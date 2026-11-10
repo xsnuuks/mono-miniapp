@@ -187,8 +187,6 @@ function App() {
   const IS_ADMIN = tgUser?.id === ADMIN_ID
   const selected = products.find((p) => p.id === selectedId)
   const cartCount = cart.reduce((s, i) => s + i.quantity, 0)
-  const cartTotal = cart.reduce((s, i) => s + (profile?.has_discount ? 10 : i.product.price) * i.quantity, 0)
-
   function showToast(msg: string) {
     setToast(msg)
     setTimeout(() => setToast(''), 1800)
