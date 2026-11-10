@@ -1244,13 +1244,13 @@ async function deleteOrder(orderId: number) {
     <div key={screen} style={page}>
       {/* Верхняя часть с градиентом на всю ширину */}
       <div style={{
-        background: 'linear-gradient(135deg, #111111 0%, #1e293b 50%, #0f172a 100%)',
-        padding: '24px 20px 32px',
-        margin: '-16px -16px 20px -16px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 16,
-      }}>
+  background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0c4a6e 100%)',
+  padding: '28px 20px 36px',
+  margin: '-16px -16px 20px -16px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 16,
+}}>
         <div style={{
           width: 72,
           height: 72,
