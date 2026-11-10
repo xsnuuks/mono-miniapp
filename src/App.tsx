@@ -1391,12 +1391,6 @@ async function deleteOrder(orderId: number) {
   
   if (screen === 'cart') {
   const cartItems = cart
-    .map(item => {
-      const product = products.find(p => p.id === item.product?.id || p.id === item.product_id)
-      return product ? { ...item, product } : null
-    })
-    .filter(Boolean) as { product: Product; quantity: number }[]
-
   const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 
   return (
@@ -1467,26 +1461,7 @@ async function deleteOrder(orderId: number) {
             onClick={() => setScreen('checkout')}
             style={{
               width: '100%',
-              background: 'linear-gradient(90deg, #1a1a1a, #2563eb)',
-              color: '#fff',
-              border: 0,
-              borderRadius: 999,
-              padding: '14px 20px',
-              fontSize: 16,
-              fontWeight: 600,
-              marginTop: 16,
-              cursor: 'pointer',
-            }}
-          >
-            Оформить заказ
-          </button>
-        </>
-      )}
-
-      <BottomNav />
-    </div>
-  )
-}
+              background: 'linear-gradient(90
 
   return (
     <div key={screen} style={{ ...page, position: 'relative' }}>
