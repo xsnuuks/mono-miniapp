@@ -1397,27 +1397,27 @@ async function deleteOrder(orderId: number) {
 
       {cartItems.length === 0 ? (
         <div style={{
-          background: '#1a1a1a',
-          borderRadius: 20,
-          padding: '40px 20px',
           textAlign: 'center',
-          marginTop: 40,
+          marginTop: 80,
         }}>
           <div style={{
             width: 80,
             height: 80,
             borderRadius: '50%',
-            background: '#2a2a2a',
+            background: '#1e1e1e',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 20px',
-            fontSize: 32,
+            margin: '0 auto 24px',
           }}>
-            🛒
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#a3a3a3" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="9" cy="21" r="1"/>
+              <circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
           </div>
-          <div style={{ fontSize: 20, fontWeight: 600, marginBottom: 8 }}>Корзина пуста</div>
-          <div style={{ color: '#a3a3a3', fontSize: 14 }}>
+          <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Корзина пуста</div>
+          <div style={{ color: '#8a8a8a', fontSize: 15 }}>
             Добавьте товары из каталога
           </div>
         </div>
@@ -1448,7 +1448,8 @@ async function deleteOrder(orderId: number) {
                     background: '#2a2a2a',
                     border: 0,
                     color: '#fff',
-                    fontSize: 18,
+                    fontSize: 20,
+                    fontWeight: 600,
                     cursor: 'pointer',
                   }}
                 >
@@ -1464,7 +1465,8 @@ async function deleteOrder(orderId: number) {
                     background: '#2a2a2a',
                     border: 0,
                     color: '#fff',
-                    fontSize: 18,
+                    fontSize: 20,
+                    fontWeight: 600,
                     cursor: 'pointer',
                   }}
                 >
