@@ -539,12 +539,13 @@ async function deleteOrder(orderId: number) {
     ) {
       return null
     }
-    const items = [
-      { id: 'catalog' as Screen, label: 'Каталог', icon: IconCatalog },
-      { id: 'cart' as Screen, label: cartCount > 0 ? `Корзина ${cartCount}` : 'Корзина', icon: IconCart },
-      { id: 'profile' as Screen, label: 'Профиль', icon: IconUser },
-      ...(IS_ADMIN ? [{ id: 'admin' as Screen, label: 'Админ', icon: IconAdmin }] : []),
-    ]
+      const items = [
+    { id: 'catalog' as Screen, label: 'Каталог', icon: IconCatalog },
+    { id: 'cart' as Screen, label: cartCount > 0 ? `Корзина ${cartCount}` : 'Корзина', icon: IconCart },
+    { id: 'info' as Screen, label: 'Инфо', icon: IconInfo },
+    { id: 'profile' as Screen, label: 'Профиль', icon: IconUser },
+    ...(IS_ADMIN ? [{ id: 'admin' as Screen, label: 'Админ', icon: IconAdmin }] : []),
+  ]
      return (
     <nav style={{
       position: 'fixed',
