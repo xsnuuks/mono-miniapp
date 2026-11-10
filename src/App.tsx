@@ -1390,12 +1390,14 @@ async function deleteOrder(orderId: number) {
  
   
   if (screen === 'cart') {
-  const cartItems = cart.map(item => {
-    const product = products.find(p => p.id === item.product_id)
-    return product ? { ...item, product } : null
-  }).filter(Boolean)
+  const cartItems = cart
+    .map(item => {
+      const product = products.find(p => p.id === item.product?.id || p.id === item.product_id)
+      return product ? { ...item, product } : null
+    })
+    .filter(Boolean) as { product: Product; quantity: number }[]
 
-  const total = cartItems.reduce((sum, item) => sum + (item!.product.price * item!.quantity), 0)
+  const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 
   return (
     <div key={screen} style={page}>
@@ -1430,7 +1432,7 @@ async function deleteOrder(orderId: number) {
       ) : (
         <>
           {cartItems.map(item => (
-            <div key={item!.product_id} style={{
+            <div key={item.product.id} style={{
               background: '#1a1a1a',
               borderRadius: 16,
               padding: 16,
@@ -1440,10 +1442,10 @@ async function deleteOrder(orderId: number) {
               gap: 12,
             }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 600 }}>{item!.product.name}</div>
-                <div style={{ color: '#a3a3a3', fontSize: 14 }}>{item!.product.price} € × {item!.quantity}</div>
+                <div style={{ fontWeight: 600 }}>{item.product.name}</div>
+                <div style={{ color: '#a3a3a3', fontSize: 14 }}>{item.product.price} € × {item.quantity}</div>
               </div>
-              <div style={{ fontWeight: 700 }}>{item!.product.price * item!.quantity} €</div>
+              <div style={{ fontWeight: 700 }}>{item.product.price * item.quantity} €</div>
             </div>
           ))}
 
