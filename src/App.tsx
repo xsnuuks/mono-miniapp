@@ -70,7 +70,7 @@ const inputStyle = {
 
 const page = {
   padding: '20px 16px 100px',
-  background: 'rgba(0,0,0,0.4)',
+  background: '#111111',
   minHeight: '100vh',
   color: '#f2f2f2',
   fontFamily: '"Montserrat", system-ui, sans-serif',
