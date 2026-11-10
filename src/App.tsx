@@ -1461,7 +1461,26 @@ async function deleteOrder(orderId: number) {
             onClick={() => setScreen('checkout')}
             style={{
               width: '100%',
-              background: 'linear-gradient(90
+              background: 'linear-gradient(90deg, #1a1a1a, #2563eb)',
+              color: '#fff',
+              border: 0,
+              borderRadius: 999,
+              padding: '14px 20px',
+              fontSize: 16,
+              fontWeight: 600,
+              marginTop: 16,
+              cursor: 'pointer',
+            }}
+          >
+            Оформить заказ
+          </button>
+        </>
+      )}
+
+      <BottomNav />
+    </div>
+  )
+}
 
   return (
     <div key={screen} style={{ ...page, position: 'relative' }}>
