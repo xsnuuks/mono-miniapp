@@ -597,7 +597,7 @@ async function deleteOrder(orderId: number) {
               cursor: 'pointer',
             }}
           >
-            <item.icon active={active} style={{ width: 22, height: 22, flexShrink: 0 }} />
+            <item.icon active={active} />
             {active && <span>{item.label}</span>}
           </button>
         )
