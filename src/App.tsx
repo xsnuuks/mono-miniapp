@@ -1390,32 +1390,101 @@ async function deleteOrder(orderId: number) {
  
   
   if (screen === 'cart') {
-    return (
-      <div key={screen} style={page}>
-        <div style={title}>Корзина</div>
-        {cart.length === 0 ? (
-          <div style={card}>Корзина пуста</div>
-        ) : (
-          <>
-            {cart.map((item) => (
-              <div key={item.product.id} style={{ ...card, marginBottom: 10 }}>
-                <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{item.product.name}</div>
-                <div style={{ fontSize: 13, color: '#a0a0a0', marginBottom: 12 }}>{(profile?.has_discount ? 10 : item.product.price)} € × {item.quantity} = {(profile?.has_discount ? 10 : item.product.price) * item.quantity} €</div>
-                <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                  <button onClick={() => changeQty(item.product.id, -1)} style={{ width: 38, height: 38, background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', borderRadius: 10, fontSize: 18, cursor: 'pointer' }}>−</button>
-                  <span style={{ minWidth: 24, textAlign: 'center' }}>{item.quantity}</span>
-                  <button onClick={() => changeQty(item.product.id, 1)} style={{ width: 38, height: 38, background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', borderRadius: 10, fontSize: 18, cursor: 'pointer' }}>+</button>
-                </div>
+  const cartItems = cart.map(item => {
+    const product = products.find(p => p.id === item.product_id)
+    return product ? { ...item, product } : null
+  }).filter(Boolean)
+
+  const total = cartItems.reduce((sum, item) => sum + (item!.product.price * item!.quantity), 0)
+
+  return (
+    <div key={screen} style={page}>
+      <div style={{ ...title, marginBottom: 20 }}>Корзина</div>
+
+      {cartItems.length === 0 ? (
+        <div style={{
+          background: '#1a1a1a',
+          borderRadius: 20,
+          padding: '40px 20px',
+          textAlign: 'center',
+          marginTop: 40,
+        }}>
+          <div style={{
+            width: 80,
+            height: 80,
+            borderRadius: '50%',
+            background: '#2a2a2a',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 20px',
+            fontSize: 32,
+          }}>
+            🛒
+          </div>
+          <div style={{ fontSize: 20, fontWeight: 600, marginBottom: 8 }}>Корзина пуста</div>
+          <div style={{ color: '#a3a3a3', fontSize: 14 }}>
+            Добавьте товары из каталога
+          </div>
+        </div>
+      ) : (
+        <>
+          {cartItems.map(item => (
+            <div key={item!.product_id} style={{
+              background: '#1a1a1a',
+              borderRadius: 16,
+              padding: 16,
+              marginBottom: 12,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+            }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 600 }}>{item!.product.name}</div>
+                <div style={{ color: '#a3a3a3', fontSize: 14 }}>{item!.product.price} € × {item!.quantity}</div>
               </div>
-            ))}
-            <div style={{ margin: '14px 0', fontSize: 18, fontWeight: 700 }}>Итого: {cartTotal} €</div>
-            <button onClick={() => setScreen('checkout')} style={btnMain}>Оформить заказ</button>
-          </>
-        )}
-        <BottomNav />
-      </div>
-    )
-  }
+              <div style={{ fontWeight: 700 }}>{item!.product.price * item!.quantity} €</div>
+            </div>
+          ))}
+
+          <div style={{
+            background: '#1a1a1a',
+            borderRadius: 16,
+            padding: 16,
+            marginTop: 8,
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontWeight: 700,
+            fontSize: 16,
+          }}>
+            <span>Итого</span>
+            <span>{total} €</span>
+          </div>
+
+          <button
+            onClick={() => setScreen('checkout')}
+            style={{
+              width: '100%',
+              background: 'linear-gradient(90deg, #1a1a1a, #2563eb)',
+              color: '#fff',
+              border: 0,
+              borderRadius: 999,
+              padding: '14px 20px',
+              fontSize: 16,
+              fontWeight: 600,
+              marginTop: 16,
+              cursor: 'pointer',
+            }}
+          >
+            Оформить заказ
+          </button>
+        </>
+      )}
+
+      <BottomNav />
+    </div>
+  )
+}
 
   return (
     <div key={screen} style={{ ...page, position: 'relative' }}>
