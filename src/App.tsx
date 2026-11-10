@@ -1301,12 +1301,32 @@ async function deleteOrder(orderId: number) {
       </div>
 
       {/* Скидка */}
-      <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 12 }}>
-        <div style={{ color: '#a3a3a3', fontSize: 13 }}>Скидка</div>
-        <div style={{ fontSize: 20, fontWeight: 700 }}>
-          {profile?.has_discount ? '10 €' : 'Нет'}
-        </div>
-      </div>
+<div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+  <div>
+    <div style={{ color: '#a3a3a3', fontSize: 13 }}>Скидка</div>
+    <div style={{ fontSize: 20, fontWeight: 700 }}>
+      {profile?.has_discount ? 'Да' : 'Нет'}
+    </div>
+  </div>
+  <button
+    onClick={() => setShowDiscountInfo(true)}
+    style={{
+      width: 28,
+      height: 28,
+      borderRadius: '50%',
+      border: '1px solid #444',
+      background: 'transparent',
+      color: '#a3a3a3',
+      fontSize: 14,
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    ?
+  </button>
+</div>
 
       {/* Реферальная ссылка */}
       <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 16 }}>
