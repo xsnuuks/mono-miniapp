@@ -673,30 +673,6 @@ async function deleteOrder(orderId: number) {
   )
 }
 
-      <button
-        onClick={() => window.open('https://t.me/optpuffy', '_blank')}
-        style={{
-          width: '100%',
-          background: 'linear-gradient(90deg, #1a1a1a, #2563eb)',
-          color: '#fff',
-          border: 0,
-          borderRadius: 999,
-          padding: '14px 20px',
-          fontSize: 16,
-          fontWeight: 600,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 8,
-        }}
-      >
-        Связаться с поддержкой
-      </button>
-
-      <BottomNav />
-    </div>
-  )
-}
   
   if (screen === 'admin_write') {
     return (
