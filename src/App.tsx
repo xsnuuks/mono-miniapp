@@ -1238,38 +1238,52 @@ async function deleteOrder(orderId: number) {
         if (screen === 'profile') {
   const name = tgUser?.first_name || 'Клиент'
   const letter = name.charAt(0).toUpperCase()
+  const photo = (tgUser as any)?.photo_url || null
 
   return (
     <div key={screen} style={page}>
-      {/* Верхняя часть с градиентом */}
+      {/* Верхняя часть с градиентом на всю ширину */}
       <div style={{
-        background: 'linear-gradient(135deg, #7c3aed, #ec4899)',
-        borderRadius: 20,
-        padding: 20,
-        marginBottom: 16,
+        background: 'linear-gradient(135deg, #111111 0%, #1e293b 50%, #0f172a 100%)',
+        padding: '24px 20px 32px',
+        margin: '-16px -16px 20px -16px',
         display: 'flex',
         alignItems: 'center',
         gap: 16,
       }}>
         <div style={{
-          width: 64,
-          height: 64,
+          width: 72,
+          height: 72,
           borderRadius: '50%',
-          background: 'rgba(0,0,0,0.4)',
+          background: '#1a1a1a',
+          overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: 28,
+          fontSize: 32,
           fontWeight: 700,
           color: '#fff',
+          flexShrink: 0,
         }}>
-          {letter}
+          {photo ? (
+            <img src={photo} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            letter
+          )}
         </div>
+
         <div>
-          <div style={{ fontSize: 22, fontWeight: 700 }}>{name}</div>
-          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>
-            Клиент: M-{String(profile?.id || 0).padStart(3, '0')}
+          <div style={{ fontSize: 24, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8 }}>
+            {name}
+            <span style={{ fontSize: 14, color: '#a3a3a3', fontWeight: 500 }}>
+              M-{String(profile?.id || 0).padStart(3, '0')}
+            </span>
           </div>
+          {tgUser?.username && (
+            <div style={{ color: '#a3a3a3', fontSize: 14, marginTop: 2 }}>
+              @{tgUser.username}
+            </div>
+          )}
         </div>
       </div>
 
@@ -1315,60 +1329,6 @@ async function deleteOrder(orderId: number) {
         </div>
         <div style={{ color: '#6b6b6b', fontSize: 12, marginTop: 6 }}>Нажми, чтобы скопировать</div>
       </div>
-
-      {/* Кнопки */}
-      <button
-        onClick={() => setScreen('favorites')}
-        style={{
-          width: '100%',
-          background: '#1a1a1a',
-          border: 0,
-          borderRadius: 16,
-          padding: 16,
-          color: '#fff',
-          fontSize: 16,
-          fontWeight: 600,
-          marginBottom: 10,
-          cursor: 'pointer',
-        }}
-      >
-        Избранное
-      </button>
-
-      <button
-        onClick={() => setScreen('support')}
-        style={{
-          width: '100%',
-          background: '#1a1a1a',
-          border: 0,
-          borderRadius: 16,
-          padding: 16,
-          color: '#fff',
-          fontSize: 16,
-          fontWeight: 600,
-          marginBottom: 10,
-          cursor: 'pointer',
-        }}
-      >
-        Поддержка
-      </button>
-
-      <button
-        onClick={() => setScreen('rules')}
-        style={{
-          width: '100%',
-          background: '#1a1a1a',
-          border: 0,
-          borderRadius: 16,
-          padding: 16,
-          color: '#fff',
-          fontSize: 16,
-          fontWeight: 600,
-          cursor: 'pointer',
-        }}
-      >
-        Правила
-      </button>
 
       <BottomNav />
     </div>
