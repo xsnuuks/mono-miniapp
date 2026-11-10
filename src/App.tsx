@@ -322,13 +322,6 @@ async function deleteOrder(orderId: number) {
   if (r.ok) setStats(await r.json())
 }
 
-  async function loadFavorites() {
-    if (!tgUser?.id) return
-    try {
-      const r = await fetch(`${API_URL}/favorites/${tgUser.id}`)
-      if (r.ok) setFavProducts(await r.json())
-    } catch {}
-  }
 
     async function toggleFav(productId: number) {
     if (!tgUser?.id) return
