@@ -100,55 +100,6 @@ function photoUrl(photo?: string | null) {
   return `${API_URL}${photo.startsWith('/') ? '' : '/'}${photo}`
 }
 
-function IconCatalog({ active }: { active: boolean }) {
-  const c = active ? '#fff' : '#8a8a8a'
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <rect x="3" y="3" width="8" height="8" stroke={c} strokeWidth="1.6" />
-      <rect x="13" y="3" width="8" height="8" stroke={c} strokeWidth="1.6" />
-      <rect x="3" y="13" width="8" height="8" stroke={c} strokeWidth="1.6" />
-      <rect x="13" y="13" width="8" height="8" stroke={c} strokeWidth="1.6" />
-    </svg>
-  )
-}
-function IconCart({ active }: { active: boolean }) {
-  const c = active ? '#fff' : '#8a8a8a'
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <path d="M6 6h15l-1.5 9h-12z" stroke={c} strokeWidth="1.6" strokeLinejoin="round" />
-      <circle cx="9" cy="20" r="1.3" fill={c} />
-      <circle cx="17" cy="20" r="1.3" fill={c} />
-      <path d="M6 6L5 3H2" stroke={c} strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  )
-}
-function IconUser({ active }: { active: boolean }) {
-  const c = active ? '#fff' : '#8a8a8a'
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="8" r="3.5" stroke={c} strokeWidth="1.6" />
-      <path d="M5 19c1.5-3.5 4-5 7-5s5.5 1.5 7 5" stroke={c} strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  )
-}
-function IconAdmin({ active }: { active: boolean }) {
-  const c = active ? '#fff' : '#8a8a8a'
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <path d="M12 3l8 4v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z" stroke={c} strokeWidth="1.6" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
-function IconInfo(props: any) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4M12 8h.01" />
-    </svg>
-  )
-}
-
 function App() {
   const [screen, setScreen] = useState<Screen>('catalog')
   const [selectedId, setSelectedId] = useState<number | null>(null)
