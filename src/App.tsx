@@ -250,14 +250,6 @@ function App() {
     showToast('Товар добавлен в корзину')
   }
 
-  function changeQty(productId: number, delta: number) {
-    setCart((prev) =>
-      prev
-        .map((i) => (i.product.id === productId ? { ...i, quantity: i.quantity + delta } : i))
-        .filter((i) => i.quantity > 0)
-    )
-  }
-
   async function submitOrder() {
     if (!city || !payment || cart.length === 0 || submitting) return
     setSubmitting(true)
