@@ -140,6 +140,15 @@ function IconAdmin({ active }: { active: boolean }) {
   )
 }
 
+function IconInfo(props: any) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 16v-4M12 8h.01" />
+    </svg>
+  )
+}
+
 function App() {
   const [screen, setScreen] = useState<Screen>('catalog')
   const [selectedId, setSelectedId] = useState<number | null>(null)
