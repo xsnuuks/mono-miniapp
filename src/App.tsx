@@ -529,23 +529,53 @@ async function deleteOrder(orderId: number) {
   }
 
   function BottomNav() {
-    if (
-      [
-        'product', 'checkout', 'success',
-        'admin_orders', 'admin_products', 'admin_product_edit',
-        'admin_users', 'admin_write', 'admin_broadcast', 'admin_stats', 'support', 'admin_chats', 'admin_chat', 'favorites'
-      ].includes(screen)
-    ) {
-      return null
-    }
-      const items = [
-    { id: 'catalog' as Screen, label: 'Каталог', icon: IconCatalog },
-    { id: 'cart' as Screen, label: cartCount > 0 ? `Корзина ${cartCount}` : 'Корзина', icon: IconCart },
-    { id: 'info' as Screen, label: 'Инфо', icon: IconInfo },
-    { id: 'profile' as Screen, label: 'Профиль', icon: IconUser },
-    ...(IS_ADMIN ? [{ id: 'admin' as Screen, label: 'Админ', icon: IconAdmin }] : []),
+  if (
+    [
+      'product', 'checkout', 'success',
+      'admin_orders', 'admin_products', 'admin_product_edit',
+      'admin_users', 'admin_write', 'admin_broadcast', 'admin_stats', 'support', 'admin_chats', 'admin_chat', 'favorites'
+    ].includes(screen)
+  ) {
+    return null
+  }
+
+  const items = [
+    { id: 'catalog' as Screen, label: 'Каталог', icon: (active: boolean) => (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+      </svg>
+    )},
+    { id: 'cart' as Screen, label: cartCount > 0 ? `Корзина ${cartCount}` : 'Корзина', icon: (active: boolean) => (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="9" cy="21" r="1"/>
+        <circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+      </svg>
+    )},
+    { id: 'info' as Screen, label: 'Инфо', icon: (active: boolean) => (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 16v-4"/>
+        <path d="M12 8h.01"/>
+      </svg>
+    )},
+    { id: 'profile' as Screen, label: 'Профиль', icon: (active: boolean) => (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    )},
+    ...(IS_ADMIN ? [{ id: 'admin' as Screen, label: 'Админ', icon: (active: boolean) => (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    )}] : []),
   ]
-     return (
+
+  return (
     <nav style={{
       position: 'fixed',
       left: 12,
@@ -567,35 +597,25 @@ async function deleteOrder(orderId: number) {
             key={item.id}
             onClick={() => setScreen(item.id)}
             style={{
-              background: active 
-                ? 'linear-gradient(90deg, #1a1a1a, #2563eb)' 
-                : 'transparent',
-              color: active ? '#fff' : '#a3a3a3',
+              background: active ? 'linear-gradient(90deg, #1a1a1a, #2563eb)' : 'transparent',
               border: 0,
-              width: active ? 'auto' : 46,
-              minHeight: 46,
               borderRadius: 999,
+              padding: active ? '8px 14px' : '8px 10px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              gap: active ? 8 : 0,
-              padding: active ? '8px 16px' : 8,
-              fontSize: active ? 15 : 0,
-              fontWeight: 600,
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-              transition: 'all .28s ease',
+              gap: 6,
+              color: active ? '#fff' : '#a3a3a3',
               cursor: 'pointer',
             }}
           >
-            <item.icon active={active} />
-            {active && <span style={{ fontWeight: 600 }}>{item.label}</span>}
+            {item.icon(active)}
+            {active && <span style={{ fontSize: 13, fontWeight: 600 }}>{item.label}</span>}
           </button>
         )
       })}
     </nav>
   )
-  }
+}
 
   if (screen === 'info') {
   return (
