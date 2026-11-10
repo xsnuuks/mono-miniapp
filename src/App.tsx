@@ -597,6 +597,43 @@ async function deleteOrder(orderId: number) {
   )
   }
 
+  if (screen === 'info') {
+  return (
+    <div key={screen} style={page}>
+      <div style={{ ...title, marginBottom: 20 }}>Инфо</div>
+      
+      <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 12 }}>
+        <div style={{ fontWeight: 600, marginBottom: 8 }}>Дополнительно</div>
+        <div style={{ color: '#a3a3a3', fontSize: 14 }}>
+          Здесь можно будет добавить правила, FAQ и другую информацию.
+        </div>
+      </div>
+
+      <button
+        onClick={() => window.open('https://t.me/optpuffy', '_blank')}
+        style={{
+          width: '100%',
+          background: 'linear-gradient(90deg, #1a1a1a, #2563eb)',
+          color: '#fff',
+          border: 0,
+          borderRadius: 999,
+          padding: '14px 20px',
+          fontSize: 16,
+          fontWeight: 600,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 8,
+        }}
+      >
+        Связаться с поддержкой
+      </button>
+
+      <BottomNav />
+    </div>
+  )
+}
+  
   if (screen === 'admin_write') {
     return (
       <div key={screen} style={page}>
