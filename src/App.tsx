@@ -1383,6 +1383,14 @@ async function deleteOrder(orderId: number) {
   const cartItems = cart
   const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
 
+  const changeQty = (productId: number, delta: number) => {
+    setCart(prev =>
+      prev
+        .map(i => i.product.id === productId ? { ...i, quantity: i.quantity + delta } : i)
+        .filter(i => i.quantity > 0)
+    )
+  }
+
   return (
     <div key={screen} style={page}>
       <div style={{ ...title, marginBottom: 20 }}>Корзина</div>
@@ -1427,9 +1435,46 @@ async function deleteOrder(orderId: number) {
             }}>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 600 }}>{item.product.name}</div>
-                <div style={{ color: '#a3a3a3', fontSize: 14 }}>{item.product.price} € × {item.quantity}</div>
+                <div style={{ color: '#a3a3a3', fontSize: 14 }}>{item.product.price} €</div>
               </div>
-              <div style={{ fontWeight: 700 }}>{item.product.price * item.quantity} €</div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <button
+                  onClick={() => changeQty(item.product.id, -1)}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: '#2a2a2a',
+                    border: 0,
+                    color: '#fff',
+                    fontSize: 18,
+                    cursor: 'pointer',
+                  }}
+                >
+                  −
+                </button>
+                <span style={{ minWidth: 24, textAlign: 'center', fontWeight: 600 }}>{item.quantity}</span>
+                <button
+                  onClick={() => changeQty(item.product.id, 1)}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: '#2a2a2a',
+                    border: 0,
+                    color: '#fff',
+                    fontSize: 18,
+                    cursor: 'pointer',
+                  }}
+                >
+                  +
+                </button>
+              </div>
+
+              <div style={{ fontWeight: 700, minWidth: 60, textAlign: 'right' }}>
+                {item.product.price * item.quantity} €
+              </div>
             </div>
           ))}
 
