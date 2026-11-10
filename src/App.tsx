@@ -1243,111 +1243,144 @@ async function deleteOrder(orderId: number) {
   }
 
         if (screen === 'profile') {
-    return (
-      <div key={screen} style={page}>
-        <div style={{ ...title, marginBottom: 6 }}>Профиль</div>
+  const name = tgUser?.first_name || 'Клиент'
+  const letter = name.charAt(0).toUpperCase()
 
-        <div style={{ ...card, marginBottom: 12, fontSize: 14, color: '#c0c0c0' }}>
-          Клиент: M-{String(profile?.client_no ?? '—').padStart(3, '0')}
+  return (
+    <div key={screen} style={page}>
+      {/* Верхняя часть с градиентом */}
+      <div style={{
+        background: 'linear-gradient(135deg, #7c3aed, #ec4899)',
+        borderRadius: 20,
+        padding: 20,
+        marginBottom: 16,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 16,
+      }}>
+        <div style={{
+          width: 64,
+          height: 64,
+          borderRadius: '50%',
+          background: 'rgba(0,0,0,0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 28,
+          fontWeight: 700,
+          color: '#fff',
+        }}>
+          {letter}
         </div>
-
-        <div style={{ fontSize: 14, color: '#a0a0a0', marginBottom: 18 }}>
-          {tgUser?.first_name || 'Пользователь'}
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
-          <div style={card}>
-            <div style={{ fontSize: 12, color: '#8a8a8a' }}>Покупок</div>
-            <div style={{ fontSize: 18, fontWeight: 700 }}>{profile?.purchases_count ?? 0}</div>
-          </div>
-          <div style={card}>
-            <div style={{ fontSize: 12, color: '#8a8a8a' }}>Друзей</div>
-            <div style={{ fontSize: 18, fontWeight: 700 }}>{profile?.successful_referrals ?? 0}</div>
-          </div>
-        </div>
-
-        <div style={{ ...card, marginBottom: 10 }}>
-          <div style={{ fontSize: 12, color: '#8a8a8a' }}>Скидка</div>
-          <div style={{ fontSize: 15, fontWeight: 600 }}>
-            {profile?.has_discount ? 'Есть (10€)' : 'Нет'}
-          </div>
-        </div>
-
-        {/* ===== РЕФЕРАЛЬНАЯ ССЫЛКА (исправлено) ===== */}
-        <div style={{ ...card, marginBottom: 14 }}>
-          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 8 }}>
-            Реферальная ссылка
-          </div>
-
-          <div
-            onClick={() => {
-              const link = `https://t.me/itsmono_bot?start=ref_${tgUser?.id}`
-
-              const textArea = document.createElement('textarea')
-              textArea.value = link
-              textArea.style.position = 'fixed'
-              textArea.style.left = '-9999px'
-              document.body.appendChild(textArea)
-              textArea.select()
-              textArea.setSelectionRange(0, 99999)
-
-              try {
-                document.execCommand('copy')
-                showToast('Ссылка скопирована')
-              } catch (e) {
-                showToast('Не удалось скопировать')
-              }
-
-              document.body.removeChild(textArea)
-            }}
-            style={{
-              fontSize: 13,
-              color: '#c0c0c0',
-              wordBreak: 'break-all' as const,
-              cursor: 'pointer',
-              padding: '10px 12px',
-              background: 'rgba(255,255,255,0.06)',
-              borderRadius: 10,
-              border: '1px solid rgba(255,255,255,0.1)',
-            }}
-          >
-            https://t.me/itsmono_bot?start=ref_{tgUser?.id}
-          </div>
-
-          <div style={{ fontSize: 12, color: '#8a8a8a', marginTop: 8 }}>
-            Нажми, чтобы скопировать
+        <div>
+          <div style={{ fontSize: 22, fontWeight: 700 }}>{name}</div>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>
+            Клиент: M-{String(profile?.id || 0).padStart(3, '0')}
           </div>
         </div>
-        {/* ===== КОНЕЦ РЕФЕРАЛЬНОЙ ССЫЛКИ ===== */}
-
-        <button
-          onClick={() => {
-            loadFavorites()
-            setScreen('favorites')
-          }}
-          style={{ ...btnMain, marginBottom: 10 }}
-        >
-          Избранное
-        </button>
-
-        <button
-          onClick={() => {
-            loadSupportMessages()
-            setScreen('support')
-          }}
-          style={{ ...btnMain, marginBottom: 10 }}
-        >
-          Поддержка
-        </button>
-
-        <button onClick={() => setScreen('rules')} style={btnMain}>
-          Правила
-        </button>
-
-        <BottomNav />
       </div>
-    )
-  }
+
+      {/* Статистика */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+        <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16 }}>
+          <div style={{ color: '#a3a3a3', fontSize: 13 }}>Покупок</div>
+          <div style={{ fontSize: 28, fontWeight: 700 }}>{profile?.purchases || 0}</div>
+        </div>
+        <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16 }}>
+          <div style={{ color: '#a3a3a3', fontSize: 13 }}>Друзей</div>
+          <div style={{ fontSize: 28, fontWeight: 700 }}>{profile?.referrals || 0}</div>
+        </div>
+      </div>
+
+      {/* Скидка */}
+      <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 12 }}>
+        <div style={{ color: '#a3a3a3', fontSize: 13 }}>Скидка</div>
+        <div style={{ fontSize: 20, fontWeight: 700 }}>
+          {profile?.has_discount ? '10 €' : 'Нет'}
+        </div>
+      </div>
+
+      {/* Реферальная ссылка */}
+      <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 16 }}>
+        <div style={{ color: '#a3a3a3', fontSize: 13, marginBottom: 8 }}>Реферальная ссылка</div>
+        <div
+          onClick={() => {
+            const link = `https://t.me/itsmono_bot?start=ref_${tgUser?.id || ''}`
+            navigator.clipboard.writeText(link)
+            alert('Ссылка скопирована')
+          }}
+          style={{
+            background: '#111',
+            borderRadius: 12,
+            padding: 12,
+            fontSize: 13,
+            wordBreak: 'break-all',
+            cursor: 'pointer',
+          }}
+        >
+          https://t.me/itsmono_bot?start=ref_{tgUser?.id || ''}
+        </div>
+        <div style={{ color: '#6b6b6b', fontSize: 12, marginTop: 6 }}>Нажми, чтобы скопировать</div>
+      </div>
+
+      {/* Кнопки */}
+      <button
+        onClick={() => setScreen('favorites')}
+        style={{
+          width: '100%',
+          background: '#1a1a1a',
+          border: 0,
+          borderRadius: 16,
+          padding: 16,
+          color: '#fff',
+          fontSize: 16,
+          fontWeight: 600,
+          marginBottom: 10,
+          cursor: 'pointer',
+        }}
+      >
+        Избранное
+      </button>
+
+      <button
+        onClick={() => setScreen('support')}
+        style={{
+          width: '100%',
+          background: '#1a1a1a',
+          border: 0,
+          borderRadius: 16,
+          padding: 16,
+          color: '#fff',
+          fontSize: 16,
+          fontWeight: 600,
+          marginBottom: 10,
+          cursor: 'pointer',
+        }}
+      >
+        Поддержка
+      </button>
+
+      <button
+        onClick={() => setScreen('rules')}
+        style={{
+          width: '100%',
+          background: '#1a1a1a',
+          border: 0,
+          borderRadius: 16,
+          padding: 16,
+          color: '#fff',
+          fontSize: 16,
+          fontWeight: 600,
+          cursor: 'pointer',
+        }}
+      >
+        Правила
+      </button>
+
+      <BottomNav />
+    </div>
+  )
+}
 
  
   
