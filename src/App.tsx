@@ -18,7 +18,7 @@ type CartItem = { product: Product; quantity: number }
 
 type Screen =
   | 'catalog' | 'product' | 'cart' | 'checkout' | 'success'
-  | 'profile' | 'rules'
+  | 'profile' | 'rules' | 'info'
   | 'admin' | 'admin_orders' | 'admin_products' | 'admin_product_edit'
   | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_stats'   | 'support' | 'admin_chats' | 'admin_chat' | 'favorites'
 
