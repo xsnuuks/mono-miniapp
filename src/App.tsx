@@ -609,14 +609,69 @@ async function deleteOrder(orderId: number) {
   if (screen === 'info') {
   return (
     <div key={screen} style={page}>
-      <div style={{ ...title, marginBottom: 20 }}>Инфо</div>
-      
-      <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 12 }}>
-        <div style={{ fontWeight: 600, marginBottom: 8 }}>Дополнительно</div>
-        <div style={{ color: '#a3a3a3', fontSize: 14 }}>
-          Здесь можно будет добавить правила, FAQ и другую информацию.
+      <div style={{ ...title, marginBottom: 24 }}>Инфо</div>
+
+      <button
+        onClick={() => setScreen('catalog')}
+        style={{
+          background: '#1a1a1a',
+          border: 0,
+          borderRadius: 16,
+          padding: '16px 20px',
+          color: '#fff',
+          fontSize: 16,
+          fontWeight: 600,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+          width: '100%',
+          marginBottom: 12,
+          cursor: 'pointer',
+        }}
+      >
+        <span style={{ fontSize: 20 }}>ⓘ</span>
+        Дополнительно
+      </button>
+
+      <div style={{
+        background: '#1a1a1a',
+        borderRadius: 20,
+        padding: 20,
+        marginBottom: 16,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, fontWeight: 600, fontSize: 16 }}>
+          <span style={{ fontSize: 20 }}>?</span>
+          Часто задаваемые вопросы (FAQ)
         </div>
+        <div style={{ color: '#a3a3a3', fontSize: 14, lineHeight: 1.5, marginBottom: 16 }}>
+          Остались вопросы? Обратитесь в команду поддержки, чтобы получить ответ
+        </div>
+        <button
+          onClick={() => window.open('https://t.me/optpuffy', '_blank')}
+          style={{
+            width: '100%',
+            background: 'linear-gradient(90deg, #1a1a1a, #2563eb)',
+            color: '#fff',
+            border: 0,
+            borderRadius: 999,
+            padding: '14px 20px',
+            fontSize: 16,
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            cursor: 'pointer',
+          }}
+        >
+          Связаться с поддержкой
+        </button>
       </div>
+
+      <BottomNav />
+    </div>
+  )
+}
 
       <button
         onClick={() => window.open('https://t.me/optpuffy', '_blank')}
@@ -1356,72 +1411,7 @@ async function deleteOrder(orderId: number) {
     )
   }
 
-  if (screen === 'info') {
-  return (
-    <div key={screen} style={page}>
-      <div style={{ ...title, marginBottom: 24 }}>Инфо</div>
-
-      <button
-        onClick={() => setScreen('catalog')}
-        style={{
-          background: '#1a1a1a',
-          border: 0,
-          borderRadius: 16,
-          padding: '16px 20px',
-          color: '#fff',
-          fontSize: 16,
-          fontWeight: 600,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
-          width: '100%',
-          marginBottom: 12,
-          cursor: 'pointer',
-        }}
-      >
-        <span style={{ fontSize: 20 }}>ⓘ</span>
-        Дополнительно
-      </button>
-
-      <div style={{
-        background: '#1a1a1a',
-        borderRadius: 20,
-        padding: 20,
-        marginBottom: 16,
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, fontWeight: 600, fontSize: 16 }}>
-          <span style={{ fontSize: 20 }}>?</span>
-          Часто задаваемые вопросы (FAQ)
-        </div>
-        <div style={{ color: '#a3a3a3', fontSize: 14, lineHeight: 1.5, marginBottom: 16 }}>
-          Остались вопросы? Обратитесь в команду поддержки, чтобы получить ответ
-        </div>
-        <button
-          onClick={() => window.open('https://t.me/optpuffy', '_blank')}
-          style={{
-            width: '100%',
-            background: 'linear-gradient(90deg, #1a1a1a, #2563eb)',
-            color: '#fff',
-            border: 0,
-            borderRadius: 999,
-            padding: '14px 20px',
-            fontSize: 16,
-            fontWeight: 600,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 8,
-            cursor: 'pointer',
-          }}
-        >
-          Связаться с поддержкой
-        </button>
-      </div>
-
-      <BottomNav />
-    </div>
-  )
-}
+ 
   
   if (screen === 'cart') {
     return (
