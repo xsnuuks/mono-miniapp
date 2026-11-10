@@ -545,38 +545,55 @@ async function deleteOrder(orderId: number) {
       { id: 'profile' as Screen, label: 'Профиль', icon: IconUser },
       ...(IS_ADMIN ? [{ id: 'admin' as Screen, label: 'Админ', icon: IconAdmin }] : []),
     ]
-    return (
-      <div style={{ position: 'fixed', bottom: 12, left: 12, right: 12, display: 'flex', gap: 8, zIndex: 50 }}>
-        {items.map((item) => {
-          const active = screen === item.id
-          const Icon = item.icon
-          return (
-            <button
-              key={item.id}
-              onClick={() => setScreen(item.id)}
-              style={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: 4,
-                padding: '10px 6px',
-                background: active ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.82)',
-                color: active ? '#fff' : '#9a9a9a',
-                border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: 12,
-                fontSize: 11,
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
-            >
-              <Icon active={active} />
-              {item.label}
-            </button>
-          )
-        })}
-      </div>
-    )
+     return (
+    <nav style={{
+      position: 'fixed',
+      left: 12,
+      right: 12,
+      bottom: 12,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-evenly',
+      gap: 4,
+      background: '#1a1a1a',
+      borderRadius: 999,
+      padding: 6,
+      zIndex: 50,
+    }}>
+      {items.map((item) => {
+        const active = screen === item.id
+        return (
+          <button
+            key={item.id}
+            onClick={() => setScreen(item.id)}
+            style={{
+              background: active 
+                ? 'linear-gradient(90deg, #1a1a1a, #2563eb)' 
+                : 'transparent',
+              color: active ? '#fff' : '#a3a3a3',
+              border: 0,
+              width: active ? 'auto' : 46,
+              minHeight: 46,
+              borderRadius: 999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: active ? 8 : 0,
+              padding: active ? '8px 16px' : 8,
+              fontSize: active ? 14 : 0,
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              transition: 'all .28s ease',
+              cursor: 'pointer',
+            }}
+          >
+            <item.icon style={{ width: 20, height: 20, flexShrink: 0 }} />
+            {active && <span>{item.label}</span>}
+          </button>
+        )
+      })}
+    </nav>
+  )
   }
 
   if (screen === 'admin_write') {
