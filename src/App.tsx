@@ -609,7 +609,7 @@ async function deleteOrder(orderId: number) {
   if (screen === 'info') {
   return (
     <div key={screen} style={page}>
-      <div style={{ ...title, marginBottom: 24 }}>Инфо</div>
+      <div style={{ ...title, marginBottom: 20 }}>Инфо</div>
 
       <button
         onClick={() => setScreen('catalog')}
@@ -623,9 +623,10 @@ async function deleteOrder(orderId: number) {
           fontWeight: 600,
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'center',
           gap: 10,
           width: '100%',
-          marginBottom: 12,
+          marginBottom: 16,
           cursor: 'pointer',
         }}
       >
@@ -637,13 +638,12 @@ async function deleteOrder(orderId: number) {
         background: '#1a1a1a',
         borderRadius: 20,
         padding: 20,
-        marginBottom: 16,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, fontWeight: 600, fontSize: 16 }}>
           <span style={{ fontSize: 20 }}>?</span>
           Часто задаваемые вопросы (FAQ)
         </div>
-        <div style={{ color: '#a3a3a3', fontSize: 14, lineHeight: 1.5, marginBottom: 16 }}>
+        <div style={{ color: '#a3a3a3', fontSize: 14, lineHeight: 1.5, marginBottom: 16, textAlign: 'center' }}>
           Остались вопросы? Обратитесь в команду поддержки, чтобы получить ответ
         </div>
         <button
