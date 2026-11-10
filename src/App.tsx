@@ -1351,6 +1351,55 @@ async function deleteOrder(orderId: number) {
         <div style={{ color: '#6b6b6b', fontSize: 12, marginTop: 6 }}>Нажми, чтобы скопировать</div>
       </div>
 
+      {showDiscountInfo && (
+  <div
+    onClick={() => setShowDiscountInfo(false)}
+    style={{
+      position: 'fixed',
+      inset: 0,
+      background: 'rgba(0,0,0,0.6)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 100,
+      padding: 20,
+    }}
+  >
+    <div
+      onClick={e => e.stopPropagation()}
+      style={{
+        background: '#1a1a1a',
+        borderRadius: 16,
+        padding: 20,
+        maxWidth: 320,
+        width: '100%',
+      }}
+    >
+      <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Как работает скидка</div>
+      <div style={{ color: '#a3a3a3', fontSize: 14, lineHeight: 1.4 }}>
+        Пригласите 2 друзей по своей реферальной ссылке.<br />
+        После того как они оформят заказ, вам активируется скидка 5 € на следующий заказ.
+      </div>
+      <button
+        onClick={() => setShowDiscountInfo(false)}
+        style={{
+          marginTop: 16,
+          width: '100%',
+          background: '#2563eb',
+          border: 0,
+          borderRadius: 12,
+          padding: 12,
+          color: '#fff',
+          fontWeight: 600,
+          cursor: 'pointer',
+        }}
+      >
+        Понятно
+      </button>
+    </div>
+  </div>
+)}
+      
       <BottomNav />
     </div>
   )
