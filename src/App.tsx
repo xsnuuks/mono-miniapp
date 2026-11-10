@@ -581,14 +581,14 @@ async function deleteOrder(orderId: number) {
               justifyContent: 'center',
               gap: active ? 8 : 0,
               padding: active ? '8px 16px' : 8,
-              fontSize: active ? 14 : 0,
+              fontSize: active ? 15 : 0,
               overflow: 'hidden',
               whiteSpace: 'nowrap',
               transition: 'all .28s ease',
               cursor: 'pointer',
             }}
           >
-            <item.icon active={active} />
+            <item.icon active={active} style={{ width: 22, height: 22, flexShrink: 0 }} />
             {active && <span>{item.label}</span>}
           </button>
         )
