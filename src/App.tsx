@@ -132,6 +132,7 @@ function App() {
   const [chatReply, setChatReply] = useState('')
   const [favIds, setFavIds] = useState<number[]>([])
   const [favProducts, setFavProducts] = useState<Product[]>([])
+  const [showDiscountInfo, setShowDiscountInfo] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
   const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user
