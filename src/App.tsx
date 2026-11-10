@@ -581,6 +581,7 @@ async function deleteOrder(orderId: number) {
               gap: active ? 8 : 0,
               padding: active ? '8px 16px' : 8,
               fontSize: active ? 15 : 0,
+              fontWeight: 600,
               overflow: 'hidden',
               whiteSpace: 'nowrap',
               transition: 'all .28s ease',
@@ -588,7 +589,7 @@ async function deleteOrder(orderId: number) {
             }}
           >
             <item.icon active={active} />
-            {active && <span>{item.label}</span>}
+            {active && <span style={{ fontWeight: 600 }}>{item.label}</span>}
           </button>
         )
       })}
