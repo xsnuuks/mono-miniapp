@@ -1762,9 +1762,8 @@ async function deleteOrder(orderId: number) {
         <span style={{ fontSize: 13, fontWeight: 600 }}>Доставка</span>
       </>
     )}
-  </button>
+   </button>
 )}
-</button>
 </div>
 <div style={{ fontSize: 13, color: '#8a8a8a', marginBottom: 16, letterSpacing: '0.04em' }}>Каталог</div>
       <div style={{
