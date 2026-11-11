@@ -1872,7 +1872,7 @@ async function deleteOrder(orderId: number) {
       style={{
         ...card,
         padding: '14px 16px',
-        textAlign: 'left',
+        textAlign: 'center',
         fontSize: 15,
         fontWeight: 600,
         color: '#fff',
