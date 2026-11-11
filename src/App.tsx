@@ -1708,6 +1708,31 @@ async function deleteOrder(orderId: number) {
   )
 }
 
+  if (screen === 'wholesale') {
+  return (
+    <div key={screen} style={page}>
+      <div style={{ ...title, marginBottom: 16 }}>Опт</div>
+      <div style={{ fontSize: 14, color: '#8a8a8a', marginBottom: 20 }}>
+        Оптовый каталог скоро появится
+      </div>
+      <button
+        onClick={() => setScreen('catalog')}
+        style={{
+          padding: '12px 20px',
+          borderRadius: 12,
+          border: '1px solid rgba(255,255,255,0.15)',
+          background: 'rgba(255,255,255,0.06)',
+          color: '#e0e0e0',
+          fontSize: 14,
+          cursor: 'pointer',
+        }}
+      >
+        Назад
+      </button>
+    </div>
+  );
+}
+  
   return (
     <div key={screen} style={{ ...page, position: 'relative' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
