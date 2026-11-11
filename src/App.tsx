@@ -1712,38 +1712,58 @@ async function deleteOrder(orderId: number) {
     <div key={screen} style={{ ...page, position: 'relative' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
   <div style={{ ...title, marginBottom: 0 }}>PUFFY STORE</div>
+  {priceMode === 'wholesale' ? (
+  <div
+    style={{
+      background: 'rgba(168, 85, 247, 0.12)',
+      border: '1px solid rgba(168, 85, 247, 0.3)',
+      borderRadius: 12,
+      padding: '6px 10px',
+      color: '#a855f7',
+      display: 'flex',
+      alignItems: 'center',
+      gap: 6,
+      fontSize: 13,
+      fontWeight: 600,
+    }}
+  >
+    Опт
+  </div>
+) : (
   <button
-  onClick={() => setScreen('delivery')}
-  style={{
-    background: 'rgba(168, 85, 247, 0.12)',
-    border: '1px solid rgba(168, 85, 247, 0.3)',
-    borderRadius: 12,
-    padding: '6px 10px',
-    cursor: 'pointer',
-    color: '#a855f7',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 6,
-  }}
->
-  {deliveryType === 'pickup' ? (
-    <>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-        <circle cx="12" cy="9" r="2.5"/>
-      </svg>
-      <span style={{ fontSize: 13, fontWeight: 600 }}>Самовывоз</span>
-    </>
-  ) : (
-    <>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-        <path d="M3.27 6.96L12 12.01l8.73-5.05"/>
-        <path d="M12 22.08V12"/>
-      </svg>
-      <span style={{ fontSize: 13, fontWeight: 600 }}>Доставка</span>
-    </>
-  )}
+    onClick={() => setScreen('delivery')}
+    style={{
+      background: 'rgba(168, 85, 247, 0.12)',
+      border: '1px solid rgba(168, 85, 247, 0.3)',
+      borderRadius: 12,
+      padding: '6px 10px',
+      cursor: 'pointer',
+      color: '#a855f7',
+      display: 'flex',
+      alignItems: 'center',
+      gap: 6,
+    }}
+  >
+    {deliveryType === 'pickup' ? (
+      <>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+          <circle cx="12" cy="9" r="2.5"/>
+        </svg>
+        <span style={{ fontSize: 13, fontWeight: 600 }}>Самовывоз</span>
+      </>
+    ) : (
+      <>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <path d="M3.27 6.96L12 12.01l8.73-5.05"/>
+          <path d="M12 22.08V12"/>
+        </svg>
+        <span style={{ fontSize: 13, fontWeight: 600 }}>Доставка</span>
+      </>
+    )}
+  </button>
+)}
 </button>
 </div>
 <div style={{ fontSize: 13, color: '#8a8a8a', marginBottom: 16, letterSpacing: '0.04em' }}>Каталог</div>
