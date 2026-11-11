@@ -1818,7 +1818,10 @@ async function deleteOrder(orderId: number) {
     Розница
   </button>
   <button
-    onClick={() => setPriceMode('wholesale')}
+    onClick={() => {
+  setPriceMode('wholesale');
+  setScreen('wholesale');
+}}
     style={{
       flex: 1,
       padding: '10px 16px',
