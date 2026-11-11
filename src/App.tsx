@@ -1556,6 +1556,55 @@ async function deleteOrder(orderId: number) {
     </div>
   )
 }
+
+  if (screen === 'conditions') {
+  return (
+    <div key="conditions" style={page}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+        <button type="button" onClick={() => setScreen('catalog')} style={{ border: 'none', background: 'none', color: '#fff', fontSize: 20, cursor: 'pointer' }}>←</button>
+        <div style={title}>Условия работы</div>
+      </div>
+
+      <div style={{ ...card, padding: 16, marginBottom: 12 }}>
+        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>📦 Минимальный заказ и ассортимент</div>
+        <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
+          Мы работаем с любыми объёмами — как с небольшими заказами, так и с супер крупными партиями.
+          <br /><br />
+          Вы можете свободно миксовать товары между собой — любые бренды, типы и вкусы (жидкости, одноразки и др.).
+          <br /><br />
+          Главное условие — соблюдение минимального общего количества для отгрузки:
+          <br />• от 20 шт — первая ценовая категория;
+          <br />• цены для крупных объёмов доступны по запросу.
+          <br /><br />
+          📌 Картриджи для подсистем не участвуют в подсчёте минимального количества.
+          <br /><br />
+          Минимальное количество считается только по жидкостям, подсистемам и одноразкам.
+        </div>
+      </div>
+
+      <div style={{ ...card, padding: 16, marginBottom: 12 }}>
+        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>📦 Доставка по Европе</div>
+        <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
+          Служба: DPD / GLS
+          <br />Сроки: в среднем от 3 до 5 рабочих дней
+          <br />20–40 €
+          <br /><br />
+          Точная стоимость зависит от веса и количества.
+        </div>
+      </div>
+
+      <div style={{ ...card, padding: 16 }}>
+        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>💳 Оплата</div>
+        <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
+          Мы предлагаем несколько способов оплаты:
+          <br /><br />
+          🅣 USDT (криптовалюта) — предпочтительный способ расчёта.
+          <br />💶 Банковский перевод в UAH — на Украинский счёт.
+        </div>
+      </div>
+    </div>
+  )
+}
   
   if (screen === 'cart') {
   const cartItems = cart
@@ -1816,8 +1865,29 @@ async function deleteOrder(orderId: number) {
       {!loading && products.length === 0 ? <div style={card}>Товаров пока нет</div> : null}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         {priceMode === 'wholesale' ? (
-  <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px 20px', color: '#8a8a8a', fontSize: 14 }}>
-    Оптовый каталог скоро появится
+  <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <button
+      type="button"
+      onClick={() => setScreen('conditions')}
+      style={{
+        ...card,
+        padding: '14px 16px',
+        textAlign: 'left',
+        fontSize: 15,
+        fontWeight: 600,
+        color: '#fff',
+        cursor: 'pointer',
+      }}
+    >
+      Условия работы
+    </button>
+
+    <div style={{ ...card, padding: '14px 16px' }}>
+      <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6 }}>💬 Нашли дешевле? Сделаем лучше!</div>
+      <div style={{ fontSize: 13, color: '#c8c8c8', lineHeight: 1.45 }}>
+        Напишите менеджеру — <a href="https://t.me/optpuffy" target="_blank" rel="noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>@optpuffy</a>, предложим более выгодную цену на опт!
+      </div>
+    </div>
   </div>
 ) : (
   [...products].sort((a, b) => Number(b.available) - Number(a.available)).map((p) => {
