@@ -1918,7 +1918,8 @@ async function deleteOrder(orderId: number) {
               </div>
             </div>
           )
-        })}
+        )
+      )}
       </div>
       <BottomNav />
       {toast ? (
