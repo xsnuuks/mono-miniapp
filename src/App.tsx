@@ -1429,21 +1429,21 @@ async function deleteOrder(orderId: number) {
           marginTop: 80,
         }}>
           <div style={{
-            width: 80,
-            height: 80,
-            borderRadius: '50%',
-            background: '#1e1e1e',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 24px',
-          }}>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#a3a3a3" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
-              <circle cx="9" cy="21" r="1"/>
-              <circle cx="20" cy="21" r="1"/>
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-            </svg>
-          </div>
+  width: 80,
+  height: 80,
+  borderRadius: '50%',
+  background: '#1e1e1e',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  margin: '0 auto 24px',
+}}>
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#a3a3a3" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+    <circle cx="9" cy="21" r="1"/>
+    <circle cx="20" cy="21" r="1"/>
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+  </svg>
+</div>
           <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Корзина пуста</div>
           <div style={{ color: '#8a8a8a', fontSize: 15 }}>
             Добавьте товары из каталога
