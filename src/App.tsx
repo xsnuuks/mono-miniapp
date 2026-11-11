@@ -133,6 +133,7 @@ function App() {
   const [favIds, setFavIds] = useState<number[]>([])
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
+  const [priceMode, setPriceMode] = useState<'retail' | 'wholesale'>('retail')
   const [ageConfirmed, setAgeConfirmed] = useState(false)
 
 function confirmAge() {
@@ -1657,6 +1658,51 @@ async function deleteOrder(orderId: number) {
     <div key={screen} style={{ ...page, position: 'relative' }}>
       <div style={{ ...title, marginBottom: 4 }}>PUFFY STORE</div>
 <div style={{ fontSize: 13, color: '#8a8a8a', marginBottom: 16, letterSpacing: '0.04em' }}>Каталог</div>
+      <div style={{
+  display: 'flex',
+  background: 'rgba(255,255,255,0.06)',
+  borderRadius: 14,
+  padding: 4,
+  marginBottom: 16,
+  gap: 4,
+}}>
+  <button
+    onClick={() => setPriceMode('retail')}
+    style={{
+      flex: 1,
+      padding: '10px 16px',
+      borderRadius: 10,
+      border: 0,
+      background: priceMode === 'retail' 
+        ? 'linear-gradient(90deg, #7c3aed, #a855f7)' 
+        : 'transparent',
+      color: '#fff',
+      fontWeight: 600,
+      fontSize: 15,
+      cursor: 'pointer',
+    }}
+  >
+    Розница
+  </button>
+  <button
+    onClick={() => setPriceMode('wholesale')}
+    style={{
+      flex: 1,
+      padding: '10px 16px',
+      borderRadius: 10,
+      border: 0,
+      background: priceMode === 'wholesale' 
+        ? 'linear-gradient(90deg, #7c3aed, #a855f7)' 
+        : 'transparent',
+      color: '#fff',
+      fontWeight: 600,
+      fontSize: 15,
+      cursor: 'pointer',
+    }}
+  >
+    Опт
+  </button>
+</div>
       {loading ? <div style={{ color: '#a0a0a0', marginBottom: 12 }}>Загрузка...</div> : null}
       {!loading && products.length === 0 ? <div style={card}>Товаров пока нет</div> : null}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
