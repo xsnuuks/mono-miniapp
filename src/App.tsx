@@ -1716,7 +1716,10 @@ async function deleteOrder(orderId: number) {
         Оптовый каталог скоро появится
       </div>
       <button
-        onClick={() => setScreen('catalog')}
+        onClick={() => {
+  setPriceMode('wholesale');
+  setScreen('wholesale');
+}}
         style={{
           padding: '12px 20px',
           borderRadius: 12,
