@@ -1691,20 +1691,24 @@ async function deleteOrder(orderId: number) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
   <div style={{ ...title, marginBottom: 0 }}>PUFFY STORE</div>
   <button
-    onClick={() => setScreen('delivery')}
-    style={{
-      background: 'transparent',
-      border: 0,
-      padding: 8,
-      cursor: 'pointer',
-      color: '#a855f7',
-    }}
-  >
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-      <circle cx="12" cy="9" r="2.5"/>
-    </svg>
-  </button>
+  onClick={() => setScreen('delivery')}
+  style={{
+    background: 'rgba(168, 85, 247, 0.12)',
+    border: '1px solid rgba(168, 85, 247, 0.3)',
+    borderRadius: 12,
+    padding: 8,
+    cursor: 'pointer',
+    color: '#a855f7',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+    <circle cx="12" cy="9" r="2.5"/>
+  </svg>
+</button>
 </div>
 <div style={{ fontSize: 13, color: '#8a8a8a', marginBottom: 16, letterSpacing: '0.04em' }}>Каталог</div>
       <div style={{
