@@ -1549,7 +1549,7 @@ async function deleteOrder(orderId: number) {
 
   return (
     <div key={screen} style={{ ...page, position: 'relative' }}>
-      <div style={{ ...title, marginBottom: 4 }}>PUFFYSTORE</div>
+      <div style={{ ...title, marginBottom: 4 }}>PUFFY STORE</div>
 <div style={{ fontSize: 13, color: '#8a8a8a', marginBottom: 16, letterSpacing: '0.04em' }}>Каталог</div>
       {loading ? <div style={{ color: '#a0a0a0', marginBottom: 12 }}>Загрузка...</div> : null}
       {!loading && products.length === 0 ? <div style={card}>Товаров пока нет</div> : null}
