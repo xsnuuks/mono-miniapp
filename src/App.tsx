@@ -1837,88 +1837,69 @@ async function deleteOrder(orderId: number) {
           position: 'relative',
         }}
       >
-        {/* дальше весь твой код карточки товара */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleFav(p.id)
+          }}
+          style={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            zIndex: 2,
+            border: 'none',
+            background: 'rgba(0,0,0,0.45)',
+            borderRadius: 20,
+            width: 36,
+            height: 36,
+            color: '#fff',
+            fontSize: 18,
+            cursor: 'pointer',
+          }}
+        >
+          {favIds.includes(p.id) ? '♥' : '♡'}
+        </button>
+        <div style={{ width: '100%', aspectRatio: '1/1', background: '#111' }}>
+          {img ? <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
+        </div>
+        <div style={{ padding: 12, display: 'flex', flexDirection: 'column', flex: 1 }}>
+          <div style={{
+            fontSize: 13,
+            fontWeight: 700,
+            marginBottom: 4,
+            lineHeight: 1.3,
+            minHeight: 36,
+            fontFamily: '"Montserrat", system-ui, sans-serif',
+            letterSpacing: '0.03em',
+            textTransform: 'uppercase' as const,
+          }}>
+            {p.name}
+          </div>
+          <div style={{ fontSize: 12, color: '#9a9a9a', marginBottom: 10 }}>
+            {p.volume} · {p.strength}
+          </div>
+          <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+            <div style={{ fontSize: 15, fontWeight: 700 }}>
+              {profile?.has_discount ? 10 : p.price} €
+            </div>
+            <div style={{
+              fontSize: 10,
+              color: p.available ? '#d0d0d0' : '#777',
+              border: `1px solid ${p.available ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.08)'}`,
+              padding: '3px 8px',
+              borderRadius: 20,
+              whiteSpace: 'nowrap',
+            }}>
+              {p.available ? 'В наличии' : 'Нет в наличии'}
+            </div>
+          </div>
+        </div>
       </div>
-  )
-          const img = photoUrl(p.photo)
-          return (
-            <div
-              key={p.id}
-              onClick={() => { setSelectedId(p.id); setScreen('product') }}
-              style={{
-                ...card,
-                padding: 0,
-                overflow: 'hidden',
-                cursor: 'pointer',
-                opacity: p.available ? 1 : 0.55,
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'relative',
-              }}
-            >
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  toggleFav(p.id)
-                }}
-                style={{
-                  position: 'absolute',
-                  top: 8,
-                  right: 8,
-                  zIndex: 2,
-                  border: 'none',
-                  background: 'rgba(0,0,0,0.45)',
-                  borderRadius: 20,
-                  width: 36,
-                  height: 36,
-                  color: '#fff',
-                  fontSize: 18,
-                  cursor: 'pointer',
-                }}
-              >
-                {favIds.includes(p.id) ? '♥' : '♡'}
-              </button>
-              <div style={{ width: '100%', aspectRatio: '1/1', background: '#111' }}>
-                {img ? <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
-              </div>
-              <div style={{ padding: 12, display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <div style={{
-                  fontSize: 13,
-                  fontWeight: 700,
-                  marginBottom: 4,
-                  lineHeight: 1.3,
-                  minHeight: 36,
-                  fontFamily: '"Montserrat", system-ui, sans-serif',
-                  letterSpacing: '0.03em',
-                  textTransform: 'uppercase' as const,
-                }}>
-                  {p.name}
-                </div>
-                <div style={{ fontSize: 12, color: '#9a9a9a', marginBottom: 10 }}>
-                  {p.volume} · {p.strength}
-                </div>
-                <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-                  <div style={{ fontSize: 15, fontWeight: 700 }}>
-                    {profile?.has_discount ? 10 : p.price} €
-                  </div>
-                  <div style={{
-                    fontSize: 10,
-                    color: p.available ? '#d0d0d0' : '#777',
-                    border: `1px solid ${p.available ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.08)'}`,
-                    padding: '3px 8px',
-                    borderRadius: 20,
-                    whiteSpace: 'nowrap',
-                  }}>
-                    {p.available ? 'В наличии' : 'Нет в наличии'}
-                  </div>
-                </div>
-              </div>
-                    </div>
-           )
-        }) 
-      }
-  </div>
+    )
+  })
+}
+</div>
       <BottomNav />
       {toast ? (
         <div style={{
