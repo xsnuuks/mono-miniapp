@@ -1840,7 +1840,6 @@ async function deleteOrder(orderId: number) {
         {/* дальше весь твой код карточки товара */}
       </div>
   )
-)}
           const img = photoUrl(p.photo)
           return (
             <div
