@@ -133,6 +133,7 @@ function App() {
   const [favIds, setFavIds] = useState<number[]>([])
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
+  const [optCat, setOptCat] = useState('all')
   const [priceMode, setPriceMode] = useState<'retail' | 'wholesale'>('retail')
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup')
   const [ageConfirmed, setAgeConfirmed] = useState(false)
@@ -1865,30 +1866,70 @@ async function deleteOrder(orderId: number) {
       {!loading && products.length === 0 ? <div style={card}>Товаров пока нет</div> : null}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         {priceMode === 'wholesale' ? (
-  <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 12 }}>
-    <button
-      type="button"
-      onClick={() => setScreen('conditions')}
-      style={{
-        ...card,
-        padding: '14px 16px',
-        textAlign: 'center',
-        fontSize: 15,
-        fontWeight: 600,
-        color: '#fff',
-        cursor: 'pointer',
-      }}
-    >
-      Условия работы
-    </button>
+  <>
+    <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 12 }}>
+      <button
+        type="button"
+        onClick={() => setScreen('conditions')}
+        style={{
+          ...card,
+          padding: '14px 16px',
+          textAlign: 'center',
+          fontSize: 15,
+          fontWeight: 600,
+          color: '#fff',
+          cursor: 'pointer',
+        }}
+      >
+        Условия работы
+      </button>
 
-    <div style={{ ...card, padding: '14px 16px' }}>
-      <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6 }}>💬 Нашли дешевле? Сделаем лучше!</div>
-      <div style={{ fontSize: 13, color: '#c8c8c8', lineHeight: 1.45 }}>
-        Напишите менеджеру — <a href="https://t.me/optpuffy" target="_blank" rel="noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>@optpuffy</a>, предложим более выгодную цену на опт!
+      <div style={{ ...card, padding: '14px 16px' }}>
+        <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6 }}>💬 Нашли дешевле? Сделаем лучше!</div>
+        <div style={{ fontSize: 13, color: '#c8c8c8', lineHeight: 1.45 }}>
+          Напишите менеджеру — <a href="https://t.me/optpuffy" target="_blank" rel="noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>@optpuffy</a>, предложим более выгодную цену на опт!
+        </div>
       </div>
     </div>
-  </div>
+
+    <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8, marginBottom: 4 }}>
+      {[
+        { id: 'all', name: 'Все', img: '' },
+        { id: 'жижи', name: 'Жижи', img: '/жижи.jpg' },
+        { id: 'одноразки', name: 'Одноразки', img: '/одноразки.jpg' },
+        { id: 'поды', name: 'Поды', img: '/поды.jpg' },
+        { id: 'картриджи', name: 'Картриджи', img: '/картриджи.jpg' },
+        { id: 'снюс', name: 'Снюс', img: '/снюс.jpg' },
+      ].map(cat => (
+        <button
+          key={cat.id}
+          type="button"
+          onClick={() => setOptCat(cat.id)}
+          style={{
+            flexShrink: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 6,
+            background: 'none',
+            border: 'none',
+            color: '#fff',
+            cursor: 'pointer',
+            padding: 0,
+          }}
+        >
+          <div style={{
+            width: 64,
+            height: 64,
+            borderRadius: '50%',
+            background: cat.img ? `url(${cat.img}) center/cover` : 'rgba(255,255,255,0.08)',
+            border: optCat === cat.id ? '2px solid #fff' : '2px solid transparent',
+          }} />
+          <div style={{ fontSize: 11, fontWeight: 600 }}>{cat.name}</div>
+        </button>
+      ))}
+    </div>
+  </>
 ) : (
   [...products].sort((a, b) => Number(b.available) - Number(a.available)).map((p) => {
     const img = photoUrl(p.photo)
