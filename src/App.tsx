@@ -20,7 +20,7 @@ type Screen =
   | 'catalog' | 'product' | 'cart' | 'checkout' | 'success' 
   | 'profile' | 'rules' | 'info' | 'delivery'
   | 'admin' | 'admin_orders' | 'admin_products' | 'admin_product_edit'
-  | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites'
+  | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale'
 
 const CITIES = ['Reutlingen', 'Pfullingen', 'Eningen', 'Betzingen']
 const PAYMENTS = ['Наличные', 'Банковский перевод']
