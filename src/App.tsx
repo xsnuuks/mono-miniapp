@@ -542,7 +542,7 @@ async function deleteOrder(orderId: number) {
             key={item.id}
             onClick={() => setScreen(item.id)}
             style={{
-              background: active ? 'linear-gradient(90deg, #1a1a1a, #2563eb)' : 'transparent',
+              background: active ? 'linear-gradient(90deg, #2e1065, #7c3aed)' : 'transparent',
               border: 0,
               borderRadius: 999,
               padding: active ? '8px 14px' : '8px 10px',
@@ -606,7 +606,7 @@ async function deleteOrder(orderId: number) {
           onClick={() => window.open('https://t.me/optpuffy', '_blank')}
           style={{
             width: '100%',
-            background: 'linear-gradient(90deg, #1a1a1a, #2563eb)',
+            background: 'linear-gradient(90deg, #2e1065, #7c3aed)',
             color: '#fff',
             border: 0,
             borderRadius: 999,
