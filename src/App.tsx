@@ -1447,7 +1447,7 @@ async function deleteOrder(orderId: number) {
   strokeWidth="1.7" 
   strokeLinecap="round" 
   strokeLinejoin="round"
-  style={{ display: 'block', marginTop: '2px', marginLeft: '2px' }}
+  style={{ display: 'block', marginTop: '2px', marginLeft: '-0.5px' }}
 >
   <path d="M6 6h15l-1.5 9h-12z"/>
   <circle cx="9" cy="20" r="1"/>
