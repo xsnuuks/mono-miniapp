@@ -134,12 +134,9 @@ function App() {
   const [favIds, setFavIds] = useState<number[]>([])
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
-  const [ageConfirmed, setAgeConfirmed] = useState(() => {
-  return localStorage.getItem('age_confirmed') === '1'
-})
+  const [ageConfirmed, setAgeConfirmed] = useState(false)
 
 function confirmAge() {
-  localStorage.setItem('age_confirmed', '1')
   setAgeConfirmed(true)
 }
 
