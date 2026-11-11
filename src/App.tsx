@@ -100,14 +100,6 @@ function photoUrl(photo?: string | null) {
   return `${API_URL}${photo.startsWith('/') ? '' : '/'}${photo}`
 }
 
-function confirmAge() {
-  localStorage.setItem('age_confirmed', '1')
-  setAgeConfirmed(true)
-}
-
-function rejectAge() {
-  window.Telegram?.WebApp?.close()
-}
 
 function App() {
   const [screen, setScreen] = useState<Screen>('catalog')
@@ -145,7 +137,18 @@ function App() {
   const [ageConfirmed, setAgeConfirmed] = useState(() => {
   return localStorage.getItem('age_confirmed') === '1'
 })
-  const fileRef = useRef<HTMLInputElement>(null)
+
+function confirmAge() {
+  localStorage.setItem('age_confirmed', '1')
+  setAgeConfirmed(true)
+}
+
+function rejectAge() {
+  const tg = (window as any).Telegram?.WebApp
+  tg?.close()
+}
+
+const fileRef = useRef<HTMLInputElement>(null)
 
   const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user
   const IS_ADMIN = tgUser?.id === ADMIN_ID
