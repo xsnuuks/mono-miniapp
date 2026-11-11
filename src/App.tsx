@@ -134,6 +134,7 @@ function App() {
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
   const [priceMode, setPriceMode] = useState<'retail' | 'wholesale'>('retail')
+  const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup')
   const [ageConfirmed, setAgeConfirmed] = useState(false)
 
 function confirmAge() {
@@ -1725,10 +1726,18 @@ async function deleteOrder(orderId: number) {
     justifyContent: 'center',
   }}
 >
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-    <circle cx="12" cy="9" r="2.5"/>
-  </svg>
+  {deliveryType === 'pickup' ? (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+      <circle cx="12" cy="9" r="2.5"/>
+    </svg>
+  ) : (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+      <path d="M3.27 6.96L12 12.01l8.73-5.05"/>
+      <path d="M12 22.08V12"/>
+    </svg>
+  )}
 </button>
 </div>
 <div style={{ fontSize: 13, color: '#8a8a8a', marginBottom: 16, letterSpacing: '0.04em' }}>Каталог</div>
