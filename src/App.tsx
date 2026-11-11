@@ -76,7 +76,6 @@ const page = {
   fontFamily: '"Montserrat", system-ui, sans-serif',
   fontSize: 15,
   fontWeight: 500,
-  animation: 'fadeIn 0.35s ease',
 }
 
 const title = {
