@@ -100,6 +100,15 @@ function photoUrl(photo?: string | null) {
   return `${API_URL}${photo.startsWith('/') ? '' : '/'}${photo}`
 }
 
+function confirmAge() {
+  localStorage.setItem('age_confirmed', '1')
+  setAgeConfirmed(true)
+}
+
+function rejectAge() {
+  window.Telegram?.WebApp?.close()
+}
+
 function App() {
   const [screen, setScreen] = useState<Screen>('catalog')
   const [selectedId, setSelectedId] = useState<number | null>(null)
@@ -133,6 +142,9 @@ function App() {
   const [favIds, setFavIds] = useState<number[]>([])
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
+  const [ageConfirmed, setAgeConfirmed] = useState(() => {
+  return localStorage.getItem('age_confirmed') === '1'
+})
   const fileRef = useRef<HTMLInputElement>(null)
 
   const tgUser = (window as any).Telegram?.WebApp?.initDataUnsafe?.user
@@ -562,6 +574,90 @@ async function deleteOrder(orderId: number) {
   )
 }
 
+  if (!ageConfirmed) {
+  return (
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      background: 'rgba(0,0,0,0.85)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 9999,
+      padding: 20,
+    }}>
+      <div style={{
+        background: 'linear-gradient(145deg, #1a0b2e, #2e1065)',
+        borderRadius: 24,
+        padding: '32px 24px',
+        maxWidth: 340,
+        width: '100%',
+        textAlign: 'center',
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        boxShadow: '0 20px 60px rgba(124, 58, 237, 0.25)',
+      }}>
+        <div style={{
+          width: 72,
+          height: 72,
+          borderRadius: 20,
+          background: 'rgba(124, 58, 237, 0.25)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: '0 auto 20px',
+          fontSize: 28,
+          fontWeight: 800,
+          color: '#c4b5fd',
+        }}>
+          18+
+        </div>
+
+        <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>
+          Вам есть 18 лет?
+        </div>
+        <div style={{ color: '#a3a3a3', fontSize: 14, marginBottom: 24, lineHeight: 1.4 }}>
+          Подтвердите возраст, чтобы продолжить.
+        </div>
+
+        <button
+          onClick={confirmAge}
+          style={{
+            width: '100%',
+            background: 'linear-gradient(90deg, #7c3aed, #a855f7)',
+            color: '#fff',
+            border: 0,
+            borderRadius: 14,
+            padding: '14px 20px',
+            fontSize: 16,
+            fontWeight: 600,
+            marginBottom: 10,
+            cursor: 'pointer',
+          }}
+        >
+          Да, мне есть 18
+        </button>
+
+        <button
+          onClick={rejectAge}
+          style={{
+            width: '100%',
+            background: 'transparent',
+            color: '#d0d0d0',
+            border: '1px solid rgba(255,255,255,0.15)',
+            borderRadius: 14,
+            padding: '14px 20px',
+            fontSize: 16,
+            fontWeight: 500,
+            cursor: 'pointer',
+          }}
+        >
+          Нет, выйти
+        </button>
+      </div>
+    </div>
+  )
+}
+  
   if (screen === 'info') {
   return (
     <div key={screen} style={page}>
