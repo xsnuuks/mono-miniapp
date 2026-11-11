@@ -1245,7 +1245,7 @@ async function deleteOrder(orderId: number) {
     <div key={screen} style={page}>
       {/* Верхняя часть с градиентом на всю ширину */}
       <div style={{
-  background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0c4a6e 100%)',
+  background: 'linear-gradient(90deg, #2e1065, #7c3aed)',
   padding: '28px 20px 36px',
   margin: '-16px -16px 20px -16px',
   display: 'flex',
