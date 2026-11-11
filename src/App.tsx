@@ -1825,4 +1825,38 @@ async function deleteOrder(orderId: number) {
    )
 }
 
+if (screen === 'delivery') {
+  return (
+    <div key={screen} style={page}>
+      <button onClick={() => setScreen('catalog')} style={backBtn}>Назад</button>
+      <div style={{ ...title, marginBottom: 20 }}>Способы получения</div>
+
+      <div style={{ ...card, marginBottom: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+          </svg>
+          <div style={{ fontSize: 18, fontWeight: 600 }}>Самовывоз</div>
+        </div>
+        <div style={{ fontSize: 14, color: '#a0a0a0', lineHeight: 1.5 }}>
+          Для оформления самовывоза предварительно свяжитесь с менеджером через поддержку.
+        </div>
+      </div>
+
+      <div style={card}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          </svg>
+          <div style={{ fontSize: 18, fontWeight: 600 }}>Доставка</div>
+        </div>
+        <div style={{ fontSize: 14, color: '#a0a0a0', lineHeight: 1.5 }}>
+          Условия доставки и доступность предварительно подтверждаются менеджером.
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default App
