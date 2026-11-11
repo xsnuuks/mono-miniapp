@@ -1794,10 +1794,7 @@ async function deleteOrder(orderId: number) {
     Розница
   </button>
   <button
-    onClick={() => {
-  setPriceMode('wholesale');
-  setScreen('wholesale');
-}}
+    onClick={() => setPriceMode('wholesale')}
     style={{
       flex: 1,
       padding: '10px 16px',
@@ -1818,7 +1815,33 @@ async function deleteOrder(orderId: number) {
       {loading ? <div style={{ color: '#a0a0a0', marginBottom: 12 }}>Загрузка...</div> : null}
       {!loading && products.length === 0 ? <div style={card}>Товаров пока нет</div> : null}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-        {[...products].sort((a, b) => Number(b.available) - Number(a.available)).map((p) => {
+        {priceMode === 'wholesale' ? (
+  <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px 20px', color: '#8a8a8a', fontSize: 14 }}>
+    Оптовый каталог скоро появится
+  </div>
+) : (
+  [...products].sort((a, b) => Number(b.available) - Number(a.available)).map((p) => {
+    const img = photoUrl(p.photo)
+    return (
+      <div
+        key={p.id}
+        onClick={() => { setSelectedId(p.id); setScreen('product') }}
+        style={{
+          ...card,
+          padding: 0,
+          overflow: 'hidden',
+          cursor: 'pointer',
+          opacity: p.available ? 1 : 0.55,
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+        }}
+      >
+        {/* дальше весь твой код карточки товара */}
+      </div>
+    )
+  })
+)}
           const img = photoUrl(p.photo)
           return (
             <div
