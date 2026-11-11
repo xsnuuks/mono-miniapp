@@ -1509,7 +1509,7 @@ async function deleteOrder(orderId: number) {
       <div style={{ ...title, marginBottom: 20 }}>Способы получения</div>
 
       <button
-        onClick={() => setScreen('catalog')}
+        onClick={() => { setDeliveryType('pickup'); setScreen('catalog') }}
         style={{
           ...card,
           width: '100%',
@@ -1532,7 +1532,7 @@ async function deleteOrder(orderId: number) {
       </button>
 
       <button
-        onClick={() => setScreen('catalog')}
+        onClick={() => { setDeliveryType('delivery'); setScreen('catalog') }}
         style={{
           ...card,
           width: '100%',
