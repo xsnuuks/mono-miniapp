@@ -1507,7 +1507,17 @@ async function deleteOrder(orderId: number) {
       <button onClick={() => setScreen('catalog')} style={backBtn}>Назад</button>
       <div style={{ ...title, marginBottom: 20 }}>Способы получения</div>
 
-      <div style={{ ...card, marginBottom: 12 }}>
+      <button
+        onClick={() => setScreen('catalog')}
+        style={{
+          ...card,
+          width: '100%',
+          textAlign: 'left',
+          marginBottom: 12,
+          cursor: 'pointer',
+          border: '1px solid rgba(255,255,255,0.08)',
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
@@ -1518,19 +1528,30 @@ async function deleteOrder(orderId: number) {
         <div style={{ fontSize: 14, color: '#a0a0a0', lineHeight: 1.5 }}>
           Для оформления самовывоза предварительно свяжитесь с менеджером через поддержку.
         </div>
-      </div>
+      </button>
 
-      <div style={card}>
+      <button
+        onClick={() => setScreen('catalog')}
+        style={{
+          ...card,
+          width: '100%',
+          textAlign: 'left',
+          cursor: 'pointer',
+          border: '1px solid rgba(255,255,255,0.08)',
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
-            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <path d="M3.27 6.96L12 12.01l8.73-5.05"/>
+            <path d="M12 22.08V12"/>
           </svg>
           <div style={{ fontSize: 18, fontWeight: 600 }}>Доставка</div>
         </div>
         <div style={{ fontSize: 14, color: '#a0a0a0', lineHeight: 1.5 }}>
-          Условия доставки и доступность предварительно подтверждаются менеджером.
+          Самовывоз недоступен в вашем городе? Закажите по почте!
         </div>
-      </div>
+      </button>
     </div>
   )
 }
