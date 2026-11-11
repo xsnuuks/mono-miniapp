@@ -1898,30 +1898,29 @@ async function deleteOrder(orderId: number) {
       </div>
     )
   })
-}
+)}
 </div>
-      <BottomNav />
-      {toast ? (
-        <div style={{
-          position: 'fixed',
-          bottom: 90,
-          left: 16,
-          right: 16,
-          background: 'rgba(0,0,0,0.88)',
-          color: '#fff',
-          padding: 14,
-          textAlign: 'center',
-          fontSize: 14,
-          borderRadius: 12,
-          zIndex: 60,
-          border: '1px solid rgba(255,255,255,0.1)',
-        }}>
-          {toast}
-        </div>
-          ) : null}
-    </div>
-   )
+<BottomNav />
+{toast ? (
+  <div style={{
+    position: 'fixed',
+    bottom: 90,
+    left: 16,
+    right: 16,
+    background: 'rgba(0,0,0,0.88)',
+    color: '#fff',
+    padding: 14,
+    textAlign: 'center',
+    fontSize: 14,
+    borderRadius: 12,
+    zIndex: 60,
+    border: '1px solid rgba(255,255,255,0.1)',
+  }}>
+    {toast}
+  </div>
+) : null}
+</div>
+)
 }
-
 
 export default App
