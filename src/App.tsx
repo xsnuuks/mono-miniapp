@@ -1438,12 +1438,22 @@ async function deleteOrder(orderId: number) {
   justifyContent: 'center',
   margin: '0 auto 24px',
 }}>
-  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#a3a3a3" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
-    <path d="M6 6h15l-1.5 9h-12z"/>
-    <circle cx="9" cy="20" r="1"/>
-    <circle cx="18" cy="20" r="1"/>
-    <path d="M6 6L5 3H2"/>
-  </svg>
+  <svg 
+  width="32" 
+  height="32" 
+  viewBox="0 0 24 24" 
+  fill="none" 
+  stroke="#a3a3a3" 
+  strokeWidth="1.7" 
+  strokeLinecap="round" 
+  strokeLinejoin="round"
+  style={{ display: 'block', marginTop: '-1px' }}
+>
+  <path d="M6 6h15l-1.5 9h-12z"/>
+  <circle cx="9" cy="20" r="1"/>
+  <circle cx="18" cy="20" r="1"/>
+  <path d="M6 6L5 3H2"/>
+</svg>
 </div>
           <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Корзина пуста</div>
           <div style={{ color: '#8a8a8a', fontSize: 15 }}>
