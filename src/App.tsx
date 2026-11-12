@@ -2275,6 +2275,23 @@ if (screen.startsWith('admin_wholesale_add_')) {
       ))}
     </div>
   </>
+  <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12 }}>
+  {wholesaleProducts
+    .filter(p => optCat === 'all' || p.category === optCat)
+    .map(p => (
+      <div key={p.id} style={{ ...card, marginBottom: 0 }}>
+        <div style={{ fontWeight: 600, marginBottom: 4 }}>{p.name}</div>
+        <div style={{ fontSize: 13, color: '#aaa' }}>
+          {p.prices} цены · {p.flavors} вкуса · {p.stock} шт.
+        </div>
+      </div>
+    ))}
+  {wholesaleProducts.filter(p => optCat === 'all' || p.category === optCat).length === 0 && (
+    <div style={{ color: '#888', textAlign: 'center', padding: '12px 0' }}>
+      Товаров в этой категории пока нет
+    </div>
+  )}
+</div>
 ) : (
   [...products].sort((a, b) => Number(b.available) - Number(a.available)).map((p) => {
     const img = photoUrl(p.photo)
