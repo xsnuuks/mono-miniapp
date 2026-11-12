@@ -1229,14 +1229,31 @@ if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale
         </p>
 
         <div style={card}>
-  {wholesaleProducts.filter(p => p.category === catId).length === 0 ? (
-    ...
+  {products.length === 0 ? (
+    <div style={{ color: '#888', textAlign: 'center', padding: '20px 0' }}>
+      Товаров пока нет
+    </div>
   ) : (
-    wholesaleProducts
-      .filter(p => p.category === catId)
-      .map(p => (
-        ...
-      ))
+    products.map(p => (
+      <button
+        key={p.id}
+        onClick={() => setScreen(`admin_wholesale_product_${catId}` as any)}
+        style={{
+          width: '100%',
+          textAlign: 'left',
+          padding: '12px 0',
+          border: 'none',
+          borderBottom: '1px solid #222',
+          background: 'transparent',
+          color: '#fff',
+        }}
+      >
+        <div style={{ fontWeight: 600 }}>{p.name}</div>
+        <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
+          {p.price} € · {p.available ? 'В наличии' : 'Скрыт'}
+        </div>
+      </button>
+    ))
   )}
 </div>
 
