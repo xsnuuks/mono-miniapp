@@ -220,6 +220,7 @@ const fileRef = useRef<HTMLInputElement>(null)
     }
     loadProducts()
     loadFavIds()
+    loadWholesaleProducts()
     if (tgUser?.id) {
       fetch(`${API_URL}/profile/${tgUser.id}`)
         .then((r) => r.json())
