@@ -2236,14 +2236,36 @@ if (screen.startsWith('admin_wholesale_add_')) {
         </button>
       ))}
     </div>
-    <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12 }}>
+    <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 12, marginTop: 12 }}>
   {wholesaleProducts
     .filter(p => optCat === 'all' || p.category === optCat)
     .map(p => (
-      <div key={p.id} style={{ ...card, marginBottom: 0 }}>
-        <div style={{ fontWeight: 600, marginBottom: 4 }}>{p.name}</div>
-        <div style={{ fontSize: 13, color: '#aaa' }}>
-          {p.prices} цены · {p.flavors} вкуса · {p.stock} шт.
+      <div key={p.id} style={{ ...card, padding: 0, overflow: 'hidden' }}>
+        <div style={{ height: 140, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ fontSize: 13, color: '#555' }}>Фото</div>
+        </div>
+        <div style={{ padding: 12 }}>
+          <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{p.name}</div>
+          <div style={{ fontSize: 13, color: '#aaa', marginBottom: 8 }}>
+            В наличии: {p.stock || 0} шт.
+          </div>
+          <div style={{ fontSize: 13, color: '#c8c8c8', marginBottom: 10 }}>
+            От 10 шт. — 8.00 €/шт.
+          </div>
+          <button
+            style={{
+              width: '100%',
+              background: 'linear-gradient(90deg, #7c3aed, #a855f7)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 10,
+              padding: '10px 0',
+              fontWeight: 600,
+              fontSize: 14,
+            }}
+          >
+            Добавить в корзину
+          </button>
         </div>
       </div>
     ))}
