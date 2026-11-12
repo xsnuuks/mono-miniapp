@@ -1368,19 +1368,38 @@ if (screen.startsWith('admin_wholesale_add_')) {
           </div>
 
           <button
-  onClick={() => {
-    setWholesaleProducts(prev => [
-      ...prev,
-      {
-        id: Date.now(),
-        name: 'ELFLIQ 30ML',
-        category: catId,
-        prices: 3,
-        flavors: 3,
-        stock: 65,
+  onClick={async () => {
+    try {
+      const r = await fetch(`${API_URL}/admin/products`, {
+        method: 'POST',
+        headers: adminHeaders(tgUser?.id),
+        body: JSON.stringify({
+          name: 'ELFLIQ 30ML',
+          price: 15,
+          volume: '30ML',
+          strength: '50MG',
+          description: '',
+          is_available: false,
+        }),
+      })
+      const data = await r.json()
+      if (data.id) {
+        setWholesaleProducts(prev => [
+          ...prev,
+          {
+            id: data.id,
+            name: 'ELFLIQ 30ML',
+            category: catId,
+            prices: 3,
+            flavors: 3,
+            stock: 65,
+          }
+        ])
+        setScreen(`admin_wholesale_${catId}` as any)
       }
-    ])
-    setScreen(`admin_wholesale_${catId}` as any)
+    } catch (e) {
+      alert('Ошибка создания')
+    }
   }}
   style={btnMain}
 >
