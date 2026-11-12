@@ -1309,6 +1309,9 @@ if (screen.startsWith('admin_wholesale_add_')) {
     снюс: 'Снюс',
   }[catId] || catId
 
+  const [tiers, setTiers] = useState([{ min_qty: 10, price: 8 }])
+  const [flavors, setFlavors] = useState([{ name: '', stock: 0 }])
+
   return (
     <div key={screen} style={page}>
       <div style={{ padding: '16px 16px 90px' }}>
@@ -1319,7 +1322,7 @@ if (screen.startsWith('admin_wholesale_add_')) {
         </p>
 
         <div style={card}>
-          <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Название товара</div>
+          <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Название</div>
           <input
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
@@ -1335,66 +1338,72 @@ if (screen.startsWith('admin_wholesale_add_')) {
             }}
           />
 
-          <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Категория</div>
-          <div style={{
-            padding: 12,
-            borderRadius: 8,
-            border: '1px solid #333',
-            background: '#1a1a1a',
-            marginBottom: 16,
-          }}>
-            {catName}
-          </div>
-
-          <div style={{
-            border: '1px dashed #333',
-            borderRadius: 8,
-            padding: '32px 16px',
-            textAlign: 'center',
-            marginBottom: 20,
-            color: '#888',
-          }}>
-            <div style={{ fontSize: 24, marginBottom: 8 }}>📷</div>
-            Загрузить фотографию
-          </div>
-
-          <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Оптовые цены</div>
-          
-          <div style={{ background: '#1a1a1a', borderRadius: 8, padding: 12, marginBottom: 8 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>От 10 шт</span>
-              <span>8 €/шт.</span>
+          <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Ценовые пороги</div>
+          {tiers.map((t, i) => (
+            <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+              <input
+                type="number"
+                value={t.min_qty}
+                onChange={(e) => {
+                  const next = [...tiers]
+                  next[i].min_qty = Number(e.target.value)
+                  setTiers(next)
+                }}
+                placeholder="От шт"
+                style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #333', background: '#1a1a1a', color: '#fff' }}
+              />
+              <input
+                type="number"
+                value={t.price}
+                onChange={(e) => {
+                  const next = [...tiers]
+                  next[i].price = Number(e.target.value)
+                  setTiers(next)
+                }}
+                placeholder="Цена €"
+                style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #333', background: '#1a1a1a', color: '#fff' }}
+              />
             </div>
-          </div>
-          <div style={{ background: '#1a1a1a', borderRadius: 8, padding: 12, marginBottom: 8 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>От 30 шт</span>
-              <span>7 €/шт.</span>
-            </div>
-          </div>
-          <div style={{ background: '#1a1a1a', borderRadius: 8, padding: 12, marginBottom: 12 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>От 50 шт</span>
-              <span>6 €/шт.</span>
-            </div>
-          </div>
-
-          <button style={{
-            width: '100%',
-            padding: 12,
-            borderRadius: 8,
-            border: '1px solid #333',
-            background: 'transparent',
-            color: '#fff',
-            marginBottom: 16,
-          }}>
-            + Добавить ценовой порог
+          ))}
+          <button
+            onClick={() => setTiers([...tiers, { min_qty: 10, price: 8 }])}
+            style={{ ...btnMain, marginBottom: 16, background: 'transparent', border: '1px solid #333' }}
+          >
+            + Порог
           </button>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-            <span style={{ fontWeight: 600 }}>Видимость</span>
-            <span style={{ fontSize: 13, color: '#888' }}>Скрыт до публикации</span>
-          </div>
+          <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Вкусы</div>
+          {flavors.map((f, i) => (
+            <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+              <input
+                value={f.name}
+                onChange={(e) => {
+                  const next = [...flavors]
+                  next[i].name = e.target.value
+                  setFlavors(next)
+                }}
+                placeholder="Название вкуса"
+                style={{ flex: 2, padding: 10, borderRadius: 8, border: '1px solid #333', background: '#1a1a1a', color: '#fff' }}
+              />
+              <input
+                type="number"
+                value={f.stock}
+                onChange={(e) => {
+                  const next = [...flavors]
+                  next[i].stock = Number(e.target.value)
+                  setFlavors(next)
+                }}
+                placeholder="Кол-во"
+                style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #333', background: '#1a1a1a', color: '#fff' }}
+              />
+            </div>
+          ))}
+          <button
+            onClick={() => setFlavors([...flavors, { name: '', stock: 0 }])}
+            style={{ ...btnMain, marginBottom: 20, background: 'transparent', border: '1px solid #333' }}
+          >
+            + Вкус
+          </button>
 
           <button
             onClick={async () => {
@@ -1406,6 +1415,8 @@ if (screen.startsWith('admin_wholesale_add_')) {
                   body: JSON.stringify({
                     name: productName.trim(),
                     category_id: catId,
+                    tiers: tiers.filter(t => t.min_qty && t.price),
+                    flavors: flavors.filter(f => f.name.trim()),
                   }),
                 })
                 const data = await r.json()
@@ -1421,9 +1432,6 @@ if (screen.startsWith('admin_wholesale_add_')) {
           >
             Создать товар
           </button>
-          <div style={{ fontSize: 12, color: '#666', textAlign: 'center', marginTop: 8 }}>
-            Пример будущего интерфейса
-          </div>
         </div>
       </div>
       <BottomNav />
