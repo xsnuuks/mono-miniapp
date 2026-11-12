@@ -1376,10 +1376,10 @@ if (screen.startsWith('admin_wholesale_add_')) {
     return
   }
   try {
-    const r = await fetch(`${API}/api/products`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const r = await fetch(`${API_URL}/admin/products`, {
+  method: 'POST',
+  headers: adminHeaders(tgUser?.id),
+  body: JSON.stringify({
         name: productName,
         price: 15,
         volume: '',
