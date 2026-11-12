@@ -1342,17 +1342,71 @@ if (screen.startsWith('admin_wholesale_add_')) {
           </div>
 
           <button
-            onClick={() => {
-              alert('Товар создан (прототип)')
-              setScreen(`admin_wholesale_${catId}` as any)
-            }}
-            style={{ ...btnMain, opacity: 0.5 }}
-          >
-            Создать товар
-          </button>
+  onClick={() => {
+    setScreen(`admin_wholesale_product_${catId}` as any)
+  }}
+  style={btnMain}
+>
+  Создать товар
+</button>
           <div style={{ fontSize: 12, color: '#666', textAlign: 'center', marginTop: 8 }}>
             Пример будущего интерфейса
           </div>
+        </div>
+      </div>
+      <BottomNav />
+    </div>
+  )
+}
+
+  if (screen.startsWith('admin_wholesale_product_')) {
+  const catId = screen.replace('admin_wholesale_product_', '')
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 16px 90px' }}>
+        <button onClick={() => setScreen(`admin_wholesale_${catId}` as any)} style={backBtn}>← Назад</button>
+        <h2 style={{ margin: '16px 0 16px', fontSize: 22 }}>ELFLIQ 30ML</h2>
+
+        <div style={card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <div style={{ fontWeight: 600 }}>ELFLIQ 30ML</div>
+            <div style={{ fontSize: 12, color: '#888', background: '#1a1a1a', padding: '4px 8px', borderRadius: 6 }}>Скрыт</div>
+          </div>
+          <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+            <div style={{ width: 80, height: 80, background: '#222', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>💧</div>
+            <div>
+              <div style={{ fontWeight: 600 }}>3 ценовых порога</div>
+              <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>3 вкуса · 65 шт. в наличии</div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 20 }}>
+          <div style={{ fontWeight: 600, marginBottom: 12 }}>Управление карточкой</div>
+          {[
+            'Редактировать товар',
+            'Изменить оптовые цены',
+            'Управление вкусами',
+            'Показать / скрыть товар',
+            'Удалить товар',
+          ].map(label => (
+            <button
+              key={label}
+              onClick={() => alert(label + ' (прототип)')}
+              style={{
+                width: '100%',
+                textAlign: 'left',
+                padding: '12px 0',
+                border: 'none',
+                borderBottom: '1px solid #222',
+                background: 'transparent',
+                color: '#fff',
+                fontSize: 15,
+              }}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
       <BottomNav />
