@@ -188,14 +188,17 @@ const fileRef = useRef<HTMLInputElement>(null)
     const r = await fetch(`${API_URL}/products`)
     const data = await r.json()
     setWholesaleProducts(
-      (data || []).map((p: any) => ({
-        id: p.id,
-        name: p.name,
-        category: p.category || 'жижи',
-        prices: 3,
-        flavors: 3,
-        stock: 65,
-      }))
+      (data || [])
+        .filter((p: any) => p.category)
+        .map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          category: p.category,
+          prices: 3,
+          flavors: 3,
+          stock: 65,
+          img: p.photo || null,
+        }))
     )
   } catch {
     setWholesaleProducts([])
