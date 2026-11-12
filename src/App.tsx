@@ -133,6 +133,7 @@ function App() {
   const [favIds, setFavIds] = useState<number[]>([])
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
+  const [wholesaleProducts, setWholesaleProducts] = useState<any[]>([])
   const [optCat, setOptCat] = useState('all')
   const [priceMode, setPriceMode] = useState<'retail' | 'wholesale'>('retail')
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup')
@@ -1228,31 +1229,33 @@ if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale
         </p>
 
         <div style={card}>
-  {products.length === 0 ? (
+  {wholesaleProducts.filter(p => p.category === catId).length === 0 ? (
     <div style={{ color: '#888', textAlign: 'center', padding: '20px 0' }}>
       Товаров пока нет
     </div>
   ) : (
-    products.map(p => (
-      <button
-        key={p.id}
-        onClick={() => setScreen(`admin_wholesale_product_${catId}` as any)}
-        style={{
-          width: '100%',
-          textAlign: 'left',
-          padding: '12px 0',
-          border: 'none',
-          borderBottom: '1px solid #222',
-          background: 'transparent',
-          color: '#fff',
-        }}
-      >
-        <div style={{ fontWeight: 600 }}>{p.name}</div>
-        <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
-          {p.price} € · {p.available ? 'В наличии' : 'Скрыт'}
-        </div>
-      </button>
-    ))
+    wholesaleProducts
+      .filter(p => p.category === catId)
+      .map(p => (
+        <button
+          key={p.id}
+          onClick={() => setScreen(`admin_wholesale_product_${catId}` as any)}
+          style={{
+            width: '100%',
+            textAlign: 'left',
+            padding: '12px 0',
+            border: 'none',
+            borderBottom: '1px solid #222',
+            background: 'transparent',
+            color: '#fff',
+          }}
+        >
+          <div style={{ fontWeight: 600 }}>{p.name}</div>
+          <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
+            {p.prices} порога · {p.flavors} вкуса · {p.stock} шт.
+          </div>
+        </button>
+      ))
   )}
 </div>
 
