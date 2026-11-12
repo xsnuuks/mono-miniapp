@@ -1386,52 +1386,73 @@ if (screen.startsWith('admin_wholesale_add_')) {
 
   if (screen.startsWith('admin_wholesale_product_')) {
   const catId = screen.replace('admin_wholesale_product_', '')
+  // Пока берём первый товар из категории (позже сделаем выбор конкретного)
+  const product = wholesaleProducts.find(p => p.category === catId)
+
+  if (!product) {
+    return (
+      <div key={screen} style={page}>
+        <div style={{ padding: '16px 16px 90px' }}>
+          <button onClick={() => setScreen(`admin_wholesale_${catId}` as any)} style={backBtn}>← Назад</button>
+          <div style={{ color: '#888', textAlign: 'center', padding: '40px 0' }}>Товар не найден</div>
+        </div>
+        <BottomNav />
+      </div>
+    )
+  }
+
   return (
     <div key={screen} style={page}>
       <div style={{ padding: '16px 16px 90px' }}>
         <button onClick={() => setScreen(`admin_wholesale_${catId}` as any)} style={backBtn}>← Назад</button>
-        <h2 style={{ margin: '16px 0 16px', fontSize: 22 }}>ELFLIQ 30ML</h2>
+        <h2 style={{ margin: '16px 0 16px', fontSize: 22 }}>{product.name}</h2>
 
         <div style={card}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <div style={{ fontWeight: 600 }}>ELFLIQ 30ML</div>
-            <div style={{ fontSize: 12, color: '#888', background: '#1a1a1a', padding: '4px 8px', borderRadius: 6 }}>Скрыт</div>
-          </div>
-          <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
-            <div style={{ width: 80, height: 80, background: '#222', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>💧</div>
-            <div>
-              <div style={{ fontWeight: 600 }}>3 ценовых порога</div>
-              <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>3 вкуса · 65 шт. в наличии</div>
+            <div style={{ fontWeight: 600 }}>{product.name}</div>
+            <div style={{ fontSize: 12, color: '#888', background: '#1a1a1a', padding: '4px 8px', borderRadius: 6 }}>
+              {product.available !== false ? 'В продаже' : 'Скрыт'}
             </div>
+          </div>
+
+          <div style={{ fontSize: 13, color: '#aaa', marginBottom: 16 }}>
+            {product.prices || 3} ценовых порога · {product.flavors || 3} вкуса · {product.stock || 0} шт.
           </div>
         </div>
 
         <div style={{ marginTop: 20 }}>
-          <div style={{ fontWeight: 600, marginBottom: 12 }}>Управление карточкой</div>
-          {[
-            'Редактировать товар',
-            'Изменить оптовые цены',
-            'Управление вкусами',
-            'Показать / скрыть товар',
-            'Удалить товар',
-          ].map(label => (
-            <button
-              key={label}
-              onClick={() => alert(label + ' (прототип)')}
-              style={{
-                width: '100%',
-                textAlign: 'left',
-                padding: '12px 0',
-                border: 'none',
-                borderBottom: '1px solid #222',
-                background: 'transparent',
-                color: '#fff',
-                fontSize: 15,
-              }}
-            >
-              {label}
-            </button>
-          ))}
+          <div style={{ fontSize: 14, color: '#888', marginBottom: 12 }}>Управление карточкой</div>
+
+          <button style={{ ...card, width: '100%', textAlign: 'left', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span>✏️</span> Редактировать товар
+          </button>
+          <button style={{ ...card, width: '100%', textAlign: 'left', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span>💰</span> Изменить оптовые цены
+          </button>
+          <button style={{ ...card, width: '100%', textAlign: 'left', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span>🎨</span> Управление вкусами
+          </button>
+          <button style={{ ...card, width: '100%', textAlign: 'left', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span>👁️</span> Показать / скрыть товар
+          </button>
+          <button 
+            onClick={async () => {
+              if (!confirm('Удалить товар?')) return
+              try {
+                await fetch(`${API_URL}/admin/products/${product.id}`, {
+                  method: 'DELETE',
+                  headers: adminHeaders(tgUser?.id),
+                })
+                setWholesaleProducts(prev => prev.filter(p => p.id !== product.id))
+                setScreen(`admin_wholesale_${catId}` as any)
+              } catch {
+                alert('Ошибка удаления')
+              }
+            }}
+            style={{ ...card, width: '100%', textAlign: 'left', color: '#ff6b6b', display: 'flex', alignItems: 'center', gap: 10 }}
+          >
+            <span>🗑️</span> Удалить товар
+          </button>
         </div>
       </div>
       <BottomNav />
