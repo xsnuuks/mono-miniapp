@@ -1234,11 +1234,73 @@ if (screen.startsWith('admin_wholesale_')) {
         </div>
 
         <button
-          onClick={() => alert('Добавление товара')}
+          onClick={() => setScreen(`admin_wholesale_add_${catId}` as any)}
           style={{ ...btnMain, marginTop: 16 }}
         >
           + Добавить товар
         </button>
+      </div>
+      <BottomNav />
+    </div>
+  )
+}
+
+if (screen.startsWith('admin_wholesale_add_')) {
+  const catId = screen.replace('admin_wholesale_add_', '')
+  const catName = {
+    all: 'Все',
+    liquid: 'Жижи',
+    disposable: 'Одноразки',
+    pod: 'Поды',
+    cartridge: 'Картриджи',
+    snus: 'Снюс',
+  }[catId] || catId
+
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 16px 90px' }}>
+        <button onClick={() => setScreen(`admin_wholesale_${catId}` as any)} style={backBtn}>← Назад</button>
+        <h2 style={{ margin: '16px 0 8px', fontSize: 22 }}>Добавить товар</h2>
+        <p style={{ color: '#aaa', fontSize: 14, marginBottom: 20 }}>
+          Категория: {catName}
+        </p>
+
+        <div style={card}>
+          <input
+            placeholder="Название"
+            style={{
+              width: '100%',
+              padding: 12,
+              borderRadius: 8,
+              border: '1px solid #333',
+              background: '#1a1a1a',
+              color: '#fff',
+              marginBottom: 12,
+            }}
+          />
+          <input
+            placeholder="Цена (€)"
+            type="number"
+            style={{
+              width: '100%',
+              padding: 12,
+              borderRadius: 8,
+              border: '1px solid #333',
+              background: '#1a1a1a',
+              color: '#fff',
+              marginBottom: 12,
+            }}
+          />
+          <button
+            onClick={() => {
+              alert('Товар добавлен')
+              setScreen(`admin_wholesale_${catId}` as any)
+            }}
+            style={btnMain}
+          >
+            Сохранить
+          </button>
+        </div>
       </div>
       <BottomNav />
     </div>
