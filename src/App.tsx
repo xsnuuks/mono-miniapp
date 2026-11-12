@@ -1293,17 +1293,19 @@ if (screen.startsWith('admin_wholesale_add_')) {
         <div style={card}>
           <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Название товара</div>
           <input
-            placeholder="ELFLIQ 30ML"
-            style={{
-              width: '100%',
-              padding: 12,
-              borderRadius: 8,
-              border: '1px solid #333',
-              background: '#1a1a1a',
-              color: '#fff',
-              marginBottom: 16,
-            }}
-          />
+  value={productName}
+  onChange={(e) => setProductName(e.target.value)}
+  placeholder="ELFLIQ 30ML"
+  style={{
+    width: '100%',
+    padding: 12,
+    borderRadius: 8,
+    border: '1px solid #333',
+    background: '#1a1a1a',
+    color: '#fff',
+    marginBottom: 16,
+  }}
+/>
 
           <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Категория</div>
           <div style={{
@@ -1368,38 +1370,44 @@ if (screen.startsWith('admin_wholesale_add_')) {
 
           <button
   onClick={async () => {
-    try {
-      const r = await fetch(`${API_URL}/admin/products`, {
-        method: 'POST',
-        headers: adminHeaders(tgUser?.id),
-        body: JSON.stringify({
-          name: 'ELFLIQ 30ML',
-          price: 15,
-          volume: '30ML',
-          strength: '50MG',
-          description: '',
-          is_available: false,
-        }),
-      })
-      const data = await r.json()
-      if (data.id) {
-        setWholesaleProducts(prev => [
-          ...prev,
-          {
-            id: data.id,
-            name: 'ELFLIQ 30ML',
-            category: catId,
-            prices: 3,
-            flavors: 3,
-            stock: 65,
-          }
-        ])
-        setScreen(`admin_wholesale_${catId}` as any)
-      }
-    } catch (e) {
-      alert('Ошибка создания')
+  if (!productName.trim()) {
+    alert('Введите название')
+    return
+  }
+  try {
+    const r = await fetch(`${API}/api/products`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: productName,
+        price: 15,
+        volume: '',
+        strength: '',
+        description: '',
+        is_available: true,
+        category: catId,
+      }),
+    })
+    const data = await r.json()
+    if (data.id) {
+      setWholesaleProducts(prev => [
+        ...prev,
+        {
+          id: data.id,
+          name: productName,
+          category: catId,
+          prices: 3,
+          flavors: 3,
+          stock: 65,
+        }
+      ])
+      setProductName('')
+      setScreen(`admin_wholesale_${catId}` as any)
     }
-  }}
+  } catch (e) {
+    alert('Ошибка создания')
+  }
+}}
   style={btnMain}
 >
   Создать товар
