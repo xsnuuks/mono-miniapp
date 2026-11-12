@@ -1208,7 +1208,7 @@ async function deleteOrder(orderId: number) {
   )
 }
 
-if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale_add_')) {
+if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale_add_') && !screen.startsWith('admin_wholesale_product_')) {
   const catId = screen.replace('admin_wholesale_', '')
   const catName = {
     all: 'Все',
