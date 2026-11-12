@@ -2274,8 +2274,7 @@ if (screen.startsWith('admin_wholesale_add_')) {
         </button>
       ))}
     </div>
-  </>
-  <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12 }}>
+    <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12 }}>
   {wholesaleProducts
     .filter(p => optCat === 'all' || p.category === optCat)
     .map(p => (
@@ -2292,6 +2291,7 @@ if (screen.startsWith('admin_wholesale_add_')) {
     </div>
   )}
 </div>
+  </>
 ) : (
   [...products].sort((a, b) => Number(b.available) - Number(a.available)).map((p) => {
     const img = photoUrl(p.photo)
