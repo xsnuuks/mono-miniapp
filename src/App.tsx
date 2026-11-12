@@ -134,6 +134,7 @@ function App() {
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
   const [wholesaleProducts, setWholesaleProducts] = useState<any[]>([])
+  const [productName, setProductName] = useState('')
   const [optCat, setOptCat] = useState('all')
   const [priceMode, setPriceMode] = useState<'retail' | 'wholesale'>('retail')
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup')
