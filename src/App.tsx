@@ -139,6 +139,8 @@ function App() {
   const [priceMode, setPriceMode] = useState<'retail' | 'wholesale'>('retail')
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup')
   const [ageConfirmed, setAgeConfirmed] = useState(false)
+  const [tiers, setTiers] = useState([{ min_qty: 10, price: 8 }])
+  const [flavors, setFlavors] = useState([{ name: '', stock: 0 }])
 
 function confirmAge() {
   setAgeConfirmed(true)
@@ -1308,9 +1310,6 @@ if (screen.startsWith('admin_wholesale_add_')) {
     картриджи: 'Картриджи',
     снюс: 'Снюс',
   }[catId] || catId
-
-  const [tiers, setTiers] = useState([{ min_qty: 10, price: 8 }])
-  const [flavors, setFlavors] = useState([{ name: '', stock: 0 }])
 
   return (
     <div key={screen} style={page}>
