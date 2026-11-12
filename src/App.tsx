@@ -1301,6 +1301,7 @@ if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale
 if (screen.startsWith('admin_wholesale_add_')) {
   const catId = screen.replace('admin_wholesale_add_', '')
   const catName = {
+    all: 'Все',
     жижи: 'Жижи',
     одноразки: 'Одноразки',
     поды: 'Поды',
@@ -1318,77 +1319,111 @@ if (screen.startsWith('admin_wholesale_add_')) {
         </p>
 
         <div style={card}>
-          <div style={{ marginBottom: 14 }}>
-            <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Название</div>
-            <input
-              value={productName}
-              onChange={e => setProductName(e.target.value)}
-              placeholder="ELFLIQ 30ML"
-              style={{
-                width: '100%',
-                background: '#111',
-                border: '1px solid #333',
-                borderRadius: 10,
-                padding: '12px 14px',
-                color: '#fff',
-                fontSize: 15,
-              }}
-            />
+          <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Название товара</div>
+          <input
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+            placeholder="ELFLIQ 30ML"
+            style={{
+              width: '100%',
+              padding: 12,
+              borderRadius: 8,
+              border: '1px solid #333',
+              background: '#1a1a1a',
+              color: '#fff',
+              marginBottom: 16,
+            }}
+          />
+
+          <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Категория</div>
+          <div style={{
+            padding: 12,
+            borderRadius: 8,
+            border: '1px solid #333',
+            background: '#1a1a1a',
+            marginBottom: 16,
+          }}>
+            {catName}
+          </div>
+
+          <div style={{
+            border: '1px dashed #333',
+            borderRadius: 8,
+            padding: '32px 16px',
+            textAlign: 'center',
+            marginBottom: 20,
+            color: '#888',
+          }}>
+            <div style={{ fontSize: 24, marginBottom: 8 }}>📷</div>
+            Загрузить фотографию
+          </div>
+
+          <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Оптовые цены</div>
+          
+          <div style={{ background: '#1a1a1a', borderRadius: 8, padding: 12, marginBottom: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span>От 10 шт</span>
+              <span>8 €/шт.</span>
+            </div>
+          </div>
+          <div style={{ background: '#1a1a1a', borderRadius: 8, padding: 12, marginBottom: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span>От 30 шт</span>
+              <span>7 €/шт.</span>
+            </div>
+          </div>
+          <div style={{ background: '#1a1a1a', borderRadius: 8, padding: 12, marginBottom: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span>От 50 шт</span>
+              <span>6 €/шт.</span>
+            </div>
+          </div>
+
+          <button style={{
+            width: '100%',
+            padding: 12,
+            borderRadius: 8,
+            border: '1px solid #333',
+            background: 'transparent',
+            color: '#fff',
+            marginBottom: 16,
+          }}>
+            + Добавить ценовой порог
+          </button>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <span style={{ fontWeight: 600 }}>Видимость</span>
+            <span style={{ fontSize: 13, color: '#888' }}>Скрыт до публикации</span>
           </div>
 
           <button
             onClick={async () => {
-  if (!productName.trim()) return alert('Введите название')
-  try {
-    const r = await fetch(`${API_URL}/api/wholesale/products`, {
-      method: 'POST',
-      headers: adminHeaders(tgUser?.id),
-      body: JSON.stringify({
-        name: productName.trim(),
-        category_id: catId,
-      }),
-    })
-    const data = await r.json()
-    if (data.id) {
-      setProductName('')
-      setScreen(`admin_wholesale_${catId}` as any)
-      // Перезагружаем список с сервера
-      const productsRes = await fetch(`${API_URL}/api/wholesale/products`)
-      const products = await productsRes.json()
-      setWholesaleProducts(products || [])
-    }
-  } catch {
-    alert('Ошибка создания')
-  }
-}}
+              if (!productName.trim()) return alert('Введите название')
+              try {
+                const r = await fetch(`${API_URL}/api/wholesale/products`, {
+                  method: 'POST',
+                  headers: adminHeaders(tgUser?.id),
+                  body: JSON.stringify({
+                    name: productName.trim(),
+                    category_id: catId,
+                  }),
+                })
                 const data = await r.json()
                 if (data.id) {
-                  // Сначала добавляем в состояние
-                  setWholesaleProducts(prev => [
-                    ...prev,
-                    {
-                      id: data.id,
-                      name: productName.trim(),
-                      category: catId,
-                      price: 15,
-                      available: true,
-                      prices: 3,
-                      flavors: 3,
-                      stock: 0,
-                    }
-                  ])
                   setProductName('')
-                  // Потом переходим
                   setScreen(`admin_wholesale_${catId}` as any)
                 }
               } catch {
                 alert('Ошибка создания')
               }
             }}
-            style={{ ...btnMain, marginTop: 8 }}
+            style={btnMain}
           >
             Создать товар
           </button>
+          <div style={{ fontSize: 12, color: '#666', textAlign: 'center', marginTop: 8 }}>
+            Пример будущего интерфейса
+          </div>
         </div>
       </div>
       <BottomNav />
