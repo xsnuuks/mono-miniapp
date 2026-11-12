@@ -1445,16 +1445,11 @@ if (screen.startsWith('admin_wholesale_add_')) {
   if (screen.startsWith('admin_wholesale_product_')) {
   const productId = Number(screen.replace('admin_wholesale_product_', ''))
   const product = wholesaleProducts.find(p => p.id === productId)
-  const catId = product?.category || 'жижи'
-
   if (!product) {
     return (
       <div key={screen} style={page}>
-        <div style={{ padding: '16px 16px 90px' }}>
-          <button onClick={() => setScreen(`admin_wholesale_${catId}` as any)} style={backBtn}>← Назад</button>
-          <div style={{ color: '#888', textAlign: 'center', padding: '40px 0' }}>Товар не найден</div>
-        </div>
-        <BottomNav />
+        <button onClick={() => setScreen('admin_wholesale')} style={backBtn}>← Назад</button>
+        <div style={card}>Товар не найден</div>
       </div>
     )
   }
@@ -1462,74 +1457,53 @@ if (screen.startsWith('admin_wholesale_add_')) {
   return (
     <div key={screen} style={page}>
       <div style={{ padding: '16px 16px 90px' }}>
-        <button onClick={() => setScreen(`admin_wholesale_${catId}` as any)} style={backBtn}>← Назад</button>
+        <button onClick={() => setScreen(`admin_wholesale_${product.category}` as any)} style={backBtn}>← Назад</button>
         <h2 style={{ margin: '16px 0 16px', fontSize: 22 }}>{product.name}</h2>
 
         <div style={card}>
-          <div style={{ fontWeight: 600, marginBottom: 4 }}>{product.name}</div>
-          <div style={{ fontSize: 13, color: '#aaa' }}>
-            Цена: {product.price || 0} € · {product.stock || 0} шт.
+          <div style={{ fontWeight: 600, marginBottom: 8 }}>{product.name}</div>
+          <div style={{ fontSize: 13, color: '#888' }}>
+            {product.prices} порога · {product.flavors} вкуса · {product.stock} шт.
           </div>
         </div>
 
         <div style={{ marginTop: 20 }}>
-          <div style={{ fontSize: 14, color: '#888', marginBottom: 12 }}>Управление</div>
+          <div style={{ fontWeight: 600, marginBottom: 12 }}>Управление</div>
 
           <button
-            onClick={() => {
+            onClick={async () => {
               const newName = prompt('Новое название', product.name)
-              if (newName?.trim() && newName !== product.name) {
-                setWholesaleProducts(prev => prev.map(p => p.id === product.id ? { ...p, name: newName.trim() } : p))
-              }
+              if (!newName || newName === product.name) return
+              await fetch(`${API_URL}/api/wholesale/products/${product.id}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Admin-Id': String(tgUser?.id || ''),
+                },
+                body: JSON.stringify({ name: newName }),
+              })
+              await loadWholesaleProducts()
+              showToast('Название обновлено')
             }}
-            style={{ ...card, width: '100%', textAlign: 'left', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}
+            style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#fff', fontSize: 15 }}
           >
-            ✏️ Изменить название
-          </button>
-
-          <button
-            onClick={() => {
-              const newPrice = prompt('Новая цена (€)', String(product.price || 0))
-              const price = Number(newPrice)
-              if (!isNaN(price) && price >= 0) {
-                setWholesaleProducts(prev => prev.map(p => p.id === product.id ? { ...p, price } : p))
-              }
-            }}
-            style={{ ...card, width: '100%', textAlign: 'left', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}
-          >
-            💰 Изменить цену
-          </button>
-
-          <button
-            onClick={() => {
-              const newStock = prompt('Количество на складе', String(product.stock || 0))
-              const stock = Number(newStock)
-              if (!isNaN(stock) && stock >= 0) {
-                setWholesaleProducts(prev => prev.map(p => p.id === product.id ? { ...p, stock } : p))
-              }
-            }}
-            style={{ ...card, width: '100%', textAlign: 'left', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}
-          >
-            📦 Изменить количество
+            Изменить название
           </button>
 
           <button
             onClick={async () => {
               if (!confirm('Удалить товар?')) return
-              try {
-                await fetch(`${API_URL}/admin/products/${product.id}`, {
-                  method: 'DELETE',
-                  headers: adminHeaders(tgUser?.id),
-                })
-                setWholesaleProducts(prev => prev.filter(p => p.id !== product.id))
-                setScreen(`admin_wholesale_${catId}` as any)
-              } catch {
-                alert('Ошибка удаления')
-              }
+              await fetch(`${API_URL}/api/wholesale/products/${product.id}`, {
+                method: 'DELETE',
+                headers: { 'X-Admin-Id': String(tgUser?.id || '') },
+              })
+              await loadWholesaleProducts()
+              setScreen(`admin_wholesale_${product.category}` as any)
+              showToast('Удалено')
             }}
-            style={{ ...card, width: '100%', textAlign: 'left', color: '#ff6b6b', display: 'flex', alignItems: 'center', gap: 10 }}
+            style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#f66', fontSize: 15 }}
           >
-            🗑️ Удалить товар
+            Удалить товар
           </button>
         </div>
       </div>
