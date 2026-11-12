@@ -189,20 +189,16 @@ const fileRef = useRef<HTMLInputElement>(null)
   try {
     const r = await fetch(`${API_URL}/api/wholesale/products`)
     const data = await r.json()
+    const list = Array.isArray(data) ? data : (data.products || [])
     setWholesaleProducts(
-      (data || [])
-        .filter((p: any) => p.category)
-        .map((p: any) => ({
-          id: p.id,
-          name: p.name,
-          category: p.category,
-          photo: p.photo || null,
-          price: p.price || 0,
-          available: p.available !== false,
-          prices: 3,
-          flavors: 3,
-          stock: 65,
-        }))
+      list.map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        category: p.category || p.category_id || 'жижи',
+        prices: p.tiers?.length || 0,
+        flavors: p.flavors?.length || 0,
+        stock: p.stock || 0,
+      }))
     )
   } catch {
     setWholesaleProducts([])
@@ -226,8 +222,8 @@ const fileRef = useRef<HTMLInputElement>(null)
       tg.setBackgroundColor('#0a0a0a')
     }
     loadProducts()
-    loadFavIds()
     loadWholesaleProducts()
+    loadFavIds()
     if (tgUser?.id) {
       fetch(`${API_URL}/profile/${tgUser.id}`)
         .then((r) => r.json())
@@ -1406,27 +1402,35 @@ if (screen.startsWith('admin_wholesale_add_')) {
 
           <button
             onClick={async () => {
-              if (!productName.trim()) return alert('Введите название')
-              try {
-                const r = await fetch(`${API_URL}/api/wholesale/products`, {
-                  method: 'POST',
-                  headers: adminHeaders(tgUser?.id),
-                  body: JSON.stringify({
-                    name: productName.trim(),
-                    category_id: Number(catId) || catId,
-                    tiers: tiers.filter(t => t.min_qty && t.price),
-                    flavors: flavors.filter(f => f.name.trim()),
-                  }),
-                })
-                const data = await r.json()
-                if (data.id) {
-                  setProductName('')
-                  setScreen(`admin_wholesale_${catId}` as any)
-                }
-              } catch {
-                alert('Ошибка создания')
-              }
-            }}
+  if (!productName.trim()) {
+    alert('Введите название')
+    return
+  }
+  try {
+    const r = await fetch(`${API_URL}/api/wholesale/products`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Id': String(tgUser?.id || ''),
+      },
+      body: JSON.stringify({
+        name: productName,
+        category_id: catId,
+        photo_url: null,
+        tiers: [],
+        flavors: [],
+      }),
+    })
+    const data = await r.json()
+    if (data.id) {
+      await loadWholesaleProducts()
+      setScreen(`admin_wholesale_${catId}` as any)
+      setProductName('')
+    }
+  } catch {
+    alert('Ошибка создания')
+  }
+}}
             style={btnMain}
           >
             Создать товар
