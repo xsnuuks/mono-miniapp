@@ -1222,7 +1222,9 @@ async function deleteOrder(orderId: number) {
               }}
             >
               <div style={{ fontWeight: 600 }}>{cat.name}</div>
-              <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>0 товаров</div>
+<div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
+  {wholesaleProducts.filter(p => p.category === cat.id).length} товаров
+</div>
             </button>
           ))}
         </div>
@@ -1262,7 +1264,7 @@ if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale
       .map(p => (
         <button
           key={p.id}
-          onClick={() => setScreen(`admin_wholesale_product_${catId}` as any)}
+          onClick={() => setScreen(`admin_wholesale_product_${p.id}` as any)}
           style={{
             width: '100%',
             textAlign: 'left',
