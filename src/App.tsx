@@ -1084,7 +1084,8 @@ async function deleteOrder(orderId: number) {
       <path d="M2 12l10 5 10-5" />
     </svg>
   ),
-  {
+    },
+    {
       id: 'admin_broadcast' as Screen,
       title: 'Рассылка',
       fn: () => { setBroadcastResult(null); setBroadcastText(''); },
