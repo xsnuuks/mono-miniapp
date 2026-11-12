@@ -133,6 +133,7 @@ function App() {
   const [favIds, setFavIds] = useState<number[]>([])
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
+  const [wholesaleProducts, setWholesaleProducts] = useState<any[]>([])
   const [optCat, setOptCat] = useState('all')
   const [priceMode, setPriceMode] = useState<'retail' | 'wholesale'>('retail')
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup')
@@ -1381,10 +1382,18 @@ if (screen.startsWith('admin_wholesale_add_')) {
       })
       const data = await r.json()
       if (data.id) {
-        await loadProducts()
+        setWholesaleProducts(prev => [
+          ...prev,
+          {
+            id: data.id,
+            name: 'ELFLIQ 30ML',
+            category: catId,
+            prices: 3,
+            flavors: 3,
+            stock: 65,
+          }
+        ])
         setScreen(`admin_wholesale_${catId}` as any)
-      } else {
-        alert('Не создался')
       }
     } catch (e) {
       alert('Ошибка создания')
