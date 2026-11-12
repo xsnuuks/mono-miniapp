@@ -134,6 +134,7 @@ function App() {
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
   const [wholesaleProducts, setWholesaleProducts] = useState<any[]>([])
+  const [wholesaleCategories, setWholesaleCategories] = useState<any[]>([])
   const [optCat, setOptCat] = useState('all')
   const [priceMode, setPriceMode] = useState<'retail' | 'wholesale'>('retail')
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup')
@@ -182,6 +183,18 @@ const fileRef = useRef<HTMLInputElement>(null)
     }
   }
 
+  async function loadWholesaleCategories() {
+  try {
+    const r = await fetch(`${API_URL}/api/wholesale/categories`)
+    if (r.ok) {
+      const data = await r.json()
+      setWholesaleCategories(data.categories || [])
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
   async function loadFavIds() {
   if (!tgUser?.id) return
   try {
@@ -199,6 +212,7 @@ const fileRef = useRef<HTMLInputElement>(null)
       tg.setBackgroundColor('#0a0a0a')
     }
     loadProducts()
+    loadWholesaleCategories()
     loadFavIds()
     if (tgUser?.id) {
       fetch(`${API_URL}/profile/${tgUser.id}`)
@@ -1178,13 +1192,7 @@ async function deleteOrder(orderId: number) {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {[
-            { id: 'all', name: 'Все' },
-            { id: 'liquid', name: 'Жижи' },
-            { id: 'disposable', name: 'Одноразки' },
-            { id: 'pod', name: 'Поды' },
-            { id: 'cartridge', name: 'Картриджи' },
-            { id: 'snus', name: 'Снюс' },
-          ].map(cat => (
+            {[{ id: 'all', name: 'Все' }, ...wholesaleCategories].map(cat => (
             <button
               key={cat.id}
               onClick={() => setScreen(`admin_wholesale_${cat.id}` as any)}
