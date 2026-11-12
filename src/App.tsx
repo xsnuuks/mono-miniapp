@@ -1260,14 +1260,15 @@ if (screen.startsWith('admin_wholesale_add_')) {
     <div key={screen} style={page}>
       <div style={{ padding: '16px 16px 90px' }}>
         <button onClick={() => setScreen(`admin_wholesale_${catId}` as any)} style={backBtn}>← Назад</button>
-        <h2 style={{ margin: '16px 0 8px', fontSize: 22 }}>Добавить товар</h2>
+        <h2 style={{ margin: '16px 0 8px', fontSize: 22 }}>Создать товар</h2>
         <p style={{ color: '#aaa', fontSize: 14, marginBottom: 20 }}>
           Категория: {catName}
         </p>
 
         <div style={card}>
+          <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Название товара</div>
           <input
-            placeholder="Название"
+            placeholder="ELFLIQ 30ML"
             style={{
               width: '100%',
               padding: 12,
@@ -1275,31 +1276,83 @@ if (screen.startsWith('admin_wholesale_add_')) {
               border: '1px solid #333',
               background: '#1a1a1a',
               color: '#fff',
-              marginBottom: 12,
+              marginBottom: 16,
             }}
           />
-          <input
-            placeholder="Цена (€)"
-            type="number"
-            style={{
-              width: '100%',
-              padding: 12,
-              borderRadius: 8,
-              border: '1px solid #333',
-              background: '#1a1a1a',
-              color: '#fff',
-              marginBottom: 12,
-            }}
-          />
+
+          <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Категория</div>
+          <div style={{
+            padding: 12,
+            borderRadius: 8,
+            border: '1px solid #333',
+            background: '#1a1a1a',
+            marginBottom: 16,
+          }}>
+            {catName}
+          </div>
+
+          <div style={{
+            border: '1px dashed #333',
+            borderRadius: 8,
+            padding: '32px 16px',
+            textAlign: 'center',
+            marginBottom: 20,
+            color: '#888',
+          }}>
+            <div style={{ fontSize: 24, marginBottom: 8 }}>📷</div>
+            Загрузить фотографию
+          </div>
+
+          <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Оптовые цены</div>
+          
+          <div style={{ background: '#1a1a1a', borderRadius: 8, padding: 12, marginBottom: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span>От 10 шт</span>
+              <span>8 €/шт.</span>
+            </div>
+          </div>
+          <div style={{ background: '#1a1a1a', borderRadius: 8, padding: 12, marginBottom: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span>От 30 шт</span>
+              <span>7 €/шт.</span>
+            </div>
+          </div>
+          <div style={{ background: '#1a1a1a', borderRadius: 8, padding: 12, marginBottom: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span>От 50 шт</span>
+              <span>6 €/шт.</span>
+            </div>
+          </div>
+
+          <button style={{
+            width: '100%',
+            padding: 12,
+            borderRadius: 8,
+            border: '1px solid #333',
+            background: 'transparent',
+            color: '#fff',
+            marginBottom: 16,
+          }}>
+            + Добавить ценовой порог
+          </button>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <span style={{ fontWeight: 600 }}>Видимость</span>
+            <span style={{ fontSize: 13, color: '#888' }}>Скрыт до публикации</span>
+          </div>
+
           <button
             onClick={() => {
-              alert('Товар добавлен')
+              alert('Товар создан (прототип)')
               setScreen(`admin_wholesale_${catId}` as any)
             }}
-            style={btnMain}
+            style={{ ...btnMain, opacity: 0.5 }}
           >
-            Сохранить
+            Создать товар
           </button>
+          <div style={{ fontSize: 12, color: '#666', textAlign: 'center', marginTop: 8 }}>
+            Пример будущего интерфейса
+          </div>
         </div>
       </div>
       <BottomNav />
