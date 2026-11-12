@@ -1384,18 +1384,10 @@ if (screen.startsWith('admin_wholesale_add_')) {
       })
       const data = await r.json()
       if (data.id) {
-        setWholesaleProducts(prev => [
-          ...prev,
-          {
-            id: data.id,
-            name: 'ELFLIQ 30ML',
-            category: catId,
-            prices: 3,
-            flavors: 3,
-            stock: 65,
-          }
-        ])
+        await loadProducts()
         setScreen(`admin_wholesale_${catId}` as any)
+      } else {
+        alert('Не создался')
       }
     } catch (e) {
       alert('Ошибка создания')
