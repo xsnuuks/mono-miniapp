@@ -1393,19 +1393,6 @@ if (screen.startsWith('admin_wholesale_add_')) {
   const product = wholesaleProducts.find(p => p.id === productId)
   const catId = product?.category || 'жижи'
 
-  // Если товар ещё не в списке — показываем загрузку
-  if (!product && productId) {
-    return (
-      <div key={screen} style={page}>
-        <div style={{ padding: '16px 16px 90px' }}>
-          <button onClick={() => setScreen(`admin_wholesale_${catId}` as any)} style={backBtn}>← Назад</button>
-          <div style={{ color: '#888', textAlign: 'center', padding: '40px 0' }}>Загрузка...</div>
-        </div>
-        <BottomNav />
-      </div>
-    )
-  }
-
   if (!product) {
     return (
       <div key={screen} style={page}>
@@ -1427,11 +1414,13 @@ if (screen.startsWith('admin_wholesale_add_')) {
         <div style={card}>
           <div style={{ fontWeight: 600, marginBottom: 4 }}>{product.name}</div>
           <div style={{ fontSize: 13, color: '#aaa' }}>
-            {product.prices || 3} ценовых порога · {product.flavors || 3} вкуса · {product.stock || 0} шт.
+            Цена: {product.price || 0} € · {product.stock || 0} шт.
           </div>
         </div>
 
         <div style={{ marginTop: 20 }}>
+          <div style={{ fontSize: 14, color: '#888', marginBottom: 12 }}>Управление</div>
+
           <button
             onClick={() => {
               const newName = prompt('Новое название', product.name)
@@ -1441,7 +1430,33 @@ if (screen.startsWith('admin_wholesale_add_')) {
             }}
             style={{ ...card, width: '100%', textAlign: 'left', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}
           >
-            ✏️ Редактировать название
+            ✏️ Изменить название
+          </button>
+
+          <button
+            onClick={() => {
+              const newPrice = prompt('Новая цена (€)', String(product.price || 0))
+              const price = Number(newPrice)
+              if (!isNaN(price) && price >= 0) {
+                setWholesaleProducts(prev => prev.map(p => p.id === product.id ? { ...p, price } : p))
+              }
+            }}
+            style={{ ...card, width: '100%', textAlign: 'left', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}
+          >
+            💰 Изменить цену
+          </button>
+
+          <button
+            onClick={() => {
+              const newStock = prompt('Количество на складе', String(product.stock || 0))
+              const stock = Number(newStock)
+              if (!isNaN(stock) && stock >= 0) {
+                setWholesaleProducts(prev => prev.map(p => p.id === product.id ? { ...p, stock } : p))
+              }
+            }}
+            style={{ ...card, width: '100%', textAlign: 'left', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 10 }}
+          >
+            📦 Изменить количество
           </button>
 
           <button
