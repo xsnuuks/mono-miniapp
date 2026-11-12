@@ -189,25 +189,47 @@ const fileRef = useRef<HTMLInputElement>(null)
     }
   }
 
-  async function loadWholesaleProducts() {
+  
+async function loadWholesaleProducts() {
   try {
-    const r = await fetch(`${API_URL}/api/wholesale/products`)
+    const r = await fetch(
+      `${API_URL}/api/wholesale/products`
+    )
+
+    if (!r.ok) {
+      throw new Error('Ошибка загрузки оптовых товаров')
+    }
+
     const data = await r.json()
-    const list = Array.isArray(data) ? data : (data.products || [])
+
+    const list = Array.isArray(data)
+      ? data
+      : (data.products || [])
+
     setWholesaleProducts(
       list.map((p: any) => ({
+        ...p,
         id: p.id,
         name: p.name,
-        category: p.category || p.category_id || 'жижи',
-        prices: p.tiers?.length || 0,
-        flavors: p.flavors?.length || 0,
-        stock: p.stock || 0,
+        category: p.category ?? p.category_id ?? 'жижи',
+        category_id: p.category_id,
+        photo_url: p.photo_url ?? null,
+        is_visible: p.is_visible ?? 1,
+        prices: Array.isArray(p.tiers)
+          ? p.tiers.length
+          : (p.prices ?? 0),
+        flavors: Array.isArray(p.flavors)
+          ? p.flavors.length
+          : (p.flavors_count ?? 0),
+        stock: p.stock ?? 0,
       }))
     )
-  } catch {
-    setWholesaleProducts([])
+  } catch (error) {
+    console.error('Wholesale load error:', error)
+    showToast('Не удалось загрузить оптовые товары')
   }
 }
+
   
   async function loadFavIds() {
   if (!tgUser?.id) return
