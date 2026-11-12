@@ -1548,9 +1548,6 @@ if (screen.startsWith('admin_wholesale_add_')) {
   if (screen.startsWith('admin_wholesale_tiers_')) {
   const productId = Number(screen.replace('admin_wholesale_tiers_', ''))
   const product = wholesaleProducts.find(p => p.id === productId)
-  const [tiers, setTiers] = useState<any[]>([])
-  const [minQty, setMinQty] = useState('')
-  const [price, setPrice] = useState('')
 
   useEffect(() => {
     fetch(`${API_URL}/api/wholesale/products/${productId}/tiers`)
