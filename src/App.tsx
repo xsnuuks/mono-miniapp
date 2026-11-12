@@ -1413,7 +1413,7 @@ if (screen.startsWith('admin_wholesale_add_')) {
                   headers: adminHeaders(tgUser?.id),
                   body: JSON.stringify({
                     name: productName.trim(),
-                    category_id: catId,
+                    category_id: Number(catId) || catId,
                     tiers: tiers.filter(t => t.min_qty && t.price),
                     flavors: flavors.filter(f => f.name.trim()),
                   }),
