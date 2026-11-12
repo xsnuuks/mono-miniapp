@@ -1191,7 +1191,14 @@ async function deleteOrder(orderId: number) {
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {[{ id: 'all', name: 'Все' }, ...wholesaleCategories].map(cat => (
+            {[
+  { id: 'all', name: 'Все' },
+  { id: 'жижи', name: 'Жижи' },
+  { id: 'одноразки', name: 'Одноразки' },
+  { id: 'поды', name: 'Поды' },
+  { id: 'картриджи', name: 'Картриджи' },
+  { id: 'снюс', name: 'Снюс' },
+].map(cat => (
             <button
               key={cat.id}
               onClick={() => setScreen(`admin_wholesale_${cat.id}` as any)}
