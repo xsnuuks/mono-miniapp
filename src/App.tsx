@@ -1608,9 +1608,6 @@ if (screen.startsWith('admin_wholesale_add_')) {
 if (screen.startsWith('admin_wholesale_flavors_')) {
   const productId = Number(screen.replace('admin_wholesale_flavors_', ''))
   const product = wholesaleProducts.find(p => p.id === productId)
-  const [flavors, setFlavors] = useState<any[]>([])
-  const [flavorName, setFlavorName] = useState('')
-  const [flavorStock, setFlavorStock] = useState('0')
 
   useEffect(() => {
     fetch(`${API_URL}/api/wholesale/products/${productId}/flavors`)
