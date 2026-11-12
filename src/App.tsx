@@ -1395,38 +1395,37 @@ if (screen.startsWith('admin_wholesale_add_')) {
     return
   }
   try {
-    const r = await fetch(`${API_URL}/admin/products`, {
-  method: 'POST',
-  headers: adminHeaders(tgUser?.id),
-  body: JSON.stringify({
+  const r = await fetch(`${API_URL}/admin/products`, {
+    method: 'POST',
+    headers: adminHeaders(tgUser?.id),
+    body: JSON.stringify({
+      name: productName,
+      price: 15,
+      volume: '',
+      strength: '',
+      description: '',
+      is_available: true,
+      category: catId,
+    }),
+  })
+  const data = await r.json()
+  if (data.id) {
+    setWholesaleProducts(prev => [
+      ...prev,
+      {
+        id: data.id,
         name: productName,
-        price: 15,
-        volume: '',
-        strength: '',
-        description: '',
-        is_available: true,
         category: catId,
-      }),
-    })
-    const data = await r.json()
-    if (data.id) {
-      setWholesaleProducts(prev => [
-        ...prev,
-        {
-          id: data.id,
-          name: productName,
-          category: catId,
-          prices: 3,
-          flavors: 3,
-          stock: 65,
-        }
-      ])
-      setProductName('')
-      setScreen(`admin_wholesale_${catId}` as any)
-    }
-  } catch (e) {
-    alert('Ошибка создания')
+        prices: 3,
+        flavors: 3,
+        stock: 65,
+      }
+    ])
+    setScreen(`admin_wholesale_${catId}` as any)
   }
+} catch {
+  alert('Ошибка создания')
+}
 }}
   style={btnMain}
 >
