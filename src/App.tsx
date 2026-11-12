@@ -219,7 +219,6 @@ const fileRef = useRef<HTMLInputElement>(null)
       tg.setBackgroundColor('#0a0a0a')
     }
     loadProducts()
-    loadWholesaleProducts()
     loadFavIds()
     if (tgUser?.id) {
       fetch(`${API_URL}/profile/${tgUser.id}`)
