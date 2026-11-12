@@ -187,7 +187,7 @@ const fileRef = useRef<HTMLInputElement>(null)
 
   async function loadWholesaleProducts() {
   try {
-    const r = await fetch(`${API_URL}/products`)
+    const r = await fetch(`${API_URL}/api/wholesale/products`)
     const data = await r.json()
     setWholesaleProducts(
       (data || [])
