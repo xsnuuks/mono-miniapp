@@ -1387,9 +1387,9 @@ if (screen.startsWith('admin_wholesale_add_')) {
 }
 
   if (screen.startsWith('admin_wholesale_product_')) {
-  const catId = screen.replace('admin_wholesale_product_', '')
-  // Пока берём первый товар из категории (позже сделаем выбор конкретного)
-  const product = wholesaleProducts.find(p => p.category === catId)
+  const productId = Number(screen.replace('admin_wholesale_product_', ''))
+  const product = wholesaleProducts.find(p => p.id === productId)
+  const catId = product?.category || 'жижи'
 
   if (!product) {
     return (
