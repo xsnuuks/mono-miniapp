@@ -1338,21 +1338,29 @@ if (screen.startsWith('admin_wholesale_add_')) {
 
           <button
             onClick={async () => {
-              if (!productName.trim()) return alert('Введите название')
-              try {
-                const r = await fetch(`${API_URL}/admin/products`, {
-                  method: 'POST',
-                  headers: adminHeaders(tgUser?.id),
-                  body: JSON.stringify({
-                    name: productName.trim(),
-                    price: 15,
-                    volume: '',
-                    strength: '',
-                    description: '',
-                    is_available: true,
-                    category: catId,
-                  }),
-                })
+  if (!productName.trim()) return alert('Введите название')
+  try {
+    const r = await fetch(`${API_URL}/api/wholesale/products`, {
+      method: 'POST',
+      headers: adminHeaders(tgUser?.id),
+      body: JSON.stringify({
+        name: productName.trim(),
+        category_id: catId,
+      }),
+    })
+    const data = await r.json()
+    if (data.id) {
+      setProductName('')
+      setScreen(`admin_wholesale_${catId}` as any)
+      // Перезагружаем список с сервера
+      const productsRes = await fetch(`${API_URL}/api/wholesale/products`)
+      const products = await productsRes.json()
+      setWholesaleProducts(products || [])
+    }
+  } catch {
+    alert('Ошибка создания')
+  }
+}}
                 const data = await r.json()
                 if (data.id) {
                   // Сначала добавляем в состояние
