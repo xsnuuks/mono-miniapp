@@ -1177,10 +1177,12 @@ async function deleteOrder(orderId: number) {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {[
-            { id: 'liquid', name: 'Жидкости' },
+            { id: 'all', name: 'Все' },
+            { id: 'liquid', name: 'Жижи' },
             { id: 'disposable', name: 'Одноразки' },
             { id: 'pod', name: 'Поды' },
-            { id: 'other', name: 'Другое' },
+            { id: 'cartridge', name: 'Картриджи' },
+            { id: 'snus', name: 'Снюс' },
           ].map(cat => (
             <button
               key={cat.id}
