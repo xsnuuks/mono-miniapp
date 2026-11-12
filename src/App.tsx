@@ -1165,6 +1165,43 @@ async function deleteOrder(orderId: number) {
   )
 }
 
+    if (screen === 'admin_wholesale') {
+    return (
+      <div key={screen} style={page}>
+        <div style={{ padding: '16px 16px 90px' }}>
+          <button onClick={() => setScreen('admin')} style={backBtn}>← Назад</button>
+          <h2 style={{ margin: '16px 0 8px', fontSize: 22 }}>Опт</h2>
+          <p style={{ color: '#aaa', fontSize: 14, marginBottom: 20 }}>
+            Настрой пороги и цены
+          </p>
+
+          <div style={card}>
+            <div style={{ fontWeight: 600, marginBottom: 12 }}>Текущие правила</div>
+            <div style={{ fontSize: 14, color: '#ccc', lineHeight: 1.6 }}>
+              От 5 шт — 13 €<br />
+              От 10 шт — 12 €
+            </div>
+            <button
+              onClick={() => alert('Редактирование скоро добавим')}
+              style={{ ...btnMain, marginTop: 16 }}
+            >
+              Изменить
+            </button>
+          </div>
+
+          <div style={{ ...card, marginTop: 12 }}>
+            <div style={{ fontWeight: 600, marginBottom: 8 }}>Как заказать</div>
+            <p style={{ fontSize: 14, color: '#ccc', lineHeight: 1.5 }}>
+              Клиент пишет в поддержку, указывает вкус и количество.<br />
+              Встреча как обычно — наличными.
+            </p>
+          </div>
+        </div>
+        <BottomNav />
+      </div>
+    )
+  }
+  
   if (screen === 'success') {
     return (
       <div key={screen} style={page}>
