@@ -1445,6 +1445,7 @@ if (screen.startsWith('admin_wholesale_add_')) {
   if (screen.startsWith('admin_wholesale_product_')) {
   const productId = Number(screen.replace('admin_wholesale_product_', ''))
   const product = wholesaleProducts.find(p => p.id === productId)
+
   if (!product) {
     return (
       <div key={screen} style={page}>
@@ -1461,33 +1462,63 @@ if (screen.startsWith('admin_wholesale_add_')) {
         <h2 style={{ margin: '16px 0 16px', fontSize: 22 }}>{product.name}</h2>
 
         <div style={card}>
-          <div style={{ fontWeight: 600, marginBottom: 8 }}>{product.name}</div>
+          <div style={{ fontWeight: 600, marginBottom: 4 }}>{product.name}</div>
           <div style={{ fontSize: 13, color: '#888' }}>
-            {product.prices} порога · {product.flavors} вкуса · {product.stock} шт.
+            {product.prices || 0} порога · {product.flavors || 0} вкуса · {product.stock || 0} шт.
           </div>
         </div>
 
         <div style={{ marginTop: 20 }}>
-          <div style={{ fontWeight: 600, marginBottom: 12 }}>Управление</div>
+          <div style={{ fontWeight: 600, marginBottom: 12 }}>Управление карточкой</div>
 
           <button
             onClick={async () => {
               const newName = prompt('Новое название', product.name)
               if (!newName || newName === product.name) return
+              const fd = new FormData()
+              fd.append('name', newName)
               await fetch(`${API_URL}/api/wholesale/products/${product.id}`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-Admin-Id': String(tgUser?.id || ''),
-                },
-                body: JSON.stringify({ name: newName }),
+                method: 'PATCH',
+                headers: { 'X-Admin-Id': String(tgUser?.id || '') },
+                body: fd,
               })
               await loadWholesaleProducts()
               showToast('Название обновлено')
             }}
             style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#fff', fontSize: 15 }}
           >
-            Изменить название
+            Редактировать товар
+          </button>
+
+          <button
+            onClick={() => setScreen(`admin_wholesale_tiers_${product.id}` as any)}
+            style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#fff', fontSize: 15 }}
+          >
+            Изменить оптовые цены
+          </button>
+
+          <button
+            onClick={() => setScreen(`admin_wholesale_flavors_${product.id}` as any)}
+            style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#fff', fontSize: 15 }}
+          >
+            Управление вкусами
+          </button>
+
+          <button
+            onClick={async () => {
+              const fd = new FormData()
+              fd.append('is_visible', product.is_visible ? '0' : '1')
+              await fetch(`${API_URL}/api/wholesale/products/${product.id}`, {
+                method: 'PATCH',
+                headers: { 'X-Admin-Id': String(tgUser?.id || '') },
+                body: fd,
+              })
+              await loadWholesaleProducts()
+              showToast(product.is_visible ? 'Скрыт' : 'Показан')
+            }}
+            style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#fff', fontSize: 15 }}
+          >
+            Показать / скрыть товар
           </button>
 
           <button
@@ -1504,6 +1535,135 @@ if (screen.startsWith('admin_wholesale_add_')) {
             style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#f66', fontSize: 15 }}
           >
             Удалить товар
+          </button>
+        </div>
+      </div>
+      <BottomNav />
+    </div>
+  )
+}
+
+  if (screen.startsWith('admin_wholesale_tiers_')) {
+  const productId = Number(screen.replace('admin_wholesale_tiers_', ''))
+  const product = wholesaleProducts.find(p => p.id === productId)
+  const [tiers, setTiers] = useState<any[]>([])
+  const [minQty, setMinQty] = useState('')
+  const [price, setPrice] = useState('')
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/wholesale/products/${productId}/tiers`)
+      .then(r => r.json())
+      .then(d => setTiers(d.tiers || d || []))
+      .catch(() => setTiers([]))
+  }, [productId])
+
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 16px 90px' }}>
+        <button onClick={() => setScreen(`admin_wholesale_product_${productId}` as any)} style={backBtn}>← Назад</button>
+        <h2 style={{ margin: '16px 0 16px', fontSize: 22 }}>Цены · {product?.name}</h2>
+
+        {tiers.map(t => (
+          <div key={t.id} style={{ ...card, marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>От {t.min_qty} шт · {t.price} €</div>
+            <button
+              onClick={async () => {
+                await fetch(`${API_URL}/api/wholesale/tiers/${t.id}`, { method: 'DELETE' })
+                setTiers(tiers.filter(x => x.id !== t.id))
+              }}
+              style={{ background: 'transparent', border: 'none', color: '#f66', fontSize: 18 }}
+            >×</button>
+          </div>
+        ))}
+
+        <div style={{ ...card, marginTop: 16 }}>
+          <input style={inputStyle} placeholder="От кол-ва (шт)" value={minQty} onChange={e => setMinQty(e.target.value)} />
+          <input style={{ ...inputStyle, marginTop: 8 }} placeholder="Цена €" value={price} onChange={e => setPrice(e.target.value)} />
+          <button
+            onClick={async () => {
+              if (!minQty || !price) return
+              const fd = new FormData()
+              fd.append('min_qty', minQty)
+              fd.append('price', price)
+              await fetch(`${API_URL}/api/wholesale/products/${productId}/tiers`, {
+                method: 'POST',
+                body: fd,
+              })
+              const r = await fetch(`${API_URL}/api/wholesale/products/${productId}/tiers`)
+              const d = await r.json()
+              setTiers(d.tiers || d || [])
+              setMinQty('')
+              setPrice('')
+            }}
+            style={{ ...btnMain, marginTop: 12 }}
+          >
+            + Добавить порог
+          </button>
+        </div>
+      </div>
+      <BottomNav />
+    </div>
+  )
+}
+
+if (screen.startsWith('admin_wholesale_flavors_')) {
+  const productId = Number(screen.replace('admin_wholesale_flavors_', ''))
+  const product = wholesaleProducts.find(p => p.id === productId)
+  const [flavors, setFlavors] = useState<any[]>([])
+  const [flavorName, setFlavorName] = useState('')
+  const [flavorStock, setFlavorStock] = useState('0')
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/wholesale/products/${productId}/flavors`)
+      .then(r => r.json())
+      .then(d => setFlavors(d.flavors || d || []))
+      .catch(() => setFlavors([]))
+  }, [productId])
+
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 16px 90px' }}>
+        <button onClick={() => setScreen(`admin_wholesale_product_${productId}` as any)} style={backBtn}>← Назад</button>
+        <h2 style={{ margin: '16px 0 16px', fontSize: 22 }}>Вкусы · {product?.name}</h2>
+
+        {flavors.map(f => (
+          <div key={f.id} style={{ ...card, marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <div style={{ fontWeight: 600 }}>{f.name}</div>
+              <div style={{ fontSize: 13, color: '#888' }}>{f.stock} шт</div>
+            </div>
+            <button
+              onClick={async () => {
+                await fetch(`${API_URL}/api/wholesale/flavors/${f.id}`, { method: 'DELETE' })
+                setFlavors(flavors.filter(x => x.id !== f.id))
+              }}
+              style={{ background: 'transparent', border: 'none', color: '#f66' }}
+            >🗑</button>
+          </div>
+        ))}
+
+        <div style={{ ...card, marginTop: 16 }}>
+          <input style={inputStyle} placeholder="Название вкуса" value={flavorName} onChange={e => setFlavorName(e.target.value)} />
+          <input style={{ ...inputStyle, marginTop: 8 }} placeholder="Количество" value={flavorStock} onChange={e => setFlavorStock(e.target.value)} />
+          <button
+            onClick={async () => {
+              if (!flavorName.trim()) return
+              const fd = new FormData()
+              fd.append('name', flavorName)
+              fd.append('stock', flavorStock)
+              await fetch(`${API_URL}/api/wholesale/products/${productId}/flavors`, {
+                method: 'POST',
+                body: fd,
+              })
+              const r = await fetch(`${API_URL}/api/wholesale/products/${productId}/flavors`)
+              const d = await r.json()
+              setFlavors(d.flavors || d || [])
+              setFlavorName('')
+              setFlavorStock('0')
+            }}
+            style={{ ...btnMain, marginTop: 12 }}
+          >
+            + Добавить вкус
           </button>
         </div>
       </div>
