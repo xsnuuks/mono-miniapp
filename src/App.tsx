@@ -1273,13 +1273,13 @@ if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale
 if (screen.startsWith('admin_wholesale_add_')) {
   const catId = screen.replace('admin_wholesale_add_', '')
   const catName = {
-    all: 'Все',
-    liquid: 'Жижи',
-    disposable: 'Одноразки',
-    pod: 'Поды',
-    cartridge: 'Картриджи',
-    snus: 'Снюс',
-  }[catId] || catId
+  all: 'Все',
+  жижи: 'Жижи',
+  одноразки: 'Одноразки',
+  поды: 'Поды',
+  картриджи: 'Картриджи',
+  снюс: 'Снюс',
+}[catId] || catId
 
   return (
     <div key={screen} style={page}>
