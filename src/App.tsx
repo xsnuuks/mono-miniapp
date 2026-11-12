@@ -1443,8 +1443,20 @@ if (screen.startsWith('admin_wholesale_add_')) {
         name: productName,
         category_id: catId,
         photo_url: null,
-        tiers: [],
-        flavors: [],
+        
+tiers: tiers
+  .filter(t => Number(t.min_qty) > 0 && Number(t.price) > 0)
+  .map(t => ({
+    min_qty: Number(t.min_qty),
+    price: Number(t.price),
+  })),
+flavors: flavors
+  .filter(f => f.name?.trim())
+  .map(f => ({
+    name: f.name.trim(),
+    stock: Math.max(0, Number(f.stock) || 0),
+  })),
+
       }),
     })
     const data = await r.json()
