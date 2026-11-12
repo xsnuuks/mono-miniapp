@@ -133,6 +133,8 @@ function App() {
   const [favIds, setFavIds] = useState<number[]>([])
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
+  const [tiers, setTiers] = useState<any[]>([])
+  const [flavors, setFlavors] = useState<any[]>([])
   const [wholesaleProducts, setWholesaleProducts] = useState<any[]>([])
   const [productName, setProductName] = useState('')
   const [optCat, setOptCat] = useState('all')
