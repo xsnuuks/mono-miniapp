@@ -1165,7 +1165,49 @@ async function deleteOrder(orderId: number) {
   )
 }
 
-    if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale_add_')) {
+    if (screen === 'admin_wholesale') {
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 16px 90px' }}>
+        <button onClick={() => setScreen('admin')} style={backBtn}>← Назад</button>
+        <h2 style={{ margin: '16px 0 8px', fontSize: 22 }}>Опт</h2>
+        <p style={{ color: '#aaa', fontSize: 14, marginBottom: 20 }}>
+          Категории
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[
+            { id: 'all', name: 'Все' },
+            { id: 'liquid', name: 'Жижи' },
+            { id: 'disposable', name: 'Одноразки' },
+            { id: 'pod', name: 'Поды' },
+            { id: 'cartridge', name: 'Картриджи' },
+            { id: 'snus', name: 'Снюс' },
+          ].map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setScreen(`admin_wholesale_${cat.id}` as any)}
+              style={{
+                ...card,
+                textAlign: 'left',
+                padding: '14px 16px',
+                cursor: 'pointer',
+                border: 'none',
+                width: '100%',
+              }}
+            >
+              <div style={{ fontWeight: 600 }}>{cat.name}</div>
+              <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>0 товаров</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <BottomNav />
+    </div>
+  )
+}
+
+if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale_add_')) {
   const catId = screen.replace('admin_wholesale_', '')
   const catName = {
     all: 'Все',
