@@ -182,18 +182,6 @@ const fileRef = useRef<HTMLInputElement>(null)
     }
   }
 
-  async function loadWholesaleCategories() {
-  try {
-    const r = await fetch(`${API_URL}/api/wholesale/categories`)
-    if (r.ok) {
-      const data = await r.json()
-      setWholesaleCategories(data.categories || [])
-    }
-  } catch (e) {
-    console.error(e)
-  }
-}
-
   async function loadFavIds() {
   if (!tgUser?.id) return
   try {
@@ -211,7 +199,6 @@ const fileRef = useRef<HTMLInputElement>(null)
       tg.setBackgroundColor('#0a0a0a')
     }
     loadProducts()
-    loadWholesaleCategories()
     loadFavIds()
     if (tgUser?.id) {
       fetch(`${API_URL}/profile/${tgUser.id}`)
