@@ -194,10 +194,12 @@ const fileRef = useRef<HTMLInputElement>(null)
           id: p.id,
           name: p.name,
           category: p.category,
+          photo: p.photo || null,
+          price: p.price || 0,
+          available: p.available !== false,
           prices: 3,
           flavors: 3,
           stock: 65,
-          img: p.photo || null,
         }))
     )
   } catch {
@@ -1299,7 +1301,6 @@ if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale
 if (screen.startsWith('admin_wholesale_add_')) {
   const catId = screen.replace('admin_wholesale_add_', '')
   const catName = {
-    all: 'Все',
     жижи: 'Жижи',
     одноразки: 'Одноразки',
     поды: 'Поды',
@@ -1317,8 +1318,8 @@ if (screen.startsWith('admin_wholesale_add_')) {
         </p>
 
         <div style={card}>
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Название товара</div>
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Название</div>
             <input
               value={productName}
               onChange={e => setProductName(e.target.value)}
@@ -1337,16 +1338,13 @@ if (screen.startsWith('admin_wholesale_add_')) {
 
           <button
             onClick={async () => {
-              if (!productName.trim()) {
-                alert('Введите название')
-                return
-              }
+              if (!productName.trim()) return alert('Введите название')
               try {
                 const r = await fetch(`${API_URL}/admin/products`, {
                   method: 'POST',
                   headers: adminHeaders(tgUser?.id),
                   body: JSON.stringify({
-                    name: productName,
+                    name: productName.trim(),
                     price: 15,
                     volume: '',
                     strength: '',
@@ -1357,25 +1355,15 @@ if (screen.startsWith('admin_wholesale_add_')) {
                 })
                 const data = await r.json()
                 if (data.id) {
-                  setWholesaleProducts(prev => [
-                    ...prev,
-                    {
-                      id: data.id,
-                      name: productName,
-                      category: catId,
-                      prices: 3,
-                      flavors: 3,
-                      stock: 65,
-                    }
-                  ])
+                  await loadWholesaleProducts()
                   setProductName('')
-                  setScreen(`admin_wholesale_${catId}` as any)
+                  setScreen(`admin_wholesale_product_${data.id}` as any)
                 }
               } catch {
                 alert('Ошибка создания')
               }
             }}
-            style={{ ...btnMain, marginTop: 16 }}
+            style={{ ...btnMain, marginTop: 8 }}
           >
             Создать товар
           </button>
