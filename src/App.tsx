@@ -1074,7 +1074,6 @@ async function deleteOrder(orderId: number) {
       ),
     },
     {
-      {
   id: 'admin_wholesale' as Screen,
   title: 'Опт',
   fn: () => setScreen('admin_wholesale'),
