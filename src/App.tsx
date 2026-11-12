@@ -1166,41 +1166,44 @@ async function deleteOrder(orderId: number) {
 }
 
     if (screen === 'admin_wholesale') {
-    return (
-      <div key={screen} style={page}>
-        <div style={{ padding: '16px 16px 90px' }}>
-          <button onClick={() => setScreen('admin')} style={backBtn}>← Назад</button>
-          <h2 style={{ margin: '16px 0 8px', fontSize: 22 }}>Опт</h2>
-          <p style={{ color: '#aaa', fontSize: 14, marginBottom: 20 }}>
-            Настрой пороги и цены
-          </p>
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 16px 90px' }}>
+        <button onClick={() => setScreen('admin')} style={backBtn}>← Назад</button>
+        <h2 style={{ margin: '16px 0 8px', fontSize: 22 }}>Опт</h2>
+        <p style={{ color: '#aaa', fontSize: 14, marginBottom: 20 }}>
+          Категории
+        </p>
 
-          <div style={card}>
-            <div style={{ fontWeight: 600, marginBottom: 12 }}>Текущие правила</div>
-            <div style={{ fontSize: 14, color: '#ccc', lineHeight: 1.6 }}>
-              От 5 шт — 13 €<br />
-              От 10 шт — 12 €
-            </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[
+            { id: 'liquid', name: 'Жидкости' },
+            { id: 'disposable', name: 'Одноразки' },
+            { id: 'pod', name: 'Поды' },
+            { id: 'other', name: 'Другое' },
+          ].map(cat => (
             <button
-              onClick={() => alert('Редактирование скоро добавим')}
-              style={{ ...btnMain, marginTop: 16 }}
+              key={cat.id}
+              onClick={() => alert(`Открыть категорию: ${cat.name}`)}
+              style={{
+                ...card,
+                textAlign: 'left',
+                padding: '14px 16px',
+                cursor: 'pointer',
+                border: 'none',
+                width: '100%',
+              }}
             >
-              Изменить
+              <div style={{ fontWeight: 600 }}>{cat.name}</div>
+              <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>0 товаров</div>
             </button>
-          </div>
-
-          <div style={{ ...card, marginTop: 12 }}>
-            <div style={{ fontWeight: 600, marginBottom: 8 }}>Как заказать</div>
-            <p style={{ fontSize: 14, color: '#ccc', lineHeight: 1.5 }}>
-              Клиент пишет в поддержку, указывает вкус и количество.<br />
-              Встреча как обычно — наличными.
-            </p>
-          </div>
+          ))}
         </div>
-        <BottomNav />
       </div>
-    )
-  }
+      <BottomNav />
+    </div>
+  )
+}
   
   if (screen === 'success') {
     return (
