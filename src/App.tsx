@@ -20,7 +20,7 @@ type Screen =
   | 'catalog' | 'product' | 'cart' | 'checkout' | 'success' | 'conditions'
   | 'profile' | 'rules' | 'info' | 'delivery'
   | 'admin' | 'admin_orders' | 'admin_products' | 'admin_product_edit'
-  | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale'
+  | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_wholesale' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale'
 
 const CITIES = ['Reutlingen', 'Pfullingen', 'Eningen', 'Betzingen']
 const PAYMENTS = ['Наличные', 'Банковский перевод']
@@ -1074,6 +1074,17 @@ async function deleteOrder(orderId: number) {
       ),
     },
     {
+      {
+  id: 'admin_wholesale' as Screen,
+  title: 'Опт',
+  fn: () => setScreen('admin_wholesale'),
+  icon: (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8a8a8a" strokeWidth="1.6" strokeLinecap="round">
+      <path d="M12 2L2 7l10 5 10-5-10-5z" />
+      <path d="M2 17l10 5 10-5" />
+      <path d="M2 12l10 5 10-5" />
+    </svg>
+  ),
       id: 'admin_broadcast' as Screen,
       title: 'Рассылка',
       fn: () => { setBroadcastResult(null); setBroadcastText(''); },
