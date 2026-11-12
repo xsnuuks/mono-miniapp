@@ -183,6 +183,25 @@ const fileRef = useRef<HTMLInputElement>(null)
     }
   }
 
+  async function loadWholesaleProducts() {
+  try {
+    const r = await fetch(`${API_URL}/products`)
+    const data = await r.json()
+    setWholesaleProducts(
+      (data || []).map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        category: p.category || 'жижи',
+        prices: 3,
+        flavors: 3,
+        stock: 65,
+      }))
+    )
+  } catch {
+    setWholesaleProducts([])
+  }
+}
+  
   async function loadFavIds() {
   if (!tgUser?.id) return
   try {
@@ -200,6 +219,7 @@ const fileRef = useRef<HTMLInputElement>(null)
       tg.setBackgroundColor('#0a0a0a')
     }
     loadProducts()
+    loadWholesaleProducts()
     loadFavIds()
     if (tgUser?.id) {
       fetch(`${API_URL}/profile/${tgUser.id}`)
