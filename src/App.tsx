@@ -1355,9 +1355,23 @@ if (screen.startsWith('admin_wholesale_add_')) {
                 })
                 const data = await r.json()
                 if (data.id) {
-                  await loadWholesaleProducts()
+                  // Сначала добавляем в состояние
+                  setWholesaleProducts(prev => [
+                    ...prev,
+                    {
+                      id: data.id,
+                      name: productName.trim(),
+                      category: catId,
+                      price: 15,
+                      available: true,
+                      prices: 3,
+                      flavors: 3,
+                      stock: 0,
+                    }
+                  ])
                   setProductName('')
-                  setScreen(`admin_wholesale_product_${data.id}` as any)
+                  // Потом переходим
+                  setScreen(`admin_wholesale_${catId}` as any)
                 }
               } catch {
                 alert('Ошибка создания')
