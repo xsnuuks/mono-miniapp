@@ -1186,7 +1186,7 @@ async function deleteOrder(orderId: number) {
           ].map(cat => (
             <button
               key={cat.id}
-              onClick={() => alert(`Открыть категорию: ${cat.name}`)}
+              onClick={() => setScreen(`admin_wholesale_${cat.id}` as any)}
               style={{
                 ...card,
                 textAlign: 'left',
@@ -1201,6 +1201,44 @@ async function deleteOrder(orderId: number) {
             </button>
           ))}
         </div>
+      </div>
+      <BottomNav />
+    </div>
+  )
+}
+
+if (screen.startsWith('admin_wholesale_')) {
+  const catId = screen.replace('admin_wholesale_', '')
+  const catName = {
+    all: 'Все',
+    liquid: 'Жижи',
+    disposable: 'Одноразки',
+    pod: 'Поды',
+    cartridge: 'Картриджи',
+    snus: 'Снюс',
+  }[catId] || catId
+
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 16px 90px' }}>
+        <button onClick={() => setScreen('admin_wholesale')} style={backBtn}>← Назад</button>
+        <h2 style={{ margin: '16px 0 8px', fontSize: 22 }}>{catName}</h2>
+        <p style={{ color: '#aaa', fontSize: 14, marginBottom: 20 }}>
+          Товары в категории
+        </p>
+
+        <div style={card}>
+          <div style={{ color: '#888', textAlign: 'center', padding: '20px 0' }}>
+            Товаров пока нет
+          </div>
+        </div>
+
+        <button
+          onClick={() => alert('Добавление товара')}
+          style={{ ...btnMain, marginTop: 16 }}
+        >
+          + Добавить товар
+        </button>
       </div>
       <BottomNav />
     </div>
