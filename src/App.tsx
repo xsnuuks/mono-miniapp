@@ -1264,14 +1264,15 @@ async function deleteOrder(orderId: number) {
 
 if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale_add_') && !screen.startsWith('admin_wholesale_product_')) {
   const catId = screen.replace('admin_wholesale_', '')
-  const catName = {
+  const catName: string = ({
   all: 'Все',
-  жижи: 'Жижи',
-  одноразки: 'Одноразки',
-  поды: 'Поды',
-  картриджи: 'Картриджи',
-  снюс: 'Снюс',
-}[catId] || catId
+  '1': 'Жижи',
+  '2': 'Одноразки',
+  '3': 'Поды',
+  '4': 'Картриджи',
+  '5': 'Снюс',
+} as Record<string, string>)[catId] || catId
+
   return (
     <div key={screen} style={page}>
       <div style={{ padding: '16px 16px 90px' }}>
@@ -1326,14 +1327,15 @@ if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale
 
 if (screen.startsWith('admin_wholesale_add_')) {
   const catId = screen.replace('admin_wholesale_add_', '')
-  const catName = {
-    all: 'Все',
-    жижи: 'Жижи',
-    одноразки: 'Одноразки',
-    поды: 'Поды',
-    картриджи: 'Картриджи',
-    снюс: 'Снюс',
-  }[catId] || catId
+  const catName: string = ({
+  all: 'Все',
+  '1': 'Жижи',
+  '2': 'Одноразки',
+  '3': 'Поды',
+  '4': 'Картриджи',
+  '5': 'Снюс',
+} as Record<string, string>)[catId] || catId
+
 
   return (
     <div key={screen} style={page}>
