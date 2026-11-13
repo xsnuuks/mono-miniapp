@@ -1251,7 +1251,7 @@ async function deleteOrder(orderId: number) {
             >
               <div style={{ fontWeight: 600 }}>{cat.name}</div>
 <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
-  {wholesaleProducts.filter(p => p.category === cat.id).length} товаров
+  {wholesaleProducts.filter(p => cat.id === 'all' || String(p.category_id) === cat.id).length} товаров
 </div>
             </button>
           ))}
