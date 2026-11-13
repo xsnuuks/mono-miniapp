@@ -2459,13 +2459,13 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
 
     <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8, marginBottom: 4 }}>
       {[
-        { id: 'all', name: 'Все', img: '' },
-        { id: 'жижи', name: 'Жижи', img: '/жижи.jpg' },
-        { id: 'одноразки', name: 'Одноразки', img: '/одноразки.jpg' },
-        { id: 'поды', name: 'Поды', img: '/поды.jpg' },
-        { id: 'картриджи', name: 'Картриджи', img: '/картриджи.jpg' },
-        { id: 'снюс', name: 'Снюс', img: '/снюс.jpg' },
-      ].map(cat => (
+  { id: 'all', name: 'Все', img: '' },
+  { id: '1', name: 'Жижи', img: '/жижи.jpg' },
+  { id: '2', name: 'Одноразки', img: '/одноразки.jpg' },
+  { id: '3', name: 'Поды', img: '/поды.jpg' },
+  { id: '4', name: 'Картриджи', img: '/картриджи.jpg' },
+  { id: '5', name: 'Снюс', img: '/снюс.jpg' },
+].map(cat => (
         <button
           key={cat.id}
           type="button"
@@ -2527,7 +2527,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
         </div>
       </div>
     ))}
-  {wholesaleProducts.filter(p => optCat === 'all' || p.category === optCat).length === 0 && (
+  {wholesaleProducts.filter(p => optCat === 'all' || String(p.category_id) === optCat).length === 0 && (
     <div style={{ color: '#888', textAlign: 'center', padding: '12px 0' }}>
       Товаров в этой категории пока нет
     </div>
