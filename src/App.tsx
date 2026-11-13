@@ -258,6 +258,30 @@ async function loadWholesaleProducts() {
     }
   }, [])
 
+  useEffect(() => {
+    if (screen.startsWith('admin_wholesale_tiers_')) {
+      const id = Number(screen.replace('admin_wholesale_tiers_', ''))
+      fetch(`${API_URL}/api/wholesale/products/${id}/tiers`)
+        .then(r => {
+          if (!r.ok) throw new Error('Ошибка загрузки цен')
+          return r.json()
+        })
+        .then(d => setTiers(Array.isArray(d) ? d : d.tiers || []))
+        .catch(() => setTiers([]))
+    }
+
+    if (screen.startsWith('admin_wholesale_flavors_')) {
+      const id = Number(screen.replace('admin_wholesale_flavors_', ''))
+      fetch(`${API_URL}/api/wholesale/products/${id}/flavors`)
+        .then(r => {
+          if (!r.ok) throw new Error('Ошибка загрузки вкусов')
+          return r.json()
+        })
+        .then(d => setFlavors(Array.isArray(d) ? d : d.flavors || []))
+        .catch(() => setFlavors([]))
+    }
+  }, [screen])
+  
   function addToCart(product: Product) {
     setCart((prev) => {
       const ex = prev.find((i) => i.product.id === product.id)
@@ -1588,13 +1612,6 @@ flavors: flavors
   if (screen.startsWith('admin_wholesale_tiers_')) {
   const productId = Number(screen.replace('admin_wholesale_tiers_', ''))
   const product = wholesaleProducts.find(p => p.id === productId)
-
-  useEffect(() => {
-    fetch(`${API_URL}/api/wholesale/products/${productId}/tiers`)
-      .then(r => r.json())
-      .then(d => setTiers(d.tiers || d || []))
-      .catch(() => setTiers([]))
-  }, [productId])
 
   return (
     <div key={screen} style={page}>
