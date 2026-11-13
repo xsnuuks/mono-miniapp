@@ -2528,7 +2528,15 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
             В наличии: {p.stock || 0} шт.
           </div>
           <div style={{ fontSize: 13, color: '#c8c8c8', marginBottom: 10 }}>
-            От 10 шт. — 8.00 €/шт.
+            {(p.wholesale_tiers || []).length > 0
+  ? [...p.wholesale_tiers]
+      .sort((a: any, b: any) => a.min_qty - b.min_qty)
+      .map((t: any) => (
+        <div key={t.id ?? t.min_qty}>
+          От {t.min_qty} шт. — {Number(t.price).toFixed(2)} €/шт.
+        </div>
+      ))
+  : 'Цена уточняется'}
           </div>
           <button
             style={{
