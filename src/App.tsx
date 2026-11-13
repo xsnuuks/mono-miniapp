@@ -1263,6 +1263,7 @@ async function deleteOrder(orderId: number) {
 }
 
 if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
+  const catId = screen.replace('admin_wholesale_', '')
   const catName: string = ({
   all: 'Все',
   '1': 'Жижи',
