@@ -1445,7 +1445,7 @@ if (screen.startsWith('admin_wholesale_add_')) {
       },
       body: JSON.stringify({
         name: productName,
-        category_id: catId,
+        category_id: Number(catId),
         photo_url: null,
         
 tiers: tiers
