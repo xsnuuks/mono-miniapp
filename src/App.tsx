@@ -2496,7 +2496,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     </div>
     <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 12, marginTop: 12 }}>
   {wholesaleProducts
-    .filter(p => optCat === 'all' || p.category === optCat)
+    .filter(p => optCat === 'all' || String(p.category_id) === optCat)
     .map(p => (
       <div key={p.id} style={{ ...card, padding: 0, overflow: 'hidden' }}>
         <div style={{ height: 140, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
