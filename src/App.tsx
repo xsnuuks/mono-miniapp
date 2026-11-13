@@ -1283,13 +1283,13 @@ if (screen.startsWith('admin_wholesale_') && !screen.startsWith('admin_wholesale
         </p>
 
         <div style={card}>
-  {wholesaleProducts.filter(p => p.category === catId).length === 0 ? (
+  {wholesaleProducts.filter(p => catId === 'all' || String(p.category_id) === catId).length === 0 ? (
     <div style={{ color: '#888', textAlign: 'center', padding: '20px 0' }}>
       Товаров пока нет
     </div>
   ) : (
     wholesaleProducts
-      .filter(p => p.category === catId)
+      .filter(p => catId === 'all' || String(p.category_id) === catId)
       .map(p => (
         <button
           key={p.id}
