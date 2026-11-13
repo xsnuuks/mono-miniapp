@@ -206,8 +206,28 @@ async function loadWholesaleProducts() {
       ? data
       : (data.products || [])
 
+    const productsWithTiers = await Promise.all(
+  list.map(async (p: any) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/api/wholesale/products/${p.id}/tiers`
+      )
+      if (!response.ok) throw new Error('Ошибка загрузки цен')
+      const data = await response.json()
+      return {
+        ...p,
+        wholesale_tiers: Array.isArray(data)
+          ? data
+          : (data.tiers || []),
+      }
+    } catch {
+      return { ...p, wholesale_tiers: [] }
+    }
+  })
+)
+    
     setWholesaleProducts(
-      list.map((p: any) => ({
+      productsWithTiers.map((p: any) => ({
         ...p,
         id: p.id,
         name: p.name,
