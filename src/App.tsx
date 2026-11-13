@@ -1666,13 +1666,6 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   const productId = Number(screen.replace('admin_wholesale_flavors_', ''))
   const product = wholesaleProducts.find(p => p.id === productId)
 
-  useEffect(() => {
-    fetch(`${API_URL}/api/wholesale/products/${productId}/flavors`)
-      .then(r => r.json())
-      .then(d => setFlavors(d.flavors || d || []))
-      .catch(() => setFlavors([]))
-  }, [productId])
-
   return (
     <div key={screen} style={page}>
       <div style={{ padding: '16px 16px 90px' }}>
