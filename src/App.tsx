@@ -1982,15 +1982,27 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
                     <span>{qty}</span>
 
                     <button
-                      type="button"
-                      disabled={qty >= stock}
-                      onClick={() => setWholesaleQty(prev => ({
-                        ...prev,
-                        [id]: Math.min(stock, qty + 1),
-                      }))}
-                    >
-                      +
-                    </button>
+  type="button"
+  disabled={qty >= stock}
+  onClick={() => setWholesaleQty(prev => ({
+    ...prev,
+    [id]: Math.min(stock, qty + 1),
+  }))}
+  style={{
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    border: '1px solid rgba(168,85,247,0.45)',
+    background: '#272032',
+    color: '#ffffff',
+    fontSize: 26,
+    fontWeight: 600,
+    cursor: 'pointer',
+    flexShrink: 0,
+  }}
+>
+  +
+</button>
                   </div>
                 </div>
               )
