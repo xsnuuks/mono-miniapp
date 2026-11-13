@@ -20,7 +20,7 @@ type Screen =
   | 'catalog' | 'product' | 'cart' | 'checkout' | 'success' | 'conditions'
   | 'profile' | 'rules' | 'info' | 'delivery'
   | 'admin' | 'admin_orders' | 'admin_products' | 'admin_product_edit'
-  | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_wholesale' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale'
+  | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_wholesale' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale' | 'wholesale_product'
 
 const CITIES = ['Reutlingen', 'Pfullingen', 'Eningen', 'Betzingen']
 const PAYMENTS = ['Наличные', 'Банковский перевод']
@@ -134,6 +134,11 @@ function App() {
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
   const [wholesaleProducts, setWholesaleProducts] = useState<any[]>([])
+  const [selectedWholesaleId, setSelectedWholesaleId] = useState<number | null>(null)
+  const [wholesaleFlavors, setWholesaleFlavors] = useState<any[]>([])
+  const [wholesaleTiers, setWholesaleTiers] = useState<any[]>([])
+  const [wholesaleQty, setWholesaleQty] = useState<Record<number, number>>({})
+  const [wholesaleLoading, setWholesaleLoading] = useState(false)
   const [tiers, setTiers] = useState<any[]>([])
   const [flavors, setFlavors] = useState<any[]>([])
   const [minQty, setMinQty] = useState('')
@@ -301,6 +306,61 @@ async function loadWholesaleProducts() {
         .catch(() => setFlavors([]))
     }
   }, [screen])
+
+  useEffect(() => {
+    if (selectedWholesaleId === null) return
+
+    let cancelled = false
+
+    async function loadWholesaleDetails() {
+      setWholesaleLoading(true)
+      setWholesaleFlavors([])
+      setWholesaleTiers([])
+      setWholesaleQty({})
+
+      try {
+        const id = selectedWholesaleId
+        const [flavorsResponse, tiersResponse] = await Promise.all([
+          fetch(`${API_URL}/api/wholesale/products/${id}/flavors`),
+          fetch(`${API_URL}/api/wholesale/products/${id}/tiers`)
+        ])
+
+        if (!flavorsResponse.ok || !tiersResponse.ok) {
+          throw new Error('Ошибка загрузки товара')
+        }
+
+        const flavorsData = await flavorsResponse.json()
+        const tiersData = await tiersResponse.json()
+
+        if (cancelled) return
+
+        setWholesaleFlavors(
+          Array.isArray(flavorsData)
+            ? flavorsData
+            : (flavorsData.flavors || [])
+        )
+
+        setWholesaleTiers(
+          Array.isArray(tiersData)
+            ? tiersData
+            : (tiersData.tiers || [])
+        )
+      } catch (error) {
+        if (!cancelled) {
+          console.error(error)
+          showToast('Не удалось загрузить товар')
+        }
+      } finally {
+        if (!cancelled) setWholesaleLoading(false)
+      }
+    }
+
+    loadWholesaleDetails()
+
+    return () => {
+      cancelled = true
+    }
+  }, [selectedWholesaleId])
   
   function addToCart(product: Product) {
     setCart((prev) => {
