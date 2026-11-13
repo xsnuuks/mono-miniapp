@@ -2480,11 +2480,11 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8, marginBottom: 4 }}>
       {[
   { id: 'all', name: 'Все', img: '' },
-  { id: '1', name: 'Жижи', img: '/жижи.jpg' },
-  { id: '2', name: 'Одноразки', img: '/одноразки.jpg' },
-  { id: '3', name: 'Поды', img: '/поды.jpg' },
-  { id: '4', name: 'Картриджи', img: '/картриджи.jpg' },
-  { id: '5', name: 'Снюс', img: '/снюс.jpg' },
+  { id: '1', name: 'Жижи', img: '/жижи.png' },
+  { id: '2', name: 'Одноразки', img: '/одноразки.png' },
+  { id: '3', name: 'Поды', img: '/поды.png' },
+  { id: '4', name: 'Картриджи', img: '/картриджи.png' },
+  { id: '5', name: 'Снюс', img: '/снюс.png' },
 ].map(cat => (
         <button
           key={cat.id}
