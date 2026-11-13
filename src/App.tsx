@@ -1840,6 +1840,195 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     )
   }
 
+  if (screen === 'wholesale_product') {
+    const product = wholesaleProducts.find(
+      p => Number(p.id) === selectedWholesaleId
+    )
+
+    if (!product) {
+      return (
+        <div style={page}>
+          <button
+            style={backBtn}
+            onClick={() => setScreen('catalog')}
+          >
+            ← Назад
+          </button>
+          <div style={card}>Товар не найден</div>
+        </div>
+      )
+    }
+
+    const activeFlavors = wholesaleFlavors.filter(
+      f => Number(f.is_visible ?? 1) !== 0
+    )
+
+    const sortedTiers = [...wholesaleTiers].sort(
+      (a, b) => Number(a.min_qty) - Number(b.min_qty)
+    )
+
+    const totalQty = activeFlavors.reduce(
+      (sum, f) => sum + (wholesaleQty[Number(f.id)] || 0),
+      0
+    )
+
+    const currentTier = [...sortedTiers]
+      .reverse()
+      .find(t => totalQty >= Number(t.min_qty))
+
+    const currentPrice = currentTier
+      ? Number(currentTier.price)
+      : null
+
+    const totalPrice = currentPrice === null
+      ? null
+      : totalQty * currentPrice
+
+    const image = photoUrl(product.photo_url)
+
+    return (
+      <div style={page}>
+        <button
+          style={backBtn}
+          onClick={() => setScreen('catalog')}
+        >
+          ← Назад
+        </button>
+
+        <div style={{ ...card, marginBottom: 16 }}>
+          {image && (
+            <img
+              src={image}
+              alt={product.name}
+              style={{
+                width: '100%',
+                borderRadius: 12,
+                marginBottom: 16,
+                objectFit: 'cover',
+              }}
+            />
+          )}
+
+          <h2 style={{ margin: '0 0 16px' }}>
+            {product.name}
+          </h2>
+
+          <h3>Выберите вкусы</h3>
+
+          {wholesaleLoading ? (
+            <p>Загрузка вкусов...</p>
+          ) : activeFlavors.length === 0 ? (
+            <p style={{ color: '#aaa' }}>
+              Вкусов пока нет
+            </p>
+          ) : (
+            activeFlavors.map(f => {
+              const id = Number(f.id)
+              const stock = Math.max(0, Number(f.stock) || 0)
+              const qty = wholesaleQty[id] || 0
+
+              return (
+                <div
+                  key={id}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: 10,
+                    padding: '14px 0',
+                    borderBottom: '1px solid #333',
+                  }}
+                >
+                  <div>
+                    <div style={{ fontWeight: 600 }}>
+                      {f.name}
+                    </div>
+                    <div style={{
+                      color: '#aaa',
+                      fontSize: 12,
+                      marginTop: 4,
+                    }}>
+                      В наличии: {stock} шт.
+                    </div>
+                  </div>
+
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                  }}>
+                    <button
+                      type="button"
+                      disabled={qty === 0}
+                      onClick={() => setWholesaleQty(prev => ({
+                        ...prev,
+                        [id]: Math.max(0, qty - 1),
+                      }))}
+                    >
+                      −
+                    </button>
+
+                    <span>{qty}</span>
+
+                    <button
+                      type="button"
+                      disabled={qty >= stock}
+                      onClick={() => setWholesaleQty(prev => ({
+                        ...prev,
+                        [id]: Math.min(stock, qty + 1),
+                      }))}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              )
+            })
+          )}
+
+          <h3 style={{ marginTop: 24 }}>
+            Оптовые цены
+          </h3>
+
+          {sortedTiers.map(t => (
+            <div
+              key={t.id ?? t.min_qty}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '8px 0',
+                color: '#ddd',
+              }}
+            >
+              <span>От {t.min_qty} шт.</span>
+              <strong>
+                {Number(t.price).toFixed(2)} €/шт.
+              </strong>
+            </div>
+          ))}
+
+          <div style={{
+            borderTop: '1px solid #444',
+            marginTop: 20,
+            paddingTop: 16,
+          }}>
+            <div>Выбрано: {totalQty} шт.</div>
+
+            <div style={{
+              fontSize: 20,
+              fontWeight: 700,
+              marginTop: 8,
+            }}>
+              Итого: {totalPrice === null
+                ? 'Порог не достигнут'
+                : `${totalPrice.toFixed(2)} €`}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  
   if (screen === 'product' && selected) {
     const img = photoUrl(selected.photo)
     return (
@@ -2578,7 +2767,19 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   {wholesaleProducts
     .filter(p => optCat === 'all' || String(p.category_id) === optCat)
     .map(p => (
-      <div key={p.id} style={{ ...card, padding: 0, overflow: 'hidden' }}>
+      <div
+  key={p.id}
+  onClick={() => {
+    setSelectedWholesaleId(Number(p.id))
+    setScreen('wholesale_product')
+  }}
+  style={{
+    ...card,
+    padding: 0,
+    overflow: 'hidden',
+    cursor: 'pointer',
+  }}
+>
         <div style={{ height: 140, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ fontSize: 13, color: '#555' }}>Фото</div>
         </div>
