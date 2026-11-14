@@ -19,7 +19,7 @@ type CartItem = { product: Product; quantity: number }
 type Screen =
   | 'catalog' | 'product' | 'cart' | 'checkout' | 'wholesale_checkout' | 'wholesale_delivery' | 'wholesale_review' | 'success' | 'conditions'
   | 'profile' | 'rules' | 'info' | 'delivery'
-  | 'admin' | 'admin_orders' | 'admin_products' | 'admin_product_edit'
+  | 'admin' | 'admin_orders' | 'admin_wholesale_orders' | 'admin_products' | 'admin_product_edit'
   | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_retail' | 'admin_wholesale' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale' | 'wholesale_product' | 'retail_product' | 'retail_checkout'
 
 const CITIES = ['Reutlingen', 'Pfullingen', 'Eningen', 'Betzingen']
@@ -1336,11 +1336,97 @@ async function deleteOrder(orderId: number) {
     )
   }
 
+  if (screen === 'admin_wholesale_orders') {
+  return (
+    <div key={screen} style={page}>
+      <button
+        type="button"
+        onClick={() => setScreen('admin_orders')}
+        style={backBtn}
+      >
+        ← Назад к розничным заказам
+      </button>
+
+      <div style={title}>Оптовые заказы</div>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 10,
+        marginBottom: 20,
+      }}>
+        <button
+          type="button"
+          onClick={() => setScreen('admin_orders')}
+          style={{ ...adminActionBtn, width: '100%' }}
+        >
+          🛍 Розничные
+        </button>
+
+        <button
+          type="button"
+          style={{ ...adminPrimaryBtn, width: '100%' }}
+        >
+          📦 Оптовые
+        </button>
+      </div>
+
+      <div style={{
+        ...adminCard,
+        textAlign: 'center',
+        padding: 24,
+      }}>
+        <div style={{ fontSize: 28, marginBottom: 12 }}>📦</div>
+        <div style={{ fontSize: 16, fontWeight: 700 }}>
+          Оптовые заказы
+        </div>
+        <div style={{
+          color: '#aaa',
+          fontSize: 13,
+          marginTop: 8,
+          lineHeight: 1.6,
+        }}>
+          Здесь будут отображаться заказы оптовых покупателей
+          после подключения их сохранения в Railway.
+        </div>
+      </div>
+    </div>
+  )
+}
+  
        if (screen === 'admin_orders') {
     return (
       <div key={screen} style={page}>
         <button onClick={() => setScreen('admin')} style={backBtn}>Назад</button>
         <div style={title}>Розничные заказы</div>
+        <div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: 10,
+  marginBottom: 20,
+}}>
+  <button
+    type="button"
+    onClick={() => setScreen('admin_orders')}
+    style={{
+      ...adminPrimaryBtn,
+      width: '100%',
+    }}
+  >
+    🛍 Розничные
+  </button>
+
+  <button
+    type="button"
+    onClick={() => setScreen('admin_wholesale_orders')}
+    style={{
+      ...adminActionBtn,
+      width: '100%',
+    }}
+  >
+    📦 Оптовые
+  </button>
+</div>
         {orders.length === 0 ? (
           <div style={card}>Нет новых заказов</div>
         ) : (
