@@ -2366,7 +2366,7 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
               marginBottom: 6,
             }}>
               <div style={{ fontSize: 17, fontWeight: 800 }}>
-                02 · Оптовые цены
+                02 · Розничные цены
               </div>
               <span style={adminBadge(true)}>
                 {tiers.length} шт.
