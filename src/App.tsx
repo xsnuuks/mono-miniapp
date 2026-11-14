@@ -6416,6 +6416,8 @@ onChange={field.name === 'phone'
     </form>
   )}
 </div>
+</div>
+)}          
 
       <BottomNav />
     </div>
