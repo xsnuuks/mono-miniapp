@@ -6036,6 +6036,7 @@ onChange={field.name === 'phone'
 
   return (
     <div key={screen} style={page}>
+      <RetailTopBar />
       <button
         type="button"
         style={backBtn}
@@ -6055,7 +6056,6 @@ onChange={field.name === 'phone'
           Оформление заказа
         </h2>
 
-        <RetailDeliverySelector />
       </div>
 
       <div style={{ ...adminCard, marginBottom: 16 }}>
