@@ -1889,10 +1889,6 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
       ? Number(currentTier.price)
       : null
 
-    const totalPrice = currentPrice === null
-      ? null
-      : totalQty * currentPrice
-
     const image = photoUrl(product.photo_url)
 
     return (
