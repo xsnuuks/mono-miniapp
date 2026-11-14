@@ -4718,7 +4718,71 @@ onChange={field.name === 'phone'
       <div style={title}>Корзина</div>
 
       {cart.length === 0 && wholesaleCart.length === 0 && (
-        <div style={card}>Корзина пуста</div>
+        <div style={{
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '65px 20px',
+  textAlign: 'center',
+}}>
+  <div style={{
+    width: 108,
+    height: 108,
+    borderRadius: '50%',
+    background: 'rgba(168,85,247,0.10)',
+    border: '1px solid rgba(168,85,247,0.25)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+  }}>
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#a855f7"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="9" cy="21" r="1" />
+      <circle cx="20" cy="21" r="1" />
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+    </svg>
+  </div>
+
+  <div style={{
+    fontSize: 21,
+    fontWeight: 700,
+    marginBottom: 10,
+  }}>
+    Корзина пуста
+  </div>
+
+  <div style={{
+    color: '#999',
+    fontSize: 13,
+    lineHeight: 1.6,
+  }}>
+    Добавьте товары из каталога,
+    чтобы они появились здесь
+  </div>
+
+  <button
+    type="button"
+    onClick={() => setScreen('catalog')}
+    style={{
+      ...adminPrimaryBtn,
+      flex: 'none',
+      marginTop: 24,
+      padding: '13px 24px',
+    }}
+  >
+    Перейти в каталог
+  </button>
+</div>
       )}
 
       {cart.length > 0 && (
