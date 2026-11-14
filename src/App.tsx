@@ -2960,61 +2960,162 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
         </button>
       ))}
     </div>
-    <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 12, marginTop: 12 }}>
+    <div style={{
+  gridColumn: '1 / -1',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+  gap: 12,
+  marginTop: 12,
+}}>
   {wholesaleProducts
-    .filter(p => optCat === 'all' || String(p.category_id) === optCat)
-    .map(p => (
-      <div
-  key={p.id}
-  onClick={() => {
-    setSelectedWholesaleId(Number(p.id))
-    setScreen('wholesale_product')
-  }}
-  style={{
-    ...card,
-    padding: 0,
-    overflow: 'hidden',
-    cursor: 'pointer',
-  }}
->
-        <div style={{ height: 140, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ fontSize: 13, color: '#555' }}>Фото</div>
-        </div>
-        <div style={{ padding: 12 }}>
-          <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{p.name}</div>
-          <div style={{ fontSize: 13, color: '#aaa', marginBottom: 8 }}>
-            В наличии: {p.stock || 0} шт.
+    .filter(p =>
+      (optCat === 'all' || String(p.category_id) === optCat) &&
+      Number(p.is_visible ?? 1) !== 0
+    )
+    .map(p => {
+      const img = photoUrl(p.photo_url)
+
+      const sortedPrices = [...(p.wholesale_tiers || [])]
+        .sort((a: any, b: any) =>
+          Number(a.min_qty) - Number(b.min_qty)
+        )
+
+      return (
+        <div
+          key={p.id}
+          onClick={() => {
+            setSelectedWholesaleId(Number(p.id))
+            setScreen('wholesale_product')
+          }}
+          style={{
+            background: '#1c1724',
+            border: '1px solid rgba(168,85,247,0.28)',
+            borderRadius: 16,
+            overflow: 'hidden',
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+            minWidth: 0,
+          }}
+        >
+          <div style={{
+            width: '100%',
+            aspectRatio: '1 / 1',
+            background: '#292035',
+          }}>
+            {img ? (
+              <img
+                src={img}
+                alt={p.name}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                }}
+              />
+            ) : (
+              <div style={{
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#777',
+                fontSize: 13,
+              }}>
+                Нет фотографии
+              </div>
+            )}
           </div>
-          <div style={{ fontSize: 13, color: '#c8c8c8', marginBottom: 10 }}>
-            {(p.wholesale_tiers || []).length > 0
-  ? [...p.wholesale_tiers]
-      .sort((a: any, b: any) => a.min_qty - b.min_qty)
-      .map((t: any) => (
-        <div key={t.id ?? t.min_qty}>
-          От {t.min_qty} шт. — {Number(t.price).toFixed(2)} €/шт.
-        </div>
-      ))
-  : 'Цена уточняется'}
-          </div>
-          <button
-            style={{
-              width: '100%',
-              background: 'linear-gradient(90deg, #7c3aed, #a855f7)',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 10,
-              padding: '10px 0',
-              fontWeight: 600,
+
+          <div style={{
+            padding: 12,
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            gap: 10,
+          }}>
+            <div style={{
               fontSize: 14,
-            }}
-          >
-            Добавить в корзину
-          </button>
+              fontWeight: 700,
+              lineHeight: 1.4,
+              overflowWrap: 'anywhere',
+            }}>
+              {p.name}
+            </div>
+
+            <div style={{
+              fontSize: 12,
+              color: Number(p.stock) > 0 ? '#4ade80' : '#aaa',
+            }}>
+              В наличии: {p.stock || 0} шт.
+            </div>
+
+            <div style={{
+              marginTop: 'auto',
+              borderTop: '1px solid rgba(255,255,255,0.12)',
+              paddingTop: 10,
+            }}>
+              <div style={{
+                fontSize: 11,
+                color: '#b8a7c8',
+                marginBottom: 8,
+              }}>
+                Оптовые цены
+              </div>
+
+              {sortedPrices.length > 0 ? (
+                sortedPrices.map((t: any) => (
+                  <div
+                    key={t.id ?? t.min_qty}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      gap: 6,
+                      fontSize: 11,
+                      padding: '5px 0',
+                      borderBottom: '1px solid rgba(255,255,255,0.06)',
+                    }}
+                  >
+                    <span>От {t.min_qty} шт.</span>
+                    <strong>
+                      {Number(t.price).toFixed(2)} €
+                    </strong>
+                  </div>
+                ))
+              ) : (
+                <div style={{ fontSize: 12, color: '#aaa' }}>
+                  Цены уточняются
+                </div>
+              )}
+            </div>
+
+            <div style={{
+              background: 'linear-gradient(90deg, #7c3aed, #b21bd0)',
+              borderRadius: 10,
+              padding: '12px 6px',
+              textAlign: 'center',
+              fontSize: 12,
+              fontWeight: 700,
+              color: '#fff',
+            }}>
+              Выбрать вкусы
+            </div>
+          </div>
         </div>
-      </div>
-    ))}
-  {wholesaleProducts.filter(p => optCat === 'all' || String(p.category_id) === optCat).length === 0 && (
-    <div style={{ color: '#888', textAlign: 'center', padding: '12px 0' }}>
+      )
+    })}
+
+  {wholesaleProducts.filter(p =>
+    (optCat === 'all' || String(p.category_id) === optCat) &&
+    Number(p.is_visible ?? 1) !== 0
+  ).length === 0 && (
+    <div style={{
+      gridColumn: '1 / -1',
+      color: '#888',
+      textAlign: 'center',
+      padding: 16,
+    }}>
       Товаров в этой категории пока нет
     </div>
   )}
