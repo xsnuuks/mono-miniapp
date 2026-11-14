@@ -5928,7 +5928,7 @@ onChange={field.name === 'phone'
     <div key={screen} style={page}>
       <div style={title}>Корзина</div>
 
-      {cart.length === 0 && wholesaleCart.length === 0 && (
+      {cart.length === 0 && retailCart.length === 0 && wholesaleCart.length === 0 && (
         <div style={{
   display: 'flex',
   flexDirection: 'column',
@@ -5997,6 +5997,76 @@ onChange={field.name === 'phone'
 </div>
       )}
 
+      {retailCart.length > 0 && (
+  <div style={{ ...adminCard, marginBottom: 18 }}>
+    <h2 style={{ marginTop: 0 }}>🛍 Розница</h2>
+
+    {retailCart.map(item => {
+      const product = retailProducts.find(
+        p => Number(p.id) === item.productId
+      )
+
+      const productQty = retailCart
+        .filter(row => row.productId === item.productId)
+        .reduce((sum, row) => sum + row.quantity, 0)
+
+      const tiers = [...(product?.retail_tiers || [])]
+        .sort((a: any, b: any) =>
+          Number(a.min_qty) - Number(b.min_qty)
+        )
+
+      const tier = tiers.filter(
+        (t: any) => productQty >= Number(t.min_qty)
+      ).pop()
+
+      const unitPrice = tier ? Number(tier.price) : 0
+
+      return (
+        <div
+          key={`${item.productId}-${item.flavorId}`}
+          style={{
+            padding: '14px 0',
+            borderBottom: '1px solid rgba(255,255,255,0.1)',
+          }}
+        >
+          <div style={{ fontWeight: 700 }}>
+            {item.productName}
+          </div>
+
+          <div style={{
+            color: '#aaa',
+            fontSize: 12,
+            marginTop: 5,
+          }}>
+            {item.flavorName}
+          </div>
+
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: 10,
+            fontSize: 13,
+          }}>
+            <span>{item.quantity} шт.</span>
+            <strong>
+              {tier
+                ? `${(unitPrice * item.quantity).toFixed(2)} €`
+                : 'Цена не задана'}
+            </strong>
+          </div>
+        </div>
+      )
+    })}
+
+    <div style={{
+      color: '#aaa',
+      fontSize: 12,
+      marginTop: 14,
+    }}>
+      Оформление новой розницы подключим следующим шагом
+    </div>
+  </div>
+)}
       {cart.length > 0 && (
         <div style={{ ...card, marginBottom: 18 }}>
           <h2>🛍 Розница</h2>
