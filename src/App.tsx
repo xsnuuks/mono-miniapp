@@ -3896,24 +3896,21 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
             )}
 
             <button
-              type="button"
-              disabled
-              style={{
-                ...btnMain,
-                opacity: 0.5,
-                cursor: 'not-allowed',
-              }}
-            >
-              Оформить оптовый заказ
-            </button>
+  type="button"
+  disabled={wholesaleCount < 20 || wholesaleRows.some(item => !item.hasPrice)}
+  onClick={() => setScreen('wholesale_checkout')}
+  style={{
+    ...adminPrimaryBtn,
+    width: '100%',
+    padding: 15,
+    marginTop: 12,
+    opacity: wholesaleCount < 20 ? 0.5 : 1,
+    cursor: wholesaleCount < 20 ? 'not-allowed' : 'pointer',
+  }}
+>
+  Оформить оптовый заказ
+</button>
 
-            <p style={{
-              color: '#999',
-              fontSize: 12,
-              textAlign: 'center',
-            }}>
-              Оформление оптовых заказов скоро появится
-            </p>
           </div>
         </div>
       )}
