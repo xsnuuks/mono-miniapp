@@ -289,6 +289,7 @@ const [wholesaleCart, setWholesaleCart] = useState<{
 
 const [retailDeliverySaved, setRetailDeliverySaved] = useState(false)
   const [retailCheckoutStep, setRetailCheckoutStep] = useState(1)
+  const [retailPaymentMethod, setRetailPaymentMethod] = useState<'usdt' | 'uah'>('usdt')
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>(() => {
   try {
     return localStorage.getItem('puffy_retail_delivery') === 'delivery'
