@@ -6213,7 +6213,29 @@ onChange={field.name === 'phone'
               color: '#b8a7c8',
               fontSize: 12,
             }}>
-              {p.prices || 0} ценовых порогов
+              {(p.retail_tiers || []).length > 0 ? (
+  <div style={{ display: 'grid', gap: 8 }}>
+    {(p.retail_tiers || []).map((tier: any) => (
+      <div
+        key={tier.id}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: 8,
+          alignItems: 'center',
+          fontSize: 12,
+        }}
+      >
+        <span>От {tier.min_qty} шт.</span>
+        <strong style={{ color: '#fff' }}>
+          {Number(tier.price).toFixed(2)} €
+        </strong>
+      </div>
+    ))}
+  </div>
+) : (
+  <span>Цены уточняются</span>
+)}
             </div>
 
             <div style={{
