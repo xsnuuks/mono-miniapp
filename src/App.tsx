@@ -1455,6 +1455,126 @@ async function deleteOrder(orderId: number) {
     📦 Оптовые
   </button>
 </div>
+        <div style={{ marginBottom: 20 }}>
+  <div style={{ fontSize: 17, fontWeight: 800, marginBottom: 12 }}>
+    🛍 Заказы Puffy Store
+  </div>
+
+  {retailOrders.length === 0 ? (
+    <div style={{ ...adminCard, color: '#aaa', fontSize: 13 }}>
+      Новых розничных заказов пока нет
+    </div>
+  ) : (
+    retailOrders.map((order: any) => (
+      <div
+        key={`retail-${order.id}`}
+        style={{ ...adminCard, marginBottom: 12 }}
+      >
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 10,
+          marginBottom: 14,
+        }}>
+          <strong style={{ fontSize: 17 }}>
+            Заказ №{order.id}
+          </strong>
+          <span style={{
+            color: '#d8b4fe',
+            background: 'rgba(168,85,247,0.14)',
+            borderRadius: 8,
+            padding: '6px 10px',
+            fontSize: 12,
+          }}>
+            {order.status === 'new' ? 'Новый' : order.status}
+          </span>
+        </div>
+
+        <div style={{ fontSize: 13, color: '#aaa', marginBottom: 12 }}>
+          {order.created_at?.replace('T', ' ').slice(0, 16)}
+          {' · '}
+          Telegram ID: {order.user_id ?? '—'}
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gap: 8,
+          padding: 12,
+          background: '#17131d',
+          borderRadius: 12,
+          marginBottom: 12,
+        }}>
+          {(order.items || []).map((item: any, index: number) => (
+            <div key={index} style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              gap: 10,
+              fontSize: 13,
+            }}>
+              <span>
+                {item.product_name} · {item.flavor_name}
+                {' × '}{item.quantity}
+              </span>
+              <strong>
+                {Number(item.line_total).toFixed(2)} €
+              </strong>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ fontSize: 13, lineHeight: 1.9 }}>
+          <div>
+            Получение: {order.delivery_type === 'pickup'
+              ? 'Самовывоз'
+              : 'GLS · Германия'}
+          </div>
+          {order.delivery_type === 'delivery' && (
+            <div>
+              {order.first_name} {order.last_name}
+              {' · '}{order.phone}
+              <div>
+                {order.postal_code} {order.city},
+                {' '}{order.street} {order.house}
+              </div>
+            </div>
+          )}
+          <div>
+            Оплата: {order.payment_method === 'cash'
+              ? 'Наличные'
+              : order.payment_method === 'usdt'
+                ? 'USDT'
+                : 'Перевод UAH'}
+          </div>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderTop: '1px solid rgba(255,255,255,0.12)',
+          paddingTop: 14,
+          marginTop: 14,
+        }}>
+          <strong>Товары</strong>
+          <strong style={{ fontSize: 20, color: '#c084fc' }}>
+            {Number(order.items_total).toFixed(2)} €
+          </strong>
+        </div>
+
+        {order.delivery_type === 'delivery' && (
+          <div style={{ color: '#aaa', fontSize: 12, marginTop: 6 }}>
+            Стоимость GLS рассчитывается отдельно
+          </div>
+        )}
+      </div>
+    ))
+  )}
+</div>
+
+<div style={{ fontSize: 17, fontWeight: 800, marginBottom: 12 }}>
+  📁 Архивные заказы MONO
+</div>
         {orders.length === 0 ? (
           <div style={card}>Нет новых заказов</div>
         ) : (
