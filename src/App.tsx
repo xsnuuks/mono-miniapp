@@ -17,7 +17,7 @@ type Product = {
 type CartItem = { product: Product; quantity: number }
 
 type Screen =
-  | 'catalog' | 'product' | 'cart' | 'checkout' | 'wholesale_checkout' | 'success' | 'conditions'
+  | 'catalog' | 'product' | 'cart' | 'checkout' | 'wholesale_checkout' | 'wholesale_delivery' | 'success' | 'conditions'
   | 'profile' | 'rules' | 'info' | 'delivery'
   | 'admin' | 'admin_orders' | 'admin_products' | 'admin_product_edit'
   | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_wholesale' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale' | 'wholesale_product'
@@ -200,6 +200,21 @@ const [wholesaleDragTargetId, setWholesaleDragTargetId] =
   const [wholesaleTiers, setWholesaleTiers] = useState<any[]>([])
   const [wholesaleQty, setWholesaleQty] = useState<Record<number, number>>({})
   const [wholesaleLoading, setWholesaleLoading] = useState(false)
+  const [wholesaleContact, setWholesaleContact] = useState({
+  first_name: '',
+  last_name: '',
+  phone: '',
+  email: '',
+})
+
+const [wholesaleCountry, setWholesaleCountry] = useState('DE')
+const [wholesaleCarrier, setWholesaleCarrier] = useState('')
+const [wholesaleAddress, setWholesaleAddress] = useState({
+  city: '',
+  postal_code: '',
+  street: '',
+  house: '',
+})
   const [wholesaleCart, setWholesaleCart] = useState<{
   productId: number
   productName: string
