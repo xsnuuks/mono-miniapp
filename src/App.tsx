@@ -6186,9 +6186,10 @@ onChange={field.name === 'phone'
       return (
         <div
           key={p.id}
-          onClick={() =>
-            showToast('Выбор вкусов подключим следующим шагом')
-          }
+          onClick={() => {
+  setSelectedRetailId(Number(p.id))
+  setScreen('retail_product')
+}}
           style={{
             background: '#1c1724',
             border: '1px solid rgba(168,85,247,0.28)',
