@@ -2006,20 +2006,157 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
         <h2 style={{ margin: '16px 0 16px', fontSize: 22 }}>Вкусы · {product?.name}</h2>
 
         {flavors.map(f => (
-          <div key={f.id} style={{ ...card, marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontWeight: 600 }}>{f.name}</div>
-              <div style={{ fontSize: 13, color: '#888' }}>{f.stock} шт</div>
-            </div>
-            <button
-              onClick={async () => {
-                await fetch(`${API_URL}/api/wholesale/flavors/${f.id}`, { method: 'DELETE' })
-                setFlavors(flavors.filter(x => x.id !== f.id))
-              }}
-              style={{ background: 'transparent', border: 'none', color: '#f66' }}
-            >🗑</button>
-          </div>
-        ))}
+  <form
+    key={f.id}
+    onSubmit={async (e) => {
+      e.preventDefault()
+
+      const fd = new FormData(e.currentTarget)
+      const name = String(fd.get('name') || '').trim()
+      const stock = Number(fd.get('stock'))
+
+      if (!name || !Number.isInteger(stock) || stock < 0) {
+        showToast('Проверь название и остаток')
+        return
+      }
+
+      fd.set('name', name)
+      fd.set('stock', String(stock))
+
+      try {
+        const r = await fetch(
+          `${API_URL}/api/wholesale/flavors/${f.id}`,
+          {
+            method: 'PATCH',
+            headers: {
+              'X-Admin-Id': String(tgUser?.id || ''),
+            },
+            body: fd,
+          }
+        )
+
+        if (!r.ok) throw new Error('Ошибка сохранения')
+
+        setFlavors(prev => prev.map(item =>
+          item.id === f.id
+            ? { ...item, name, stock }
+            : item
+        ))
+
+        await loadWholesaleProducts()
+        showToast('Изменения сохранены')
+      } catch {
+        showToast('Не удалось сохранить вкус')
+      }
+    }}
+    style={{
+      ...card,
+      marginBottom: 12,
+      border: '1px solid rgba(168,85,247,0.25)',
+      borderRadius: 16,
+      padding: 16,
+    }}
+  >
+    <div style={{
+      fontWeight: 700,
+      fontSize: 15,
+      marginBottom: 14,
+    }}>
+      {f.name}
+    </div>
+
+    <div style={{
+      fontSize: 12,
+      color: '#aaa',
+      marginBottom: 6,
+    }}>
+      Название вкуса
+    </div>
+
+    <input
+      name="name"
+      key={`name-${f.id}`}
+      defaultValue={f.name}
+      style={inputStyle}
+      required
+    />
+
+    <div style={{
+      fontSize: 12,
+      color: '#aaa',
+      marginBottom: 6,
+    }}>
+      Количество в наличии
+    </div>
+
+    <input
+      name="stock"
+      type="number"
+      min="0"
+      step="1"
+      defaultValue={f.stock}
+      style={inputStyle}
+      required
+    />
+
+    <div style={{ display: 'flex', gap: 10 }}>
+      <button
+        type="submit"
+        style={{
+          ...btnMain,
+          flex: 1,
+          background: '#7c3aed',
+          border: 'none',
+          padding: 12,
+          fontSize: 13,
+        }}
+      >
+        Сохранить
+      </button>
+
+      <button
+        type="button"
+        onClick={async () => {
+          if (!confirm(`Удалить вкус "${f.name}"?`)) return
+
+          try {
+            const r = await fetch(
+              `${API_URL}/api/wholesale/flavors/${f.id}`,
+              {
+                method: 'DELETE',
+                headers: {
+                  'X-Admin-Id': String(tgUser?.id || ''),
+                },
+              }
+            )
+
+            if (!r.ok) throw new Error('Ошибка удаления')
+
+            setFlavors(prev =>
+              prev.filter(item => item.id !== f.id)
+            )
+
+            await loadWholesaleProducts()
+            showToast('Вкус удалён')
+          } catch {
+            showToast('Не удалось удалить вкус')
+          }
+        }}
+        style={{
+          padding: '12px 16px',
+          borderRadius: 12,
+          border: '1px solid rgba(255,80,80,0.25)',
+          background: 'rgba(255,80,80,0.08)',
+          color: '#ff8585',
+          fontWeight: 700,
+          cursor: 'pointer',
+        }}
+      >
+        Удалить
+      </button>
+    </div>
+  </form>
+))}
 
         <div style={{ ...card, marginTop: 16 }}>
           <input style={inputStyle} placeholder="Название вкуса" value={flavorName} onChange={e => setFlavorName(e.target.value)} />
