@@ -2035,7 +2035,26 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
             <div style={{ marginTop: 12 }}>
   <button
     type="button"
-    onClick={() => setScreen('cart')}
+    onClick={() => {
+  const selectedFlavors = wholesaleFlavors
+    .filter(f => Number(wholesaleQty[Number(f.id)] || 0) > 0)
+    .map(f => ({
+      productId: Number(product.id),
+      productName: String(product.name),
+      flavorId: Number(f.id),
+      flavorName: String(f.name),
+      quantity: Number(wholesaleQty[Number(f.id)]),
+    }))
+
+  if (selectedFlavors.length > 0) {
+    setWholesaleCart(prev => [
+      ...prev.filter(item => item.productId !== Number(product.id)),
+      ...selectedFlavors,
+    ])
+  }
+
+  setScreen('cart')
+}}
     style={{
       ...btnMain,
       width: '100%',
