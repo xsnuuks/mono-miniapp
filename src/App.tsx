@@ -4741,7 +4741,7 @@ onChange={field.name === 'phone'
       width="48"
       height="48"
       viewBox="0 0 24 24"
-      style={{ transform: 'translate(-3px, 1px)' }}
+      style={{ transform: 'translate(-3px, 2px)' }}
       fill="none"
       stroke="#a855f7"
       strokeWidth="1.5"
