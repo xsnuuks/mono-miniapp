@@ -2285,7 +2285,7 @@ description: '',
               showToast('Товар создан')
               setScreen(`admin_retail_${categoryId}` as Screen)
             } catch (error) {
-              console.error('Create wholesale product:', error)
+              console.error('Create retail product:', error)
               showToast('Не удалось создать товар')
             } finally {
               setSubmitting(false)
