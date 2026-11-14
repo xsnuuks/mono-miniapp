@@ -692,6 +692,36 @@ async function loadWholesaleProducts() {
     loadRetailOrders()
   }
 }, [screen])
+
+  async function setRetailOrderStatus(orderId: number, status: string) {
+  try {
+    const initData = (window as any).Telegram?.WebApp?.initData || ''
+
+    const response = await fetch(
+      `${API_URL}/api/admin/retail/orders/${orderId}/status`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Telegram-Init-Data': initData,
+        },
+        body: JSON.stringify({ status }),
+      }
+    )
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}))
+      throw new Error(error.detail || 'Не удалось изменить статус')
+    }
+
+    await loadRetailOrders()
+    showToast('Статус заказа обновлён')
+  } catch (error) {
+    showToast(
+      error instanceof Error ? error.message : 'Ошибка изменения статуса'
+    )
+  }
+}
   
   async function setOrderStatus(id: number, status: string) {
     await fetch(`${API_URL}/admin/orders/${id}/status`, {
@@ -1569,7 +1599,28 @@ async function deleteOrder(orderId: number) {
         )}
       </div>
     ))
+  )}/
+          <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
+  {order.delivery_type === 'delivery' && order.status === 'new' && (
+    <button
+      type="button"
+      onClick={() => setRetailOrderStatus(order.id, 'shipped')}
+      style={{ ...adminActionBtn, flex: 1 }}
+    >
+      📦 Отправлен
+    </button>
   )}
+
+  {order.status !== 'done' && order.status !== 'cancelled' && (
+    <button
+      type="button"
+      onClick={() => setRetailOrderStatus(order.id, 'done')}
+      style={{ ...adminPrimaryBtn, flex: 1 }}
+    >
+      ✓ Завершён
+    </button>
+  )}
+</div>
 </div>
 
 <div style={{ fontSize: 17, fontWeight: 800, marginBottom: 12 }}>
