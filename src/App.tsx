@@ -3719,6 +3719,153 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     </div>
   )
 }
+
+  if (screen === 'wholesale_checkout') {
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 16px 90px' }}>
+        <button
+          type="button"
+          style={backBtn}
+          onClick={() => setScreen('cart')}
+        >
+          ← Назад в корзину
+        </button>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 20,
+        }}>
+          <h2 style={{ margin: 0, fontSize: 23 }}>
+            Контактные данные
+          </h2>
+          <span style={adminBadge(true)}>1 / 4</span>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          gap: 8,
+          marginBottom: 24,
+        }}>
+          {[1, 2, 3, 4].map(step => (
+            <div key={step} style={{
+              flex: 1,
+              height: 5,
+              borderRadius: 99,
+              background: step === 1
+                ? '#8b5cf6'
+                : 'rgba(255,255,255,0.1)',
+            }} />
+          ))}
+        </div>
+
+        <form
+          onSubmit={e => {
+  e.preventDefault()
+
+  const data = new FormData(e.currentTarget)
+
+  setWholesaleContact({
+    first_name: String(data.get('first_name') || '').trim(),
+    last_name: String(data.get('last_name') || '').trim(),
+    phone: String(data.get('phone') || '').trim(),
+    email: String(data.get('email') || '').trim(),
+  })
+
+  setScreen('wholesale_delivery')
+}}
+        >
+          <div style={{
+            background: '#262629',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: 17,
+            padding: 16,
+          }}>
+            <div style={{
+              fontSize: 17,
+              fontWeight: 700,
+              marginBottom: 20,
+            }}>
+              ♙ Введите данные
+            </div>
+
+            {[
+              {
+                name: 'first_name',
+                label: 'Имя',
+                placeholder: 'Ваше имя',
+                type: 'text',
+                value: wholesaleContact.first_name,
+              },
+              {
+                name: 'last_name',
+                label: 'Фамилия',
+                placeholder: 'Ваша фамилия',
+                type: 'text',
+                value: wholesaleContact.last_name,
+              },
+              {
+                name: 'phone',
+                label: 'Телефон',
+                placeholder: '+49...',
+                type: 'tel',
+                value: wholesaleContact.phone,
+              },
+              {
+                name: 'email',
+                label: 'Email',
+                placeholder: 'your@email.com',
+                type: 'email',
+                value: wholesaleContact.email,
+              },
+            ].map(field => (
+              <div key={field.name} style={{ marginBottom: 16 }}>
+                <label style={{
+                  display: 'block',
+                  color: '#b8a8dc',
+                  fontSize: 13,
+                  marginBottom: 8,
+                }}>
+                  {field.label} *
+                </label>
+
+                <input
+                  name={field.name}
+                  type={field.type}
+                  defaultValue={field.value}
+                  placeholder={field.placeholder}
+                  required
+                  style={{
+                    ...inputStyle,
+                    background: '#161616',
+                    boxSizing: 'border-box',
+                    marginBottom: 0,
+                    padding: 14,
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="submit"
+            style={{
+              ...adminPrimaryBtn,
+              width: '100%',
+              marginTop: 18,
+              padding: 16,
+              fontSize: 15,
+            }}
+          >
+            Далее
+          </button>
+        </form>
+      </div>
+    </div>
+  )
+}
   
   if (screen === 'cart') {
   const retailTotal = cart.reduce(
