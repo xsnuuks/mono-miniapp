@@ -1635,7 +1635,7 @@ async function deleteOrder(orderId: number) {
               <div style={{ fontSize: 13, color: '#c0c0c0', marginBottom: 8 }}>
                 Статус:{' '}
                 {o.status === 'progress'
-  ? 'ожидает
+  ? 'ожидает'
                   : o.status === 'done'
                     ? 'выполнен'
                     : o.status === 'cancelled'
