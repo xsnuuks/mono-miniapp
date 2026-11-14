@@ -192,6 +192,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [orders, setOrders] = useState<any[]>([])
+  const [retailOrders, setRetailOrders] = useState<any[]>([])
   const [users, setUsers] = useState<any[]>([])
   const [usersPage, setUsersPage] = useState(0)
   const [usersTotal, setUsersTotal] = useState(0)
@@ -665,6 +666,27 @@ async function loadWholesaleProducts() {
     if (r.ok) setOrders(await r.json())
   }
 
+  async function loadRetailOrders() {
+  try {
+    const initData = (window as any).Telegram?.WebApp?.initData || ''
+
+    const response = await fetch(`${API_URL}/api/admin/retail/orders`, {
+      headers: {
+        'X-Telegram-Init-Data': initData,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Не удалось загрузить розничные заказы')
+    }
+
+    const data = await response.json()
+    setRetailOrders(data.orders || [])
+  } catch {
+    showToast('Ошибка загрузки новых розничных заказов')
+  }
+}
+  
   async function setOrderStatus(id: number, status: string) {
     await fetch(`${API_URL}/admin/orders/${id}/status`, {
       method: 'POST',
