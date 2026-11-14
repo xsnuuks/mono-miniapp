@@ -952,6 +952,46 @@ async function deleteOrder(orderId: number) {
     </div>
   )
 }
+
+  function RetailTopBar({ wholesale = false }: { wholesale?: boolean }) {
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 12,
+      minHeight: 46,
+      marginBottom: 20,
+      position: 'relative',
+      zIndex: 20,
+    }}>
+      <div style={{
+        fontSize: 19,
+        fontWeight: 800,
+        color: '#fff',
+        letterSpacing: '-0.3px',
+      }}>
+        PUFFY STORE
+      </div>
+
+      {wholesale ? (
+        <div style={{
+          background: 'rgba(168,85,247,0.12)',
+          border: '1px solid rgba(168,85,247,0.3)',
+          borderRadius: 12,
+          padding: '10px 14px',
+          color: '#a855f7',
+          fontSize: 13,
+          fontWeight: 700,
+        }}>
+          Опт
+        </div>
+      ) : (
+        <RetailDeliverySelector />
+      )}
+    </div>
+  )
+}
   
   function BottomNav() {
   if (
