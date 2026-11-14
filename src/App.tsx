@@ -912,7 +912,7 @@ async function deleteOrder(orderId: number) {
         </option>
 
         <option value="delivery" style={{ color: '#111' }}>
-          Доставка GLS
+          Доставка
         </option>
       </select>
     </div>
