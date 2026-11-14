@@ -686,6 +686,12 @@ async function loadWholesaleProducts() {
     showToast('Ошибка загрузки новых розничных заказов')
   }
 }
+
+  useEffect(() => {
+  if (screen === 'admin_orders') {
+    loadRetailOrders()
+  }
+}, [screen])
   
   async function setOrderStatus(id: number, status: string) {
     await fetch(`${API_URL}/admin/orders/${id}/status`, {
