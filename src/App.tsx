@@ -6292,6 +6292,34 @@ onChange={field.name === 'phone'
         const get = (key: string) =>
           String(fd.get(key) || '').trim()
 
+        if (retailCheckoutStep === 1) {
+  const firstName = get('firstName')
+  const lastName = get('lastName')
+  const phone = get('phone')
+  const email = get('email')
+
+  if (!firstName || !lastName || !phone || !email) {
+    showToast('Заполните контактные данные')
+    return
+  }
+
+  if (!/^\+49[0-9\s()-]{6,18}$/.test(phone)) {
+    showToast('Проверьте номер телефона')
+    return
+  }
+
+  setRetailDeliveryData(prev => ({
+    ...prev,
+    firstName,
+    lastName,
+    phone,
+    email,
+  }))
+
+  setRetailCheckoutStep(2)
+  return
+}
+        
         const data = {
           firstName: get('firstName'),
           lastName: get('lastName'),
@@ -6416,7 +6444,7 @@ onChange={field.name === 'phone'
           marginTop: 8,
         }}
       >
-        Сохранить и проверить данные
+        {retailCheckoutStep === 1 ? 'Далее →' : 'Сохранить адрес →'}
       </button>
     </form>
   )}
