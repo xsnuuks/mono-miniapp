@@ -6106,84 +6106,119 @@ onChange={field.name === 'phone'
 </div>
   </>
 ) : (
-  [...products].sort((a, b) => Number(b.available) - Number(a.available)).map((p) => {
-    const img = photoUrl(p.photo)
-    return (
-      <div
-        key={p.id}
-        onClick={() => { setSelectedId(p.id); setScreen('product') }}
-        style={{
-          ...card,
-          padding: 0,
-          overflow: 'hidden',
-          cursor: 'pointer',
-          opacity: p.available ? 1 : 0.55,
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-        }}
-      >
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation()
-            toggleFav(p.id)
-          }}
+  <>
+  {retailProducts
+    .filter(p => Number(p.is_visible ?? 1) !== 0)
+    .map(p => {
+      const img = photoUrl(p.photo_url)
+
+      return (
+        <div
+          key={p.id}
+          onClick={() =>
+            showToast('Выбор вкусов подключим следующим шагом')
+          }
           style={{
-            position: 'absolute',
-            top: 8,
-            right: 8,
-            zIndex: 2,
-            border: 'none',
-            background: 'rgba(0,0,0,0.45)',
-            borderRadius: 20,
-            width: 36,
-            height: 36,
-            color: '#fff',
-            fontSize: 18,
+            background: '#1c1724',
+            border: '1px solid rgba(168,85,247,0.28)',
+            borderRadius: 16,
+            overflow: 'hidden',
             cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+            minWidth: 0,
           }}
         >
-          {favIds.includes(p.id) ? '♥' : '♡'}
-        </button>
-        <div style={{ width: '100%', aspectRatio: '1/1', background: '#111' }}>
-          {img ? <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
-        </div>
-        <div style={{ padding: 12, display: 'flex', flexDirection: 'column', flex: 1 }}>
           <div style={{
-            fontSize: 13,
-            fontWeight: 700,
-            marginBottom: 4,
-            lineHeight: 1.3,
-            minHeight: 36,
-            fontFamily: '"Montserrat", system-ui, sans-serif',
-            letterSpacing: '0.03em',
-            textTransform: 'uppercase' as const,
+            width: '100%',
+            aspectRatio: '1 / 1',
+            background: '#292035',
           }}>
-            {p.name}
+            {img ? (
+              <img
+                src={img}
+                alt={p.name}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              <div style={{
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#888',
+                fontSize: 12,
+              }}>
+                Нет фотографии
+              </div>
+            )}
           </div>
-          <div style={{ fontSize: 12, color: '#9a9a9a', marginBottom: 10 }}>
-            {p.volume} · {p.strength}
-          </div>
-          <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-            <div style={{ fontSize: 15, fontWeight: 700 }}>
-              {profile?.has_discount ? 10 : p.price} €
-            </div>
+
+          <div style={{
+            padding: 12,
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            gap: 10,
+          }}>
             <div style={{
-              fontSize: 10,
-              color: p.available ? '#d0d0d0' : '#777',
-              border: `1px solid ${p.available ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.08)'}`,
-              padding: '3px 8px',
-              borderRadius: 20,
-              whiteSpace: 'nowrap',
+              fontSize: 14,
+              fontWeight: 700,
+              overflowWrap: 'anywhere',
             }}>
-              {p.available ? 'В наличии' : 'Нет в наличии'}
+              {p.name}
+            </div>
+
+            <div style={{
+              fontSize: 12,
+              color: '#34d399',
+            }}>
+              В наличии: {p.stock || 0} шт.
+            </div>
+
+            <div style={{
+              marginTop: 'auto',
+              borderTop: '1px solid rgba(255,255,255,0.12)',
+              paddingTop: 10,
+              color: '#b8a7c8',
+              fontSize: 12,
+            }}>
+              {p.prices || 0} ценовых порогов
+            </div>
+
+            <div style={{
+              background: 'linear-gradient(90deg, #7c3aed, #b21bd0)',
+              borderRadius: 10,
+              padding: 12,
+              textAlign: 'center',
+              fontSize: 12,
+              fontWeight: 700,
+              color: '#fff',
+            }}>
+              Выбрать вкусы
             </div>
           </div>
         </div>
-      </div>
-    )
-  })
+      )
+    })}
+
+  {retailProducts.filter(
+    p => Number(p.is_visible ?? 1) !== 0
+  ).length === 0 && (
+    <div style={{
+      gridColumn: '1 / -1',
+      color: '#888',
+      textAlign: 'center',
+      padding: 20,
+    }}>
+      В рознице пока нет товаров
+    </div>
+  )}
+</>
 )}
 </div>
 <BottomNav />
