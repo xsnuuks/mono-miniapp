@@ -185,6 +185,16 @@ function App() {
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
   const [wholesaleProducts, setWholesaleProducts] = useState<any[]>([])
+  const wholesaleDragRef = useRef<{
+  fromId: number
+  toId: number
+} | null>(null)
+
+const [wholesaleDraggingId, setWholesaleDraggingId] =
+  useState<number | null>(null)
+
+const [wholesaleDragTargetId, setWholesaleDragTargetId] =
+  useState<number | null>(null)
   const [selectedWholesaleId, setSelectedWholesaleId] = useState<number | null>(null)
   const [wholesaleFlavors, setWholesaleFlavors] = useState<any[]>([])
   const [wholesaleTiers, setWholesaleTiers] = useState<any[]>([])
