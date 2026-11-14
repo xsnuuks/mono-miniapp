@@ -1881,14 +1881,6 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
       0
     )
 
-    const currentTier = [...sortedTiers]
-      .reverse()
-      .find(t => totalQty >= Number(t.min_qty))
-
-    const currentPrice = currentTier
-      ? Number(currentTier.price)
-      : null
-
     const image = photoUrl(product.photo_url)
 
     return (
