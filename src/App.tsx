@@ -139,6 +139,13 @@ function App() {
   const [wholesaleTiers, setWholesaleTiers] = useState<any[]>([])
   const [wholesaleQty, setWholesaleQty] = useState<Record<number, number>>({})
   const [wholesaleLoading, setWholesaleLoading] = useState(false)
+  const [wholesaleCart, setWholesaleCart] = useState<{
+  productId: number
+  productName: string
+  flavorId: number
+  flavorName: string
+  quantity: number
+}[]>([])
   const [tiers, setTiers] = useState<any[]>([])
   const [flavors, setFlavors] = useState<any[]>([])
   const [minQty, setMinQty] = useState('')
