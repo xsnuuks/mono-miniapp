@@ -6061,10 +6061,10 @@ onChange={field.name === 'phone'
     return
   }
 
-  if (deliveryType !== 'delivery' || !retailDeliverySaved) {
-    showToast('Сначала заполните данные доставки')
-    return
-  }
+  if (deliveryType === 'delivery' && !retailDeliverySaved) {
+  showToast('Сначала заполните данные доставки')
+  return
+}
 
   if (!retailRequestIdRef.current) {
     retailRequestIdRef.current = crypto.randomUUID()
