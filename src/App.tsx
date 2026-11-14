@@ -4283,7 +4283,10 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
       if (existingIndex >= 0) {
         updated[existingIndex] = {
           ...updated[existingIndex],
-          quantity: updated[existingIndex].quantity + quantity,
+          quantity: Math.min(
+  Number(flavor.stock) || 0,
+  updated[existingIndex].quantity + quantity
+),
         }
       } else {
         updated.push({
