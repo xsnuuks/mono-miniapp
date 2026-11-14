@@ -6280,6 +6280,99 @@ onChange={field.name === 'phone'
         <div>Германия · GLS</div>
       </div>
 
+      {retailCheckoutStep === 3 && (
+  <div style={{
+    background: '#17131d',
+    borderRadius: 14,
+    padding: 16,
+    display: 'grid',
+    gap: 14,
+  }}>
+    <div style={{ fontSize: 17, fontWeight: 800 }}>
+      Ваш заказ
+    </div>
+
+    {retailCart.map(item => {
+      const unitPrice = getRetailPrice(item.productId) ?? 0
+
+      return (
+        <div
+          key={`${item.productId}-${item.flavorId}`}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            gap: 12,
+            paddingBottom: 12,
+            borderBottom: '1px solid rgba(255,255,255,0.1)',
+          }}
+        >
+          <div>
+            <div style={{ fontWeight: 700 }}>
+              {item.productName}
+            </div>
+            <div style={{ color: '#aaa', fontSize: 13, marginTop: 4 }}>
+              {item.flavorName} · {item.quantity} шт.
+            </div>
+          </div>
+
+          <div style={{ fontWeight: 700, whiteSpace: 'nowrap' }}>
+            {(unitPrice * item.quantity).toFixed(2)} €
+          </div>
+        </div>
+      )
+    })}
+
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      fontWeight: 800,
+      fontSize: 17,
+    }}>
+      <span>Товары</span>
+      <span>{retailTotal.toFixed(2)} €</span>
+    </div>
+
+    <div style={{ color: '#aaa', fontSize: 12 }}>
+      Доставка GLS рассчитывается отдельно и пока не включена в сумму.
+    </div>
+  </div>
+)}
+
+      {retailCheckoutStep === 3 && (
+  <div style={{ display: 'grid', gap: 12 }}>
+    <div style={{ fontSize: 17, fontWeight: 800 }}>
+      Способ оплаты
+    </div>
+
+    {[
+      { id: 'usdt', label: 'USDT (криптовалюта)' },
+      { id: 'uah', label: 'Банковский перевод UAH' },
+    ].map(method => (
+      <button
+        key={method.id}
+        type="button"
+        onClick={() => setRetailPaymentMethod(method.id as 'usdt' | 'uah')}
+        style={{
+          padding: 16,
+          borderRadius: 12,
+          textAlign: 'left',
+          color: '#fff',
+          background: retailPaymentMethod === method.id
+            ? 'rgba(168,85,247,0.2)'
+            : '#17131d',
+          border: retailPaymentMethod === method.id
+            ? '1px solid #a855f7'
+            : '1px solid rgba(255,255,255,0.12)',
+          cursor: 'pointer',
+        }}
+      >
+        {retailPaymentMethod === method.id ? '◉' : '○'} {method.label}
+      </button>
+    ))}
+  </div>
+)}
+
       <button
         type="button"
         onClick={() => setRetailDeliverySaved(false)}
