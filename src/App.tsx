@@ -6373,6 +6373,77 @@ onChange={field.name === 'phone'
   </div>
 )}
 
+      {retailCheckoutStep === 3 && (
+  <button
+    type="button"
+    onClick={() => setRetailCheckoutStep(4)}
+    disabled={hasMissingPrices || retailCart.length === 0}
+    style={{
+      ...adminPrimaryBtn,
+      width: '100%',
+      padding: 16,
+      opacity: hasMissingPrices || retailCart.length === 0 ? 0.5 : 1,
+    }}
+  >
+    Далее — подтверждение →
+  </button>
+)}
+
+      {retailCheckoutStep === 4 && (
+  <div style={{
+    display: 'grid',
+    gap: 14,
+    padding: 16,
+    borderRadius: 14,
+    background: '#17131d',
+    border: '1px solid rgba(168,85,247,0.25)',
+  }}>
+    <div style={{
+      fontSize: 18,
+      fontWeight: 800,
+      color: '#d8b4fe',
+    }}>
+      Подтверждение заказа
+    </div>
+
+    <div style={{ fontSize: 14, lineHeight: 1.8 }}>
+      <div>Получатель: {retailDeliveryData.firstName} {retailDeliveryData.lastName}</div>
+      <div>Доставка: GLS, Германия</div>
+      <div>Товаров на сумму: {retailTotal.toFixed(2)} €</div>
+      <div>
+        Оплата: {retailPaymentMethod === 'usdt'
+          ? 'USDT'
+          : 'Банковский перевод UAH'}
+      </div>
+    </div>
+
+    <div style={{ fontSize: 12, color: '#aaa' }}>
+      Стоимость доставки рассчитывается отдельно и не включена
+      в указанную сумму.
+    </div>
+
+    <button
+      type="button"
+      onClick={() => setRetailCheckoutStep(3)}
+      style={{ ...backBtn, width: '100%' }}
+    >
+      ← Назад к оплате
+    </button>
+
+    <div style={{
+      padding: 14,
+      borderRadius: 12,
+      background: 'rgba(168,85,247,0.08)',
+      color: '#d8b4fe',
+      fontSize: 13,
+      textAlign: 'center',
+    }}>
+      Подтверждение и отправку заказа подключим после
+      сохранения заказов на сервере.
+    </div>
+  </div>
+)}
+      
       <button
         type="button"
         onClick={() => setRetailDeliverySaved(false)}
