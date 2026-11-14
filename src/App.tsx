@@ -238,6 +238,7 @@ const [wholesaleDragTargetId, setWholesaleDragTargetId] =
 
 const [wholesaleCountry, setWholesaleCountry] = useState('DE')
 const [wholesaleCarrier, setWholesaleCarrier] = useState('')
+const [wholesalePayment, setWholesalePayment] = useState<'USDT' | 'UAH' | ''>('')
 const [wholesaleAddress, setWholesaleAddress] = useState({
   city: '',
   postal_code: '',
