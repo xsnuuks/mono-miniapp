@@ -3866,6 +3866,313 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     </div>
   )
 }
+
+  if (screen === 'wholesale_delivery') {
+  const countries = [
+  ['PL', 'Польша'],
+  ['AT', 'Австрия'],
+  ['BE', 'Бельгия'],
+  ['BG', 'Болгария'],
+  ['HU', 'Венгрия'],
+  ['DE', 'Германия'],
+  ['GR', 'Греция'],
+  ['DK', 'Дания'],
+  ['IE', 'Ирландия'],
+  ['ES', 'Испания'],
+  ['IT', 'Италия'],
+  ['CY', 'Кипр'],
+  ['LV', 'Латвия'],
+  ['LT', 'Литва'],
+  ['LU', 'Люксембург'],
+  ['MT', 'Мальта'],
+  ['NL', 'Нидерланды'],
+  ['PT', 'Португалия'],
+  ['RO', 'Румыния'],
+  ['SK', 'Словакия'],
+  ['SI', 'Словения'],
+  ['FI', 'Финляндия'],
+  ['FR', 'Франция'],
+  ['HR', 'Хорватия'],
+  ['CZ', 'Чехия'],
+  ['SE', 'Швеция'],
+  ['EE', 'Эстония'],
+]
+
+  const deliveryField = {
+    ...inputStyle,
+    width: '100%',
+    boxSizing: 'border-box' as const,
+    background: '#161616',
+    marginBottom: 0,
+    padding: 14,
+  }
+
+  const deliveryLabel = {
+    display: 'block',
+    color: '#b8a8dc',
+    fontSize: 13,
+    marginBottom: 8,
+  }
+
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 16px 90px' }}>
+        <button
+          type="button"
+          style={backBtn}
+          onClick={() => setScreen('wholesale_checkout')}
+        >
+          ← Назад
+        </button>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 20,
+        }}>
+          <h2 style={{ margin: 0, fontSize: 23 }}>
+            Доставка
+          </h2>
+
+          <span style={adminBadge(true)}>
+            2 / 4
+          </span>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          gap: 8,
+          marginBottom: 24,
+        }}>
+          {[1, 2, 3, 4].map(step => (
+            <div
+              key={step}
+              style={{
+                flex: 1,
+                height: 5,
+                borderRadius: 99,
+                background: step <= 2
+                  ? '#8b5cf6'
+                  : 'rgba(255,255,255,0.1)',
+              }}
+            />
+          ))}
+        </div>
+
+        <form
+          onSubmit={e => {
+            e.preventDefault()
+
+            if (!wholesaleCarrier) {
+              showToast('Выберите службу доставки')
+              return
+            }
+
+            if (
+              wholesaleCarrier === 'GLS' &&
+              wholesaleCountry !== 'DE'
+            ) {
+              showToast('GLS доступен только по Германии')
+              return
+            }
+
+            const fd = new FormData(e.currentTarget)
+
+            const address = {
+              city: String(fd.get('city') || '').trim(),
+              postal_code: String(fd.get('postal_code') || '').trim(),
+              street: String(fd.get('street') || '').trim(),
+              house: String(fd.get('house') || '').trim(),
+            }
+
+            if (Object.values(address).some(value => !value)) {
+              showToast('Заполните адрес доставки')
+              return
+            }
+
+            setWholesaleAddress(address)
+            setScreen('wholesale_review')
+          }}
+        >
+          <div style={{
+            background: '#262629',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: 17,
+            padding: 16,
+          }}>
+            <div style={{
+              fontSize: 17,
+              fontWeight: 700,
+              marginBottom: 20,
+            }}>
+              🚚 Доставка
+            </div>
+
+            <div style={{ marginBottom: 18 }}>
+              <label style={deliveryLabel}>
+                Страна доставки *
+              </label>
+
+              <select
+                value={wholesaleCountry}
+                onChange={e => {
+                  const country = e.target.value
+                  setWholesaleCountry(country)
+
+                  if (
+                    country !== 'DE' &&
+                    wholesaleCarrier === 'GLS'
+                  ) {
+                    setWholesaleCarrier('')
+                  }
+                }}
+                style={deliveryField}
+                required
+              >
+                {countries.map(([code, name]) => (
+                  <option key={code} value={code}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div style={{ marginBottom: 18 }}>
+              <label style={deliveryLabel}>
+                Способ доставки *
+              </label>
+
+              <select
+                value={wholesaleCarrier}
+                onChange={e =>
+                  setWholesaleCarrier(e.target.value)
+                }
+                style={deliveryField}
+                required
+              >
+                <option value="">
+                  Выберите способ доставки
+                </option>
+
+                <option value="DPD">
+                  DPD — доставка по Европе
+                </option>
+
+                {wholesaleCountry === 'DE' && (
+                  <option value="GLS">
+                    GLS — доставка по Германии
+                  </option>
+                )}
+              </select>
+            </div>
+
+            {wholesaleCarrier && (
+              <div style={{
+                padding: 12,
+                borderRadius: 12,
+                background: 'rgba(168,85,247,0.08)',
+                border: '1px solid rgba(168,85,247,0.2)',
+                color: '#d8b4fe',
+                fontSize: 12,
+                lineHeight: 1.6,
+                marginBottom: 18,
+              }}>
+                Выбрана доставка {wholesaleCarrier}.
+                Стоимость рассчитывается индивидуально
+                в зависимости от страны и веса посылки.
+              </div>
+            )}
+
+            <div style={{
+              display: 'flex',
+              gap: 10,
+              marginBottom: 18,
+            }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <label style={deliveryLabel}>
+                  Город *
+                </label>
+
+                <input
+                  name="city"
+                  defaultValue={wholesaleAddress.city}
+                  placeholder="Город"
+                  style={deliveryField}
+                  required
+                />
+              </div>
+
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <label style={deliveryLabel}>
+                  Почтовый индекс *
+                </label>
+
+                <input
+                  name="postal_code"
+                  defaultValue={wholesaleAddress.postal_code}
+                  placeholder="Индекс"
+                  style={deliveryField}
+                  required
+                />
+              </div>
+            </div>
+
+            <div style={{ marginBottom: 18 }}>
+              <label style={deliveryLabel}>
+                Улица *
+              </label>
+
+              <input
+                name="street"
+                defaultValue={wholesaleAddress.street}
+                placeholder="Название улицы"
+                style={deliveryField}
+                required
+              />
+            </div>
+
+            <div>
+              <label style={deliveryLabel}>
+                Номер дома / квартиры *
+              </label>
+
+              <input
+                name="house"
+                defaultValue={wholesaleAddress.house}
+                placeholder="Например, 12A, кв. 3"
+                style={deliveryField}
+                required
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            style={{
+              ...adminPrimaryBtn,
+              width: '100%',
+              marginTop: 18,
+              padding: 16,
+              fontSize: 15,
+            }}
+          >
+            Далее
+          </button>
+        </form>
+
+        <div style={{
+          color: '#777',
+          fontSize: 12,
+          textAlign: 'center',
+          marginTop: 18,
+        }}>
+          Прототип · Заказ пока не отправляется
+        </div>
+      </div>
+    </div>
+  )
+}
   
   if (screen === 'cart') {
   const retailTotal = cart.reduce(
