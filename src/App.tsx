@@ -1477,6 +1477,191 @@ async function deleteOrder(orderId: number) {
   )
 }
 
+  if (/^admin_retail_(all|\d+)$/.test(screen)) {
+  const catId = screen.replace('admin_retail_', '')
+
+  const categoryNames: Record<string, string> = {
+    all: 'Все товары',
+    '1': 'Жижи',
+    '2': 'Одноразки',
+    '3': 'Поды',
+    '4': 'Картриджи',
+    '5': 'Снюс',
+  }
+
+  const categoryProducts = retailProducts.filter(
+    p => catId === 'all' || String(p.category_id) === catId
+  )
+
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 0 90px' }}>
+        <button
+          type="button"
+          style={backBtn}
+          onClick={() => setScreen('admin_retail')}
+        >
+          ← Назад
+        </button>
+
+        <h2 style={{
+          fontSize: 24,
+          margin: '10px 0 6px',
+        }}>
+          {categoryNames[catId] || 'Розница'}
+        </h2>
+
+        <p style={{
+          color: '#999',
+          fontSize: 13,
+          marginBottom: 20,
+        }}>
+          Управление розничными товарами
+        </p>
+
+        <button
+          type="button"
+          onClick={() =>
+            setScreen(`admin_retail_add_${catId}` as Screen)
+          }
+          style={{
+            ...adminPrimaryBtn,
+            width: '100%',
+            padding: 15,
+            fontSize: 15,
+            marginBottom: 20,
+          }}
+        >
+          + Добавить товар
+        </button>
+
+        {categoryProducts.length === 0 ? (
+          <div style={{
+            ...adminCard,
+            padding: '40px 20px',
+            textAlign: 'center',
+          }}>
+            <div style={{
+              fontSize: 38,
+              marginBottom: 14,
+            }}>
+              📦
+            </div>
+
+            <div style={{
+              fontSize: 17,
+              fontWeight: 700,
+              marginBottom: 8,
+            }}>
+              Товаров пока нет
+            </div>
+
+            <div style={{
+              fontSize: 13,
+              color: '#999',
+              lineHeight: 1.6,
+            }}>
+              Добавь первый товар в новую розницу.
+              Старый ассортимент сюда не переносится.
+            </div>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gap: 12 }}>
+            {categoryProducts.map(p => (
+              <div
+                key={p.id}
+                style={adminCard}
+              >
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 12,
+                }}>
+                  <div style={{
+                    width: 76,
+                    height: 76,
+                    flexShrink: 0,
+                    borderRadius: 14,
+                    background: 'rgba(255,255,255,0.05)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                  }}>
+                    {p.photo_url ? (
+                      <img
+                        src={photoUrl(p.photo_url) || ''}
+                        alt={p.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain',
+                        }}
+                      />
+                    ) : (
+                      <span style={{ fontSize: 28 }}>📦</span>
+                    )}
+                  </div>
+
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{
+                      fontSize: 15,
+                      fontWeight: 700,
+                      overflowWrap: 'anywhere',
+                      marginBottom: 8,
+                    }}>
+                      {p.name}
+                    </div>
+
+                    <span style={adminBadge(
+                      Number(p.is_visible) === 1
+                    )}>
+                      {Number(p.is_visible) === 1
+                        ? '● Опубликован'
+                        : '○ Скрыт'}
+                    </span>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  gap: 8,
+                  marginTop: 14,
+                }}>
+                  {[
+                    { label: 'Вкусов', value: p.flavors_count || 0 },
+                    { label: 'Остаток', value: p.stock || 0 },
+                    { label: 'Порогов', value: p.prices || 0 },
+                  ].map(stat => (
+                    <div key={stat.label} style={adminMiniStat}>
+                      <div style={{
+                        fontSize: 18,
+                        fontWeight: 700,
+                      }}>
+                        {stat.value}
+                      </div>
+
+                      <div style={{
+                        fontSize: 11,
+                        color: '#aaa',
+                        marginTop: 4,
+                      }}>
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <BottomNav />
+    </div>
+  )
+}
+  
   if (screen === 'admin_retail') {
   const categories = [
     { id: 'all', name: 'Все' },
