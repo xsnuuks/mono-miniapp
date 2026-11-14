@@ -6439,6 +6439,20 @@ onChange={field.name === 'phone'
     </>
       )}
 
+      {retailCheckoutStep === 2 && (
+  <button
+    type="button"
+    onClick={() => setRetailCheckoutStep(1)}
+    style={{
+      ...backBtn,
+      width: '100%',
+      marginBottom: 0,
+    }}
+  >
+    ← Назад к контактам
+  </button>
+)}
+      
       <button
         type="submit"
         style={{
