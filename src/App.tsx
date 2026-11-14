@@ -23,6 +23,35 @@ type Screen =
   | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_wholesale' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale' | 'wholesale_product'
 
 const CITIES = ['Reutlingen', 'Pfullingen', 'Eningen', 'Betzingen']
+const WHOLESALE_DIAL_CODES: Record<string, string> = {
+  PL: '+48',
+  AT: '+43',
+  BE: '+32',
+  BG: '+359',
+  HU: '+36',
+  DE: '+49',
+  GR: '+30',
+  DK: '+45',
+  IE: '+353',
+  ES: '+34',
+  IT: '+39',
+  CY: '+357',
+  LV: '+371',
+  LT: '+370',
+  LU: '+352',
+  MT: '+356',
+  NL: '+31',
+  PT: '+351',
+  RO: '+40',
+  SK: '+421',
+  SI: '+386',
+  FI: '+358',
+  FR: '+33',
+  HR: '+385',
+  CZ: '+420',
+  SE: '+46',
+  EE: '+372',
+}
 const PAYMENTS = ['Наличные', 'Банковский перевод']
 
 const card = {
