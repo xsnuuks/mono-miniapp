@@ -4132,6 +4132,13 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
       >
         ← Назад в каталог
       </button>
+      <div style={{
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginBottom: 16,
+}}>
+  <RetailDeliverySelector />
+</div>
 
       <div style={{
         ...adminCard,
