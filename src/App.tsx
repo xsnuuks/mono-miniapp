@@ -6334,21 +6334,39 @@ onChange={field.name === 'phone'
 </div>
   </div>
 </div>
-          <button
-  type="button"
-  onClick={submitRetailOrder}
-  disabled
-  style={{
-    ...adminPrimaryBtn,
-    width: '100%',
-    padding: 16,
+
+          {retailOrderId !== null ? (
+  <div style={{
+    ...adminCard,
     marginBottom: 12,
-    opacity: 0.5,
-    cursor: 'not-allowed',
-  }}
->
-  Оформить заказ →
-</button>
+    textAlign: 'center',
+    border: '1px solid #a855f7',
+  }}>
+    <div style={{ color: '#d8b4fe', fontSize: 20, fontWeight: 800 }}>
+      ✓ Заказ №{retailOrderId} создан
+    </div>
+    <p style={{ color: '#ccc', fontSize: 13, lineHeight: 1.6 }}>
+      Заказ получен. Свяжитесь с менеджером,
+      чтобы согласовать место самовывоза и оплату.
+    </p>
+  </div>
+) : (
+  <button
+    type="button"
+    onClick={submitRetailOrder}
+    disabled
+    style={{
+      ...adminPrimaryBtn,
+      width: '100%',
+      padding: 16,
+      marginBottom: 12,
+      opacity: 0.5,
+      cursor: 'not-allowed',
+    }}
+  >
+    Оформить заказ →
+  </button>
+)}
 
           <button
             type="button"
