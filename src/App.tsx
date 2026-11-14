@@ -6067,7 +6067,7 @@ onChange={field.name === 'phone'
         marginBottom: 20,
       }}>
         <h2 style={{ margin: 0, fontSize: 22 }}>
-          Оформление заказа
+          {retailCheckoutStep === 1 ? 'Контактные данные' : 'Адрес доставки'}
         </h2>
 
       </div>
@@ -6357,6 +6357,22 @@ onChange={field.name === 'phone'
       }}
       style={{ display: 'grid', gap: 14 }}
     >
+      <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+  {[1, 2, 3, 4].map(step => (
+    <div
+      key={step}
+      style={{
+        flex: 1,
+        height: 5,
+        borderRadius: 8,
+        background: step <= retailCheckoutStep
+          ? '#a855f7'
+          : 'rgba(255,255,255,0.12)',
+      }}
+    />
+  ))}
+</div>
+      
       {retailCheckoutStep === 1 && (
     <>
       <div style={{
