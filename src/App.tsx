@@ -32,6 +32,57 @@ const card = {
   padding: 16,
 }
 
+const adminCard = {
+  background: 'linear-gradient(180deg, rgba(20,20,24,0.98), rgba(13,13,16,0.98))',
+  border: '1px solid rgba(168,85,247,0.22)',
+  borderRadius: 18,
+  padding: 14,
+  boxShadow: '0 10px 30px rgba(0,0,0,0.22)',
+}
+
+const adminBadge = (active: boolean) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  padding: '6px 10px',
+  borderRadius: 999,
+  fontSize: 12,
+  fontWeight: 700,
+  color: active ? '#d1fae5' : '#ddd',
+  background: active ? 'rgba(16,185,129,0.14)' : 'rgba(255,255,255,0.06)',
+  border: active
+    ? '1px solid rgba(16,185,129,0.35)'
+    : '1px solid rgba(255,255,255,0.08)',
+})
+
+const adminMiniStat = {
+  flex: 1,
+  minWidth: 0,
+  background: 'rgba(255,255,255,0.04)',
+  border: '1px solid rgba(255,255,255,0.06)',
+  borderRadius: 14,
+  padding: '10px 12px',
+}
+
+const adminActionBtn = {
+  flex: 1,
+  minWidth: 0,
+  padding: '11px 12px',
+  borderRadius: 12,
+  border: '1px solid rgba(168,85,247,0.22)',
+  background: 'rgba(255,255,255,0.04)',
+  color: '#fff',
+  fontSize: 13,
+  fontWeight: 700,
+  cursor: 'pointer',
+}
+
+const adminPrimaryBtn = {
+  ...adminActionBtn,
+  background: 'linear-gradient(90deg, #7c3aed, #a855f7)',
+  border: 'none',
+}
+
 const backBtn = {
   background: 'rgba(0,0,0,0.78)',
   border: '1px solid rgba(255,255,255,0.08)',
