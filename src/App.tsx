@@ -410,6 +410,7 @@ async function loadWholesaleProducts() {
     }
     loadProducts()
     loadWholesaleProducts()
+    loadRetailProducts()
     loadFavIds()
     if (tgUser?.id) {
       fetch(`${API_URL}/profile/${tgUser.id}`)
