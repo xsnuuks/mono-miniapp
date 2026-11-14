@@ -4286,6 +4286,368 @@ onChange={field.name === 'phone'
     </div>
   )
 }
+
+  if (screen === 'wholesale_review') {
+  const count = wholesaleCart.reduce(
+    (sum, item) => sum + item.quantity, 0
+  )
+
+  const rows = wholesaleCart.map(item => {
+    const product = wholesaleProducts.find(
+      p => Number(p.id) === item.productId
+    )
+
+    const prices = [...(product?.wholesale_tiers || [])]
+      .sort((a: any, b: any) =>
+        Number(a.min_qty) - Number(b.min_qty)
+      )
+
+    const available = prices.filter(
+      (t: any) => count >= Number(t.min_qty)
+    )
+
+    const tier = available.length
+      ? available[available.length - 1]
+      : prices[0]
+
+    const unitPrice = tier ? Number(tier.price) : 0
+
+    return {
+      ...item,
+      unitPrice,
+      subtotal: unitPrice * item.quantity,
+      hasPrice: !!tier,
+    }
+  })
+
+  const total = rows.reduce(
+    (sum, item) => sum + item.subtotal, 0
+  )
+
+  const countryNames: Record<string, string> = {
+    PL: 'Польша', AT: 'Австрия', BE: 'Бельгия',
+    BG: 'Болгария', HU: 'Венгрия', DE: 'Германия',
+    GR: 'Греция', DK: 'Дания', IE: 'Ирландия',
+    ES: 'Испания', IT: 'Италия', CY: 'Кипр',
+    LV: 'Латвия', LT: 'Литва', LU: 'Люксембург',
+    MT: 'Мальта', NL: 'Нидерланды', PT: 'Португалия',
+    RO: 'Румыния', SK: 'Словакия', SI: 'Словения',
+    FI: 'Финляндия', FR: 'Франция', HR: 'Хорватия',
+    CZ: 'Чехия', SE: 'Швеция', EE: 'Эстония',
+  }
+
+  const sectionStyle = {
+    background: '#262629',
+    border: '1px solid rgba(255,255,255,0.12)',
+    borderRadius: 17,
+    padding: 16,
+    marginBottom: 14,
+  }
+
+  const detailStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: 12,
+    marginBottom: 12,
+    fontSize: 13,
+  }
+
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 16px 90px' }}>
+        <button
+          type="button"
+          style={backBtn}
+          onClick={() => setScreen('wholesale_delivery')}
+        >
+          ← Назад
+        </button>
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 20,
+        }}>
+          <h2 style={{ margin: 0, fontSize: 23 }}>
+            Проверка заказа
+          </h2>
+          <span style={adminBadge(true)}>3 / 4</span>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          gap: 8,
+          marginBottom: 24,
+        }}>
+          {[1, 2, 3, 4].map(step => (
+            <div key={step} style={{
+              flex: 1,
+              height: 5,
+              borderRadius: 99,
+              background: step <= 3
+                ? '#8b5cf6'
+                : 'rgba(255,255,255,0.1)',
+            }} />
+          ))}
+        </div>
+
+        <div style={sectionStyle}>
+          <div style={{
+            fontSize: 17,
+            fontWeight: 700,
+            marginBottom: 20,
+          }}>
+            📦 Ваш заказ
+          </div>
+
+          <div style={{
+            background: '#111',
+            borderRadius: 14,
+            padding: 14,
+          }}>
+            <div style={{
+              color: '#b8a8dc',
+              fontSize: 12,
+              marginBottom: 14,
+            }}>
+              Контактные данные
+            </div>
+
+            <div style={detailStyle}>
+              <span style={{ color: '#aaa' }}>Имя</span>
+              <strong>
+                {wholesaleContact.first_name}{' '}
+                {wholesaleContact.last_name}
+              </strong>
+            </div>
+
+            <div style={detailStyle}>
+              <span style={{ color: '#aaa' }}>Телефон</span>
+              <strong>{wholesaleContact.phone}</strong>
+            </div>
+
+            <div style={detailStyle}>
+              <span style={{ color: '#aaa' }}>Email</span>
+              <strong style={{ overflowWrap: 'anywhere' }}>
+                {wholesaleContact.email}
+              </strong>
+            </div>
+
+            <hr style={{ borderColor: '#333', margin: '18px 0' }}/>
+
+            <div style={detailStyle}>
+              <span style={{ color: '#aaa' }}>Доставка</span>
+              <strong>{wholesaleCarrier}</strong>
+            </div>
+
+            <div style={{
+              color: '#b8a8dc',
+              fontSize: 12,
+              marginBottom: 8,
+            }}>
+              Адрес получения
+            </div>
+
+            <div style={{ fontSize: 13, lineHeight: 1.7 }}>
+              {wholesaleAddress.street}{' '}
+              {wholesaleAddress.house}
+              <div style={{ color: '#aaa' }}>
+                {wholesaleAddress.postal_code}{' '}
+                {wholesaleAddress.city}
+              </div>
+              <div style={{ color: '#aaa' }}>
+                {countryNames[wholesaleCountry] || wholesaleCountry}
+              </div>
+            </div>
+
+            <hr style={{ borderColor: '#333', margin: '18px 0' }}/>
+
+            <div style={{
+              color: '#b8a8dc',
+              fontSize: 12,
+              marginBottom: 12,
+            }}>
+              Товары ({count} шт.)
+            </div>
+
+            {rows.map(item => (
+              <div
+                key={`${item.productId}-${item.flavorId}`}
+                style={{
+                  padding: '10px 0',
+                  borderBottom: '1px solid #252525',
+                }}
+              >
+                <div style={{ fontWeight: 600, fontSize: 13 }}>
+                  {item.productName}
+                </div>
+
+                <div style={{
+                  color: '#aaa',
+                  fontSize: 12,
+                  marginTop: 4,
+                }}>
+                  {item.flavorName}
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginTop: 6,
+                  fontSize: 13,
+                }}>
+                  <span>
+                    {item.quantity} × {item.unitPrice.toFixed(2)} €
+                  </span>
+                  <strong>
+                    {item.hasPrice
+                      ? `${item.subtotal.toFixed(2)} €`
+                      : 'Цена не задана'}
+                  </strong>
+                </div>
+              </div>
+            ))}
+
+            <hr style={{ borderColor: '#333', margin: '18px 0' }}/>
+
+            <div style={{
+              fontSize: 15,
+              fontWeight: 700,
+              marginBottom: 14,
+            }}>
+              Способ оплаты
+            </div>
+
+            {[
+              { id: 'USDT', label: 'Крипта · USDT', icon: '◇' },
+              { id: 'UAH', label: 'Карта UAH', icon: '▣' },
+            ].map(method => (
+              <button
+                key={method.id}
+                type="button"
+                onClick={() =>
+                  setWholesalePayment(method.id as 'USDT' | 'UAH')
+                }
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 12,
+                  width: '100%',
+                  padding: '16px 12px',
+                  marginBottom: 10,
+                  borderRadius: 12,
+                  border: wholesalePayment === method.id
+                    ? '1px solid #a855f7'
+                    : '1px solid #4b3b5d',
+                  background: wholesalePayment === method.id
+                    ? 'rgba(168,85,247,0.15)'
+                    : '#211827',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <span style={{
+                  color: '#c084fc',
+                  fontSize: 22,
+                }}>
+                  {method.icon}
+                </span>
+
+                <strong style={{ flex: 1 }}>
+                  {method.label}
+                </strong>
+
+                <span style={{
+                  color: '#c084fc',
+                  fontSize: 22,
+                }}>
+                  {wholesalePayment === method.id ? '◉' : '○'}
+                </span>
+              </button>
+            ))}
+
+            <div style={{
+              color: '#b8a8dc',
+              fontSize: 12,
+              lineHeight: 1.7,
+              marginTop: 12,
+            }}>
+              Оплата на этом этапе не производится.
+              Выбор способа оплаты не списывает деньги.
+            </div>
+
+            <hr style={{ borderColor: '#333', margin: '18px 0' }}/>
+
+            <div style={detailStyle}>
+              <span style={{ color: '#aaa' }}>
+                Стоимость товаров
+              </span>
+              <strong>{total.toFixed(2)} €</strong>
+            </div>
+
+            <div style={detailStyle}>
+              <span style={{ color: '#aaa' }}>
+                Доставка
+              </span>
+              <span style={{ color: '#c084fc' }}>
+                Рассчитывается индивидуально
+              </span>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 12,
+              borderTop: '1px solid #333',
+              paddingTop: 16,
+            }}>
+              <strong>Итого без доставки</strong>
+              <strong style={{
+                color: '#a855f7',
+                fontSize: 21,
+              }}>
+                {total.toFixed(2)} €
+              </strong>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          disabled={
+            !wholesalePayment ||
+            count < 20 ||
+            rows.some(item => !item.hasPrice)
+          }
+          onClick={() =>
+            showToast('Следующий шаг — экран подтверждения')
+          }
+          style={{
+            ...adminPrimaryBtn,
+            width: '100%',
+            padding: 16,
+            fontSize: 15,
+            opacity: wholesalePayment && count >= 20 ? 1 : 0.5,
+          }}
+        >
+          Продолжить
+        </button>
+
+        <div style={{
+          textAlign: 'center',
+          fontSize: 12,
+          color: '#888',
+          marginTop: 14,
+        }}>
+          Прототип — заказ пока не создаётся и не оплачивается
+        </div>
+      </div>
+    </div>
+  )
+}
   
   if (screen === 'cart') {
   const retailTotal = cart.reduce(
