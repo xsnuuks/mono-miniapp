@@ -1747,81 +1747,195 @@ flavors: flavors
   </label>
 </div>
 
-        <div style={card}>
-          <div style={{ fontWeight: 600, marginBottom: 4 }}>{product.name}</div>
-          <div style={{ fontSize: 13, color: '#888' }}>
-            {product.prices || 0} порога · {product.flavors || 0} вкуса · {product.stock || 0} шт.
-          </div>
+        <div style={{ ...adminCard, marginBottom: 16 }}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 18,
+  }}>
+    <div style={{ minWidth: 0 }}>
+      <div style={{ fontSize: 20, fontWeight: 700 }}>
+        {product.name}
+      </div>
+      <div style={{ color: '#999', fontSize: 12, marginTop: 5 }}>
+        Оптовый товар
+      </div>
+    </div>
+
+    <span style={adminBadge(Number(product.is_visible) === 1)}>
+      {Number(product.is_visible) === 1
+        ? '● Опубликован'
+        : '○ Скрыт'}
+    </span>
+  </div>
+
+  <div style={{ display: 'flex', gap: 8 }}>
+    {[
+      { label: 'Вкусов', value: product.flavors || 0 },
+      { label: 'В наличии', value: product.stock || 0 },
+      { label: 'Порогов', value: product.prices || 0 },
+    ].map(stat => (
+      <div key={stat.label} style={adminMiniStat}>
+        <div style={{ fontSize: 20, fontWeight: 700 }}>
+          {stat.value}
         </div>
+        <div style={{ fontSize: 11, color: '#aaa', marginTop: 4 }}>
+          {stat.label}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
 
-        <div style={{ marginTop: 20 }}>
-          <div style={{ fontWeight: 600, marginBottom: 12 }}>Управление карточкой</div>
+<div style={{ ...adminCard, marginBottom: 16 }}>
+  <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 14 }}>
+    Управление карточкой
+  </div>
 
-          <button
-            onClick={async () => {
-              const newName = prompt('Новое название', product.name)
-              if (!newName || newName === product.name) return
-              const fd = new FormData()
-              fd.append('name', newName)
-              await fetch(`${API_URL}/api/wholesale/products/${product.id}`, {
-                method: 'PATCH',
-                headers: { 'X-Admin-Id': String(tgUser?.id || '') },
-                body: fd,
-              })
-              await loadWholesaleProducts()
-              showToast('Название обновлено')
-            }}
-            style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#fff', fontSize: 15 }}
-          >
-            Редактировать товар
-          </button>
+  <div style={{ display: 'grid', gap: 10 }}>
+    <button
+      type="button"
+      style={{ ...adminActionBtn, textAlign: 'left' }}
+      onClick={async () => {
+        const newName = prompt('Новое название', product.name)
+        if (!newName?.trim() || newName.trim() === product.name) return
 
-          <button
-            onClick={() => setScreen(`admin_wholesale_tiers_${product.id}` as any)}
-            style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#fff', fontSize: 15 }}
-          >
-            Изменить оптовые цены
-          </button>
+        const fd = new FormData()
+        fd.append('name', newName.trim())
 
-          <button
-            onClick={() => setScreen(`admin_wholesale_flavors_${product.id}` as any)}
-            style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#fff', fontSize: 15 }}
-          >
-            Управление вкусами
-          </button>
+        const response = await fetch(
+          `${API_URL}/api/wholesale/products/${product.id}`,
+          {
+            method: 'PATCH',
+            headers: { 'X-Admin-Id': String(tgUser?.id || '') },
+            body: fd,
+          }
+        )
 
-          <button
-            onClick={async () => {
-              const fd = new FormData()
-              fd.append('is_visible', product.is_visible ? '0' : '1')
-              await fetch(`${API_URL}/api/wholesale/products/${product.id}`, {
-                method: 'PATCH',
-                headers: { 'X-Admin-Id': String(tgUser?.id || '') },
-                body: fd,
-              })
-              await loadWholesaleProducts()
-              showToast(product.is_visible ? 'Скрыт' : 'Показан')
-            }}
-            style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#fff', fontSize: 15 }}
-          >
-            Показать / скрыть товар
-          </button>
+        if (!response.ok) {
+          showToast('Не удалось изменить название')
+          return
+        }
 
-          <button
-            onClick={async () => {
-              if (!confirm('Удалить товар?')) return
-              await fetch(`${API_URL}/api/wholesale/products/${product.id}`, {
-                method: 'DELETE',
-                headers: { 'X-Admin-Id': String(tgUser?.id || '') },
-              })
-              await loadWholesaleProducts()
-              setScreen(`admin_wholesale_${product.category}` as any)
-              showToast('Удалено')
-            }}
-            style={{ width: '100%', textAlign: 'left', padding: '12px 0', border: 'none', borderBottom: '1px solid #222', background: 'transparent', color: '#f66', fontSize: 15 }}
-          >
-            Удалить товар
-          </button>
+        await loadWholesaleProducts()
+        showToast('Название обновлено')
+      }}
+    >
+      ✎　Название товара
+    </button>
+
+    <button
+      type="button"
+      style={{ ...adminActionBtn, textAlign: 'left' }}
+      onClick={() =>
+        setScreen(`admin_wholesale_flavors_${product.id}` as any)
+      }
+    >
+      ≡　Вкусы и остатки
+    </button>
+
+    <button
+      type="button"
+      style={{ ...adminActionBtn, textAlign: 'left' }}
+      onClick={() =>
+        setScreen(`admin_wholesale_tiers_${product.id}` as any)
+      }
+    >
+      €　Оптовые цены
+    </button>
+  </div>
+</div>
+
+<div style={{ ...adminCard, marginBottom: 16 }}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 12,
+  }}>
+    <div>
+      <div style={{ fontWeight: 700 }}>
+        Видимость товара
+      </div>
+      <div style={{ fontSize: 12, color: '#aaa', marginTop: 4 }}>
+        {Number(product.is_visible) === 1
+          ? 'Покупатели видят товар'
+          : 'Товар скрыт от покупателей'}
+      </div>
+    </div>
+
+    <span style={adminBadge(Number(product.is_visible) === 1)}>
+      {Number(product.is_visible) === 1 ? 'ВКЛ' : 'ВЫКЛ'}
+    </span>
+  </div>
+
+  <button
+    type="button"
+    style={{ ...adminPrimaryBtn, width: '100%' }}
+    onClick={async () => {
+      const nextVisible = Number(product.is_visible) === 1 ? 0 : 1
+      const fd = new FormData()
+      fd.append('is_visible', String(nextVisible))
+
+      try {
+        const response = await fetch(
+          `${API_URL}/api/wholesale/products/${product.id}`,
+          {
+            method: 'PATCH',
+            headers: { 'X-Admin-Id': String(tgUser?.id || '') },
+            body: fd,
+          }
+        )
+
+        if (!response.ok) throw new Error('Ошибка')
+
+        await loadWholesaleProducts()
+        showToast(nextVisible ? 'Товар опубликован' : 'Товар скрыт')
+      } catch {
+        showToast('Не удалось изменить видимость')
+      }
+    }}
+  >
+    {Number(product.is_visible) === 1
+      ? 'Скрыть товар'
+      : 'Опубликовать товар'}
+  </button>
+</div>
+
+<button
+  type="button"
+  onClick={async () => {
+    if (!confirm('Удалить товар навсегда?')) return
+
+    const response = await fetch(
+      `${API_URL}/api/wholesale/products/${product.id}`,
+      {
+        method: 'DELETE',
+        headers: { 'X-Admin-Id': String(tgUser?.id || '') },
+      }
+    )
+
+    if (!response.ok) {
+      showToast('Не удалось удалить товар')
+      return
+    }
+
+    await loadWholesaleProducts()
+    setScreen(`admin_wholesale_${product.category_id}` as any)
+    showToast('Товар удалён')
+  }}
+  style={{
+    ...adminActionBtn,
+    width: '100%',
+    color: '#ff8585',
+    border: '1px solid rgba(255,100,100,0.25)',
+  }}
+>
+  Удалить товар
+</button>
         </div>
       </div>
       <BottomNav />
