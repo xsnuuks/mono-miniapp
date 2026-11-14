@@ -6440,20 +6440,21 @@ onChange={field.name === 'phone'
       </div>
 
       <button
-        type="button"
-        disabled
-        style={{
-          ...adminPrimaryBtn,
-          width: '100%',
-          marginTop: 20,
-          padding: 16,
-          fontSize: 15,
-          opacity: 0.5,
-          cursor: 'not-allowed',
-        }}
-      >
-        Оформить розничный заказ
-      </button>
+  type="button"
+  disabled={hasMissingPrices}
+  onClick={() => setScreen('retail_checkout')}
+  style={{
+    ...adminPrimaryBtn,
+    width: '100%',
+    marginTop: 20,
+    padding: 16,
+    fontSize: 15,
+    opacity: hasMissingPrices ? 0.5 : 1,
+    cursor: hasMissingPrices ? 'not-allowed' : 'pointer',
+  }}
+>
+  Оформить розничный заказ
+</button>
 
       <div style={{
         marginTop: 12,
