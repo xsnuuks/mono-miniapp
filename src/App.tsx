@@ -1366,6 +1366,26 @@ async function deleteOrder(orderId: number) {
       ),
     },
     {
+  id: 'admin_retail' as Screen,
+  title: 'Розница',
+  fn: () => loadRetailProducts(),
+  icon: (
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#a855f7"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="7" width="18" height="14" rx="2" />
+      <path d="M3 11h18M7 7V3h10v4" />
+    </svg>
+  ),
+},
+    {
   id: 'admin_wholesale' as Screen,
   title: 'Опт',
   fn: () => setScreen('admin_wholesale'),
