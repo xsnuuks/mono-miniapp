@@ -476,6 +476,47 @@ async function loadWholesaleProducts() {
   }, [screen])
 
   useEffect(() => {
+  if (selectedRetailId === null) return
+
+  let cancelled = false
+
+  async function loadRetailDetails() {
+    setRetailLoading(true)
+    setRetailFlavors([])
+    setRetailQty({})
+
+    try {
+      const response = await fetch(
+        `${API_URL}/api/retail/products/${selectedRetailId}/flavors`
+      )
+
+      if (!response.ok) {
+        throw new Error('Ошибка загрузки вкусов')
+      }
+
+      const data = await response.json()
+
+      if (!cancelled) {
+        setRetailFlavors(
+          Array.isArray(data) ? data : (data.flavors || [])
+        )
+      }
+    } catch (error) {
+      console.error('Retail flavors:', error)
+      if (!cancelled) showToast('Не удалось загрузить вкусы')
+    } finally {
+      if (!cancelled) setRetailLoading(false)
+    }
+  }
+
+  void loadRetailDetails()
+
+  return () => {
+    cancelled = true
+  }
+}, [selectedRetailId])
+  
+  useEffect(() => {
     if (selectedWholesaleId === null) return
 
     let cancelled = false
