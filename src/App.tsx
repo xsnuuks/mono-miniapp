@@ -292,6 +292,7 @@ const [retailDeliverySaved, setRetailDeliverySaved] = useState(false)
   const [retailOrderSubmitting, setRetailOrderSubmitting] = useState(false)
   const [retailOrderId, setRetailOrderId] = useState<number | null>(null)
   const retailOrderRequestRef = useRef(false)
+  const retailRequestIdRef = useRef<string | null>(null)
   const [retailPaymentMethod, setRetailPaymentMethod] = useState<'usdt' | 'uah'>('usdt')
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>(() => {
   try {
