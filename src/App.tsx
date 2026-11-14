@@ -1096,6 +1096,13 @@ async function deleteOrder(orderId: number) {
   return (
     <div key={screen} style={page}>
       <div style={{ ...title, marginBottom: 20 }}>Инфо</div>
+      <div style={{
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginBottom: 16,
+}}>
+  <RetailDeliverySelector />
+</div>
 
       <button
         onClick={() => setScreen('catalog')}
