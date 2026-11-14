@@ -6927,29 +6927,7 @@ onChange={field.name === 'phone'
   
   return (
     <div key={screen} style={{ ...page, position: 'relative' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-  <div style={{ ...title, marginBottom: 0 }}>PUFFY STORE</div>
-  {priceMode === 'wholesale' ? (
-  <div
-    style={{
-      background: 'rgba(168, 85, 247, 0.12)',
-      border: '1px solid rgba(168, 85, 247, 0.3)',
-      borderRadius: 12,
-      padding: '6px 10px',
-      color: '#a855f7',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 6,
-      fontSize: 13,
-      fontWeight: 600,
-    }}
-  >
-    Опт
-  </div>
-) : (
-  <RetailDeliverySelector />
-)}
-</div>
+      <RetailTopBar wholesale={priceMode === 'wholesale'} />
 <div style={{ fontSize: 13, color: '#8a8a8a', marginBottom: 16, letterSpacing: '0.04em' }}>Каталог</div>
       <div style={{
   display: 'flex',
