@@ -1597,10 +1597,7 @@ async function deleteOrder(orderId: number) {
             Стоимость GLS рассчитывается отдельно
           </div>
         )}
-      </div>
-    ))
-  )}/
-          <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
+        <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
   {order.delivery_type === 'delivery' && order.status === 'new' && (
     <button
       type="button"
@@ -1621,6 +1618,10 @@ async function deleteOrder(orderId: number) {
     </button>
   )}
 </div>
+      </div>
+    ))
+  )}
+          
 </div>
 
 <div style={{ fontSize: 17, fontWeight: 800, marginBottom: 12 }}>
