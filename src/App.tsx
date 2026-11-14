@@ -6334,6 +6334,21 @@ onChange={field.name === 'phone'
 </div>
   </div>
 </div>
+          <button
+  type="button"
+  onClick={submitRetailOrder}
+  disabled
+  style={{
+    ...adminPrimaryBtn,
+    width: '100%',
+    padding: 16,
+    marginBottom: 12,
+    opacity: 0.5,
+    cursor: 'not-allowed',
+  }}
+>
+  Оформить заказ →
+</button>
 
           <button
             type="button"
