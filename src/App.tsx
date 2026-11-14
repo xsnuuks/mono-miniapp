@@ -182,7 +182,7 @@ function photoUrl(photo?: string | null) {
 
 function App() {
   const [screen, setScreen] = useState<Screen>('catalog')
-  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [selectedId] = useState<number | null>(null)
   const [cart, setCart] = useState<CartItem[]>([])
   const [toast, setToast] = useState('')
   const [city, setCity] = useState('')
