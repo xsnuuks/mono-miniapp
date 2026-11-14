@@ -6076,7 +6076,10 @@ onChange={field.name === 'phone'
   try {
     const response = await fetch(`${API_URL}/api/retail/orders`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+  'Content-Type': 'application/json',
+  'X-Telegram-Init-Data': window.Telegram?.WebApp?.initData || '',
+},
       body: JSON.stringify({
         request_id: retailRequestIdRef.current,
         user_id: tgUser?.id ?? null,
