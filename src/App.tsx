@@ -250,6 +250,13 @@ const [wholesaleAddress, setWholesaleAddress] = useState({
   street: '',
   house: '',
 })
+  const [retailCart, setRetailCart] = useState<{
+  productId: number
+  productName: string
+  flavorId: number
+  flavorName: string
+  quantity: number
+}[]>([])
   const [wholesaleCart, setWholesaleCart] = useState<{
   productId: number
   productName: string
