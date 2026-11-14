@@ -308,6 +308,28 @@ const fileRef = useRef<HTMLInputElement>(null)
     }
   }
 
+async function loadRetailProducts() {
+  try {
+    const response = await fetch(
+      `${API_URL}/api/retail/products`
+    )
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`)
+    }
+
+    const data = await response.json()
+
+    setRetailProducts(
+      Array.isArray(data)
+        ? data
+        : (data.products || [])
+    )
+  } catch (error) {
+    console.error('Retail products error:', error)
+    showToast('Не удалось загрузить розничные товары')
+  }
+}
   
 async function loadWholesaleProducts() {
   try {
