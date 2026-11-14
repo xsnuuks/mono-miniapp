@@ -2491,16 +2491,222 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
 }
   
   if (screen === 'cart') {
-  const cartItems = cart
-  const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
+  const retailTotal = cart.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
+    0
+  )
 
-  const changeQty = (productId: number, delta: number) => {
-    setCart(prev =>
-      prev
-        .map(i => i.product.id === productId ? { ...i, quantity: i.quantity + delta } : i)
-        .filter(i => i.quantity > 0)
+  const wholesaleCount = wholesaleCart.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  )
+
+  const wholesaleRows = wholesaleCart.map(item => {
+    const product = wholesaleProducts.find(
+      p => Number(p.id) === item.productId
+    )
+
+    const tiers = [...(product?.wholesale_tiers || [])]
+      .sort((a: any, b: any) =>
+        Number(a.min_qty) - Number(b.min_qty)
+      )
+
+    const applicable = tiers.filter(
+      (t: any) => wholesaleCount >= Number(t.min_qty)
+    )
+
+    const tier = applicable.length
+      ? applicable[applicable.length - 1]
+      : tiers[0]
+
+    const unitPrice = tier ? Number(tier.price) : 0
+
+    return {
+      ...item,
+      unitPrice,
+      subtotal: unitPrice * item.quantity,
+      hasPrice: !!tier,
+    }
+  })
+
+  const wholesaleTotal = wholesaleRows.reduce(
+    (sum, item) => sum + item.subtotal,
+    0
+  )
+
+  const changeRetailQty = (id: number, delta: number) => {
+    setCart(prev => prev
+      .map(item => item.product.id === id
+        ? { ...item, quantity: item.quantity + delta }
+        : item
+      )
+      .filter(item => item.quantity > 0)
     )
   }
+
+  const changeWholesaleQty = (flavorId: number, delta: number) => {
+    setWholesaleCart(prev => prev
+      .map(item => item.flavorId === flavorId
+        ? { ...item, quantity: item.quantity + delta }
+        : item
+      )
+      .filter(item => item.quantity > 0)
+    )
+  }
+
+  return (
+    <div key={screen} style={page}>
+      <div style={title}>Корзина</div>
+
+      {cart.length === 0 && wholesaleCart.length === 0 && (
+        <div style={card}>Корзина пуста</div>
+      )}
+
+      {cart.length > 0 && (
+        <div style={{ ...card, marginBottom: 18 }}>
+          <h2>🛍 Розница</h2>
+
+          {cart.map(item => (
+            <div
+              key={item.product.id}
+              style={{
+                padding: '12px 0',
+                borderBottom: '1px solid #333',
+              }}
+            >
+              <div style={{ fontWeight: 600 }}>
+                {item.product.name}
+              </div>
+
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                marginTop: 8,
+              }}>
+                <button onClick={() =>
+                  changeRetailQty(item.product.id, -1)
+                }>−</button>
+
+                <span>{item.quantity}</span>
+
+                <button onClick={() =>
+                  changeRetailQty(item.product.id, 1)
+                }>+</button>
+
+                <span style={{ marginLeft: 'auto' }}>
+                  {(item.product.price * item.quantity).toFixed(2)} €
+                </span>
+              </div>
+            </div>
+          ))}
+
+          <h3>Итого: {retailTotal.toFixed(2)} €</h3>
+
+          <button
+            style={btnMain}
+            onClick={() => setScreen('checkout')}
+          >
+            Оформить розничный заказ
+          </button>
+        </div>
+      )}
+
+      {wholesaleCart.length > 0 && (
+        <div style={{ ...card, marginBottom: 18 }}>
+          <h2>📦 Опт</h2>
+
+          {wholesaleRows.map(item => (
+            <div
+              key={`${item.productId}-${item.flavorId}`}
+              style={{
+                padding: '12px 0',
+                borderBottom: '1px solid #333',
+              }}
+            >
+              <div style={{ fontWeight: 600 }}>
+                {item.productName}
+              </div>
+
+              <div style={{ color: '#aaa', fontSize: 13 }}>
+                {item.flavorName}
+              </div>
+
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                marginTop: 10,
+              }}>
+                <button onClick={() =>
+                  changeWholesaleQty(item.flavorId, -1)
+                }>−</button>
+
+                <span>{item.quantity}</span>
+
+                <button onClick={() =>
+                  changeWholesaleQty(item.flavorId, 1)
+                }>+</button>
+
+                <span style={{ marginLeft: 'auto' }}>
+                  {item.hasPrice
+                    ? `${item.subtotal.toFixed(2)} €`
+                    : 'Цена не задана'}
+                </span>
+              </div>
+
+              <div style={{
+                color: '#aaa',
+                fontSize: 12,
+                marginTop: 6,
+              }}>
+                {item.hasPrice
+                  ? `${item.unitPrice.toFixed(2)} €/шт.`
+                  : 'Нет оптового прайса'}
+              </div>
+            </div>
+          ))}
+
+          <div style={{ marginTop: 18 }}>
+            <div>Всего: {wholesaleCount} шт.</div>
+
+            <h2>
+              Итого: {wholesaleTotal.toFixed(2)} €
+            </h2>
+
+            {wholesaleCount < 20 && (
+              <p style={{ color: '#fbbf24' }}>
+                Для оформления нужно ещё {20 - wholesaleCount} шт.
+              </p>
+            )}
+
+            <button
+              type="button"
+              disabled
+              style={{
+                ...btnMain,
+                opacity: 0.5,
+                cursor: 'not-allowed',
+              }}
+            >
+              Оформить оптовый заказ
+            </button>
+
+            <p style={{
+              color: '#999',
+              fontSize: 12,
+              textAlign: 'center',
+            }}>
+              Оформление оптовых заказов скоро появится
+            </p>
+          </div>
+        </div>
+      )}
+
+      <BottomNav />
+    </div>
+  )
+}
 
   return (
     <div key={screen} style={page}>
