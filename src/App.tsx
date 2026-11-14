@@ -6404,6 +6404,8 @@ onChange={field.name === 'phone'
           />
         </label>
       ))}
+    </>
+      )}
 
       <button
         type="submit"
