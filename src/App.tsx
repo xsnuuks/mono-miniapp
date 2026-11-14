@@ -289,7 +289,7 @@ const [wholesaleCart, setWholesaleCart] = useState<{
 
 const [retailDeliverySaved, setRetailDeliverySaved] = useState(false)
   const [retailCheckoutStep, setRetailCheckoutStep] = useState(1)
-  const [, setRetailOrderSubmitting] = useState(false)
+  const [retailOrderSubmitting, setRetailOrderSubmitting] = useState(false)
   const [retailOrderId, setRetailOrderId] = useState<number | null>(null)
   const retailOrderRequestRef = useRef(false)
   const retailRequestIdRef = useRef<string | null>(null)
@@ -6354,17 +6354,17 @@ onChange={field.name === 'phone'
   <button
     type="button"
     onClick={submitRetailOrder}
-    disabled
-    style={{
+disabled={retailOrderSubmitting || hasMissingPrices || retailCart.length === 0}
+style={{
       ...adminPrimaryBtn,
       width: '100%',
       padding: 16,
       marginBottom: 12,
-      opacity: 0.5,
-      cursor: 'not-allowed',
+      opacity: retailOrderSubmitting || hasMissingPrices || retailCart.length === 0 ? 0.5 : 1,
+      cursor: retailOrderSubmitting ? 'wait' : 'pointer',
     }}
   >
-    Оформить заказ →
+    {retailOrderSubmitting ? 'Отправка заказа...' : 'Оформить заказ →'}
   </button>
 )}
 
