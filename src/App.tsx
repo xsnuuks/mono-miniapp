@@ -1340,13 +1340,13 @@ async function deleteOrder(orderId: number) {
     return (
       <div key={screen} style={page}>
         <button onClick={() => setScreen('admin')} style={backBtn}>Назад</button>
-        <div style={title}>Заказы</div>
+        <div style={title}>Розничные заказы</div>
         {orders.length === 0 ? (
           <div style={card}>Нет новых заказов</div>
         ) : (
           orders.map((o) => (
             <div key={o.id} style={{ ...card, marginBottom: 10 }}>
-              <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Заказ MONO-{o.id}</div>
+              <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Архивный заказ №{o.id}</div>
               <div style={{ fontSize: 13, color: '#c0c0c0', marginBottom: 8 }}>
                 Статус:{' '}
                 {o.status === 'progress'
