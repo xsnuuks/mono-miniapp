@@ -6352,8 +6352,9 @@ onChange={field.name === 'phone'
         }
 
         setRetailDeliveryData(data)
-        setRetailDeliverySaved(true)
-        showToast('Контакты и адрес заполнены')
+setRetailDeliverySaved(true)
+setRetailCheckoutStep(3)
+showToast('Адрес сохранён')
       }}
       style={{ display: 'grid', gap: 14 }}
     >
