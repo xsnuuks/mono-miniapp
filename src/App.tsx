@@ -289,7 +289,7 @@ const [wholesaleCart, setWholesaleCart] = useState<{
 
 const [retailDeliverySaved, setRetailDeliverySaved] = useState(false)
   const [retailCheckoutStep, setRetailCheckoutStep] = useState(1)
-  const [retailOrderSubmitting, setRetailOrderSubmitting] = useState(false)
+  const [, setRetailOrderSubmitting] = useState(false)
   const [retailOrderId, setRetailOrderId] = useState<number | null>(null)
   const retailOrderRequestRef = useRef(false)
   const retailRequestIdRef = useRef<string | null>(null)
@@ -6490,6 +6490,21 @@ onChange={field.name === 'phone'
       Стоимость доставки рассчитывается отдельно и не включена
       в указанную сумму.
     </div>
+
+    <button
+  type="button"
+  disabled
+  onClick={submitRetailOrder}
+  style={{
+    ...adminPrimaryBtn,
+    width: '100%',
+    padding: 16,
+    opacity: 0.5,
+    cursor: 'not-allowed',
+  }}
+>
+  Оформить заказ — скоро
+</button>
 
     <button
       type="button"
