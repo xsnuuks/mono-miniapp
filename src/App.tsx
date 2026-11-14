@@ -1978,7 +1978,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   }}
 >
   −
-
+ </button>
                     <span>{qty}</span>
 
                     <button
