@@ -1580,158 +1580,520 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
 
 if (screen.startsWith('admin_wholesale_add_')) {
   const catId = screen.replace('admin_wholesale_add_', '')
-  const catName: string = ({
-  all: 'Все',
-  '1': 'Жижи',
-  '2': 'Одноразки',
-  '3': 'Поды',
-  '4': 'Картриджи',
-  '5': 'Снюс',
-} as Record<string, string>)[catId] || catId
 
+  const categoryNames: Record<string, string> = {
+    '1': 'Жижи',
+    '2': 'Одноразки',
+    '3': 'Поды',
+    '4': 'Картриджи',
+    '5': 'Снюс',
+  }
+
+  const fieldStyle = {
+    ...inputStyle,
+    boxSizing: 'border-box' as const,
+    marginBottom: 0,
+    minWidth: 0,
+  }
+
+  const fieldLabel = {
+    display: 'block',
+    color: '#aaa',
+    fontSize: 12,
+    marginBottom: 8,
+    fontWeight: 600,
+  }
+
+  const removeStyle = {
+    border: '1px solid rgba(255,90,90,0.25)',
+    background: 'rgba(255,90,90,0.08)',
+    color: '#ff8585',
+    borderRadius: 12,
+    padding: '10px 14px',
+    cursor: 'pointer',
+  }
 
   return (
     <div key={screen} style={page}>
-      <div style={{ padding: '16px 16px 90px' }}>
-        <button onClick={() => setScreen(`admin_wholesale_${catId}` as any)} style={backBtn}>← Назад</button>
-        <h2 style={{ margin: '16px 0 8px', fontSize: 22 }}>Создать товар</h2>
-        <p style={{ color: '#aaa', fontSize: 14, marginBottom: 20 }}>
-          Категория: {catName}
-        </p>
+      <div style={{ padding: '12px 0 90px' }}>
+        <button
+          type="button"
+          onClick={() => setScreen(`admin_wholesale_${catId}` as any)}
+          style={backBtn}
+        >
+          ← Назад
+        </button>
 
-        <div style={card}>
-          <div style={{ fontSize: 13, color: '#888', marginBottom: 6 }}>Название</div>
-          <input
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-            placeholder="ELFLIQ 30ML"
-            style={{
-              width: '100%',
-              padding: 12,
-              borderRadius: 8,
-              border: '1px solid #333',
-              background: '#1a1a1a',
-              color: '#fff',
-              marginBottom: 16,
-            }}
-          />
+        <div style={{ marginBottom: 22 }}>
+          <div style={{
+            fontSize: 12,
+            color: '#bb91ff',
+            fontWeight: 700,
+            letterSpacing: 1,
+            marginBottom: 7,
+          }}>
+            PUFFY WHOLESALE
+          </div>
 
-          <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Ценовые пороги</div>
-          {tiers.map((t, i) => (
-            <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-              <input
-                type="number"
-                value={t.min_qty}
-                onChange={(e) => {
-                  const next = [...tiers]
-                  next[i].min_qty = Number(e.target.value)
-                  setTiers(next)
-                }}
-                placeholder="От шт"
-                style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #333', background: '#1a1a1a', color: '#fff' }}
-              />
-              <input
-                type="number"
-                value={t.price}
-                onChange={(e) => {
-                  const next = [...tiers]
-                  next[i].price = Number(e.target.value)
-                  setTiers(next)
-                }}
-                placeholder="Цена €"
-                style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #333', background: '#1a1a1a', color: '#fff' }}
-              />
-            </div>
-          ))}
-          <button
-            onClick={() => setTiers([...tiers, { min_qty: 10, price: 8 }])}
-            style={{ ...btnMain, marginBottom: 16, background: 'transparent', border: '1px solid #333' }}
-          >
-            + Порог
-          </button>
+          <h2 style={{
+            margin: '0 0 8px',
+            fontSize: 24,
+            fontWeight: 800,
+          }}>
+            Новый товар
+          </h2>
 
-          <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Вкусы</div>
-          {flavors.map((f, i) => (
-            <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-              <input
-                value={f.name}
-                onChange={(e) => {
-                  const next = [...flavors]
-                  next[i].name = e.target.value
-                  setFlavors(next)
-                }}
-                placeholder="Название вкуса"
-                style={{ flex: 2, padding: 10, borderRadius: 8, border: '1px solid #333', background: '#1a1a1a', color: '#fff' }}
-              />
-              <input
-                type="number"
-                value={f.stock}
-                onChange={(e) => {
-                  const next = [...flavors]
-                  next[i].stock = Number(e.target.value)
-                  setFlavors(next)
-                }}
-                placeholder="Кол-во"
-                style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #333', background: '#1a1a1a', color: '#fff' }}
-              />
-            </div>
-          ))}
-          <button
-            onClick={() => setFlavors([...flavors, { name: '', stock: 0 }])}
-            style={{ ...btnMain, marginBottom: 20, background: 'transparent', border: '1px solid #333' }}
-          >
-            + Вкус
-          </button>
-
-          <button
-            onClick={async () => {
-  if (!productName.trim()) {
-    alert('Введите название')
-    return
-  }
-  try {
-    const r = await fetch(`${API_URL}/api/wholesale/products`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Admin-Id': String(tgUser?.id || ''),
-      },
-      body: JSON.stringify({
-        name: productName,
-        category_id: Number(catId),
-        photo_url: null,
-        
-tiers: tiers
-  .filter(t => Number(t.min_qty) > 0 && Number(t.price) > 0)
-  .map(t => ({
-    min_qty: Number(t.min_qty),
-    price: Number(t.price),
-  })),
-flavors: flavors
-  .filter(f => f.name?.trim())
-  .map(f => ({
-    name: f.name.trim(),
-    stock: Math.max(0, Number(f.stock) || 0),
-  })),
-
-      }),
-    })
-    const data = await r.json()
-    if (data.id) {
-      await loadWholesaleProducts()
-      setScreen(`admin_wholesale_${catId}` as any)
-      setProductName('')
-    }
-  } catch {
-    alert('Ошибка создания')
-  }
-}}
-            style={btnMain}
-          >
-            Создать товар
-          </button>
+          <div style={{ color: '#999', fontSize: 13 }}>
+            Заполни информацию, цены и ассортимент
+          </div>
         </div>
+
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault()
+            if (submitting) return
+
+            const formData = new FormData(e.currentTarget)
+            const categoryId = catId === 'all'
+              ? Number(formData.get('category_id'))
+              : Number(catId)
+
+            if (!productName.trim()) {
+              showToast('Введите название')
+              return
+            }
+
+            if (!categoryNames[String(categoryId)]) {
+              showToast('Выберите категорию')
+              return
+            }
+
+            if (
+              tiers.length === 0 ||
+              tiers.some(t =>
+                !Number.isInteger(Number(t.min_qty)) ||
+                Number(t.min_qty) < 1 ||
+                !Number.isFinite(Number(t.price)) ||
+                Number(t.price) <= 0
+              )
+            ) {
+              showToast('Проверь ценовые пороги')
+              return
+            }
+
+            if (
+              flavors.length === 0 ||
+              flavors.some(f =>
+                !String(f.name || '').trim() ||
+                !Number.isInteger(Number(f.stock)) ||
+                Number(f.stock) < 0
+              )
+            ) {
+              showToast('Проверь вкусы и остатки')
+              return
+            }
+
+            const quantities = tiers.map(t => Number(t.min_qty))
+            if (new Set(quantities).size !== quantities.length) {
+              showToast('Пороги количества не должны повторяться')
+              return
+            }
+
+            setSubmitting(true)
+
+            try {
+              const response = await fetch(
+                `${API_URL}/api/wholesale/products`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-Admin-Id': String(tgUser?.id || ''),
+                  },
+                  body: JSON.stringify({
+                    name: productName.trim(),
+                    category_id: categoryId,
+                    photo_url: null,
+                    tiers: tiers.map(t => ({
+                      min_qty: Number(t.min_qty),
+                      price: Number(t.price),
+                    })),
+                    flavors: flavors.map(f => ({
+                      name: String(f.name).trim(),
+                      stock: Number(f.stock),
+                    })),
+                  }),
+                }
+              )
+
+              if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`)
+              }
+
+              const data = await response.json()
+
+              if (!data.id) {
+                throw new Error('Сервер не вернул ID товара')
+              }
+
+              await loadWholesaleProducts()
+
+              setProductName('')
+              setTiers([])
+              setFlavors([])
+
+              showToast('Товар создан')
+              setScreen(`admin_wholesale_${categoryId}` as any)
+            } catch (error) {
+              console.error('Create wholesale product:', error)
+              showToast('Не удалось создать товар')
+            } finally {
+              setSubmitting(false)
+            }
+          }}
+          style={{ display: 'grid', gap: 16 }}
+        >
+          {/* ИНФОРМАЦИЯ */}
+
+          <div style={adminCard}>
+            <div style={{
+              fontSize: 17,
+              fontWeight: 800,
+              marginBottom: 5,
+            }}>
+              01 · Информация
+            </div>
+
+            <div style={{
+              fontSize: 12,
+              color: '#999',
+              marginBottom: 18,
+            }}>
+              Основные данные карточки
+            </div>
+
+            <label style={fieldLabel}>Название товара</label>
+
+            <input
+              value={productName}
+              onChange={e => setProductName(e.target.value)}
+              placeholder="Например, ELFLIQ 10ML"
+              maxLength={120}
+              required
+              style={fieldStyle}
+            />
+
+            <div style={{ height: 16 }} />
+
+            <label style={fieldLabel}>Категория</label>
+
+            {catId === 'all' ? (
+              <select
+                name="category_id"
+                required
+                defaultValue=""
+                style={fieldStyle}
+              >
+                <option value="" disabled>
+                  Выбери категорию
+                </option>
+                {Object.entries(categoryNames).map(([id, name]) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <div style={{
+                padding: 13,
+                borderRadius: 12,
+                background: 'rgba(168,85,247,0.08)',
+                border: '1px solid rgba(168,85,247,0.2)',
+                fontWeight: 700,
+              }}>
+                {categoryNames[catId] || 'Категория не найдена'}
+              </div>
+            )}
+          </div>
+
+          {/* ЦЕНОВЫЕ ПОРОГИ */}
+
+          <div style={adminCard}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 6,
+            }}>
+              <div style={{ fontSize: 17, fontWeight: 800 }}>
+                02 · Оптовые цены
+              </div>
+              <span style={adminBadge(true)}>
+                {tiers.length} шт.
+              </span>
+            </div>
+
+            <div style={{
+              fontSize: 12,
+              color: '#999',
+              lineHeight: 1.5,
+              marginBottom: 16,
+            }}>
+              Укажи количество, от которого действует цена
+            </div>
+
+            <div style={{ display: 'grid', gap: 12 }}>
+              {tiers.map((t, i) => (
+                <div
+                  key={i}
+                  style={{
+                    padding: 12,
+                    background: 'rgba(255,255,255,0.035)',
+                    borderRadius: 14,
+                    border: '1px solid rgba(255,255,255,0.07)',
+                  }}
+                >
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: 12,
+                  }}>
+                    <span style={{
+                      fontSize: 13,
+                      fontWeight: 700,
+                    }}>
+                      Порог №{i + 1}
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={() => setTiers(
+                        prev => prev.filter((_, index) => index !== i)
+                      )}
+                      style={removeStyle}
+                    >
+                      Удалить
+                    </button>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <label style={fieldLabel}>От шт.</label>
+                      <input
+                        type="number"
+                        min="1"
+                        step="1"
+                        value={t.min_qty}
+                        onChange={e => setTiers(prev =>
+                          prev.map((item, index) =>
+                            index === i
+                              ? {
+                                  ...item,
+                                  min_qty: e.target.value,
+                                }
+                              : item
+                          )
+                        )}
+                        style={fieldStyle}
+                        required
+                      />
+                    </div>
+
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <label style={fieldLabel}>Цена € / шт.</label>
+                      <input
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        value={t.price}
+                        onChange={e => setTiers(prev =>
+                          prev.map((item, index) =>
+                            index === i
+                              ? {
+                                  ...item,
+                                  price: e.target.value,
+                                }
+                              : item
+                          )
+                        )}
+                        style={fieldStyle}
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setTiers(prev => [
+                ...prev,
+                { min_qty: 20, price: 5.7 },
+              ])}
+              style={{
+                ...adminActionBtn,
+                width: '100%',
+                marginTop: 14,
+                padding: 14,
+                color: '#d8b4fe',
+              }}
+            >
+              + Добавить ценовой порог
+            </button>
+          </div>
+
+          {/* ВКУСЫ И ОСТАТКИ */}
+
+          <div style={adminCard}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 6,
+            }}>
+              <div style={{ fontSize: 17, fontWeight: 800 }}>
+                03 · Вкусы
+              </div>
+              <span style={adminBadge(true)}>
+                {flavors.length} шт.
+              </span>
+            </div>
+
+            <div style={{
+              fontSize: 12,
+              color: '#999',
+              marginBottom: 16,
+            }}>
+              Добавь варианты и остатки на складе
+            </div>
+
+            <div style={{ display: 'grid', gap: 12 }}>
+              {flavors.map((f, i) => (
+                <div
+                  key={i}
+                  style={{
+                    padding: 12,
+                    background: 'rgba(255,255,255,0.035)',
+                    borderRadius: 14,
+                    border: '1px solid rgba(255,255,255,0.07)',
+                  }}
+                >
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: 12,
+                  }}>
+                    <span style={{ fontSize: 13, fontWeight: 700 }}>
+                      Вкус №{i + 1}
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={() => setFlavors(
+                        prev => prev.filter((_, index) => index !== i)
+                      )}
+                      style={removeStyle}
+                    >
+                      Удалить
+                    </button>
+                  </div>
+
+                  <label style={fieldLabel}>Название вкуса</label>
+                  <input
+                    value={f.name}
+                    onChange={e => setFlavors(prev =>
+                      prev.map((item, index) =>
+                        index === i
+                          ? { ...item, name: e.target.value }
+                          : item
+                      )
+                    )}
+                    placeholder="Например, Mango Ice"
+                    style={fieldStyle}
+                    required
+                  />
+
+                  <div style={{ height: 12 }} />
+
+                  <label style={fieldLabel}>Остаток, шт.</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={f.stock}
+                    onChange={e => setFlavors(prev =>
+                      prev.map((item, index) =>
+                        index === i
+                          ? { ...item, stock: e.target.value }
+                          : item
+                      )
+                    )}
+                    style={fieldStyle}
+                    required
+                  />
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setFlavors(prev => [
+                ...prev,
+                { name: '', stock: 0 },
+              ])}
+              style={{
+                ...adminActionBtn,
+                width: '100%',
+                marginTop: 14,
+                padding: 14,
+                color: '#d8b4fe',
+              }}
+            >
+              + Добавить вкус
+            </button>
+          </div>
+
+          {/* СОХРАНЕНИЕ */}
+
+          <div style={adminCard}>
+            <div style={{
+              fontWeight: 700,
+              marginBottom: 8,
+            }}>
+              Готово к созданию?
+            </div>
+
+            <div style={{
+              color: '#999',
+              fontSize: 12,
+              lineHeight: 1.6,
+              marginBottom: 16,
+            }}>
+              Проверь название, цены и остатки. После
+              создания можно будет загрузить фотографию
+              и редактировать товар в админке.
+            </div>
+
+            <button
+              type="submit"
+              disabled={submitting}
+              style={{
+                ...adminPrimaryBtn,
+                width: '100%',
+                padding: 16,
+                fontSize: 15,
+                opacity: submitting ? 0.5 : 1,
+              }}
+            >
+              {submitting ? 'Создание...' : 'Создать товар'}
+            </button>
+          </div>
+        </form>
       </div>
+
       <BottomNav />
     </div>
   )
