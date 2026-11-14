@@ -2243,7 +2243,7 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
 
             try {
               const response = await fetch(
-                `${API_URL}/api/wholesale/products`,
+                `${API_URL}/api/retail/products`,
                 {
                   method: 'POST',
                   headers: {
@@ -2252,8 +2252,8 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
                   },
                   body: JSON.stringify({
                     name: productName.trim(),
-                    category_id: categoryId,
-                    photo_url: null,
+category_id: categoryId,
+description: '',
                     tiers: tiers.map(t => ({
                       min_qty: Number(t.min_qty),
                       price: Number(t.price),
@@ -2276,14 +2276,14 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
                 throw new Error('Сервер не вернул ID товара')
               }
 
-              await loadWholesaleProducts()
+              await loadRetailProducts()
 
               setProductName('')
               setTiers([])
               setFlavors([])
 
               showToast('Товар создан')
-              setScreen(`admin_wholesale_${categoryId}` as any)
+              setScreen(`admin_retail_${categoryId}` as Screen)
             } catch (error) {
               console.error('Create wholesale product:', error)
               showToast('Не удалось создать товар')
@@ -2470,7 +2470,7 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
               type="button"
               onClick={() => setTiers(prev => [
                 ...prev,
-                { min_qty: 20, price: 5.7 },
+                { min_qty: 1, price: 15 },
               ])}
               style={{
                 ...adminActionBtn,
