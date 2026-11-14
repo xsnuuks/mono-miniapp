@@ -214,6 +214,7 @@ function App() {
   const [favProducts, setFavProducts] = useState<Product[]>([])
   const [showDiscountInfo, setShowDiscountInfo] = useState(false)
   const [wholesaleProducts, setWholesaleProducts] = useState<any[]>([])
+  const [retailProducts, setRetailProducts] = useState<any[]>([])
   const wholesaleDragRef = useRef<{
   fromId: number
   toId: number
