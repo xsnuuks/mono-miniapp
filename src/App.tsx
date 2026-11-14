@@ -4024,6 +4024,256 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     )
   }
 
+  if (screen === 'retail_product') {
+  const product = retailProducts.find(
+    p => Number(p.id) === selectedRetailId
+  )
+
+  if (!product) {
+    return (
+      <div style={page}>
+        <button style={backBtn} onClick={() => setScreen('catalog')}>
+          ← Назад
+        </button>
+        <div style={card}>Товар не найден</div>
+      </div>
+    )
+  }
+
+  const totalQty = retailFlavors.reduce(
+    (sum, f) => sum + (retailQty[f.id] || 0), 0
+  )
+
+  const tiers = [...(product.retail_tiers || [])].sort(
+    (a: any, b: any) => Number(a.min_qty) - Number(b.min_qty)
+  )
+
+  const activeTier = tiers
+    .filter((t: any) => totalQty >= Number(t.min_qty))
+    .pop()
+
+  const unitPrice = activeTier ? Number(activeTier.price) : 0
+  const totalPrice = unitPrice * totalQty
+
+  return (
+    <div key={screen} style={page}>
+      <button
+        type="button"
+        onClick={() => setScreen('catalog')}
+        style={backBtn}
+      >
+        ← Назад в каталог
+      </button>
+
+      <div style={{
+        ...adminCard,
+        marginBottom: 16,
+        textAlign: 'center',
+      }}>
+        {product.photo_url && (
+          <img
+            src={photoUrl(product.photo_url) || ''}
+            alt={product.name}
+            style={{
+              width: '100%',
+              maxHeight: 240,
+              objectFit: 'contain',
+              marginBottom: 14,
+            }}
+          />
+        )}
+
+        <div style={{ fontSize: 20, fontWeight: 800 }}>
+          {product.name}
+        </div>
+
+        <div style={{
+          color: '#34d399',
+          fontSize: 13,
+          marginTop: 10,
+        }}>
+          В наличии: {product.stock || 0} шт.
+        </div>
+      </div>
+
+      <div style={adminCard}>
+        <div style={{
+          fontSize: 17,
+          fontWeight: 700,
+          marginBottom: 18,
+        }}>
+          Выберите вкусы
+        </div>
+
+        {retailLoading ? (
+          <div style={{ color: '#aaa' }}>Загрузка...</div>
+        ) : (
+          retailFlavors.map(f => {
+            const quantity = retailQty[f.id] || 0
+            const stock = Number(f.stock) || 0
+
+            return (
+              <div
+                key={f.id}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: 12,
+                  padding: '14px 0',
+                  borderBottom: '1px solid rgba(168,85,247,0.2)',
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700 }}>
+                    {f.name}
+                  </div>
+
+                  <div style={{
+                    color: stock > 0 ? '#34d399' : '#999',
+                    fontSize: 12,
+                    marginTop: 6,
+                  }}>
+                    {stock > 0
+                      ? `${stock} шт. в наличии`
+                      : 'Нет в наличии'}
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  border: '1px solid #7541ad',
+                  borderRadius: 12,
+                  overflow: 'hidden',
+                  background: '#29183c',
+                }}>
+                  <button
+                    type="button"
+                    disabled={quantity === 0}
+                    onClick={() =>
+                      setRetailQty(prev => ({
+                        ...prev,
+                        [f.id]: Math.max(0, quantity - 1),
+                      }))
+                    }
+                    style={{
+                      width: 44,
+                      height: 44,
+                      border: 'none',
+                      background: 'rgba(255,255,255,0.05)',
+                      color: '#fff',
+                      fontSize: 22,
+                    }}
+                  >
+                    −
+                  </button>
+
+                  <span style={{
+                    minWidth: 35,
+                    textAlign: 'center',
+                    fontWeight: 800,
+                  }}>
+                    {quantity}
+                  </span>
+
+                  <button
+                    type="button"
+                    disabled={quantity >= stock}
+                    onClick={() =>
+                      setRetailQty(prev => ({
+                        ...prev,
+                        [f.id]: Math.min(stock, quantity + 1),
+                      }))
+                    }
+                    style={{
+                      width: 44,
+                      height: 44,
+                      border: 'none',
+                      background: 'rgba(168,85,247,0.2)',
+                      color: '#fff',
+                      fontSize: 22,
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            )
+          })
+        )}
+
+        <div style={{
+          marginTop: 22,
+          paddingTop: 16,
+          borderTop: '1px solid #444',
+        }}>
+          <div style={{
+            color: '#aaa',
+            fontSize: 12,
+            textAlign: 'center',
+            marginBottom: 14,
+          }}>
+            Цена за штуку
+          </div>
+
+          {tiers.map((tier: any) => (
+            <div
+              key={tier.id}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '10px 0',
+                color: activeTier?.id === tier.id
+                  ? '#d8b4fe'
+                  : '#aaa',
+                fontSize: 13,
+              }}
+            >
+              <span>От {tier.min_qty} шт.</span>
+              <strong>{Number(tier.price).toFixed(2)} €</strong>
+            </div>
+          ))}
+        </div>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: 22,
+          marginBottom: 18,
+        }}>
+          <strong>{totalQty} шт.</strong>
+          <strong style={{
+            fontSize: 24,
+            color: '#c084fc',
+          }}>
+            {totalPrice.toFixed(2)} €
+          </strong>
+        </div>
+
+        <button
+          type="button"
+          disabled={totalQty === 0 || !activeTier}
+          onClick={() =>
+            showToast('Следующий шаг — подключение розничной корзины')
+          }
+          style={{
+            ...adminPrimaryBtn,
+            width: '100%',
+            padding: 16,
+            opacity: totalQty > 0 && activeTier ? 1 : 0.5,
+          }}
+        >
+          Добавить выбранное
+        </button>
+      </div>
+
+      <BottomNav />
+    </div>
+  )
+}
+  
   if (screen === 'wholesale_product') {
     const product = wholesaleProducts.find(
       p => Number(p.id) === selectedWholesaleId
