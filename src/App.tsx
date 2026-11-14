@@ -1444,31 +1444,122 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
           Товары в категории
         </p>
 
-        <div style={card}>
-  {wholesaleProducts.filter(p => catId === 'all' || String(p.category_id) === catId).length === 0 ? (
-    <div style={{ color: '#888', textAlign: 'center', padding: '20px 0' }}>
+        <div style={{ display: 'grid', gap: 12 }}>
+  {wholesaleProducts.filter(
+    p => catId === 'all' || String(p.category_id) === catId
+  ).length === 0 ? (
+    <div style={{
+      ...adminCard,
+      textAlign: 'center',
+      color: '#aaa',
+      padding: 28,
+    }}>
       Товаров пока нет
     </div>
   ) : (
     wholesaleProducts
-      .filter(p => catId === 'all' || String(p.category_id) === catId)
+      .filter(p =>
+        catId === 'all' || String(p.category_id) === catId
+      )
       .map(p => (
         <button
           key={p.id}
-          onClick={() => setScreen(`admin_wholesale_product_${p.id}` as any)}
+          type="button"
+          onClick={() =>
+            setScreen(`admin_wholesale_product_${p.id}` as any)
+          }
           style={{
+            ...adminCard,
             width: '100%',
-            textAlign: 'left',
-            padding: '12px 0',
-            border: 'none',
-            borderBottom: '1px solid #222',
-            background: 'transparent',
             color: '#fff',
+            textAlign: 'left',
+            cursor: 'pointer',
           }}
         >
-          <div style={{ fontWeight: 600 }}>{p.name}</div>
-          <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
-            {p.prices} порога · {p.flavors} вкуса · {p.stock} шт.
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+          }}>
+            <div style={{
+              width: 76,
+              height: 76,
+              flexShrink: 0,
+              borderRadius: 14,
+              background: 'rgba(255,255,255,0.05)',
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              {p.photo_url ? (
+                <img
+                  src={photoUrl(p.photo_url) || ''}
+                  alt={p.name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                />
+              ) : (
+                <span style={{ fontSize: 26 }}>📦</span>
+              )}
+            </div>
+
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{
+                fontSize: 15,
+                fontWeight: 700,
+                marginBottom: 8,
+                overflowWrap: 'anywhere',
+              }}>
+                {p.name}
+              </div>
+
+              <span style={adminBadge(
+                Number(p.is_visible) === 1
+              )}>
+                {Number(p.is_visible) === 1
+                  ? '● Опубликован'
+                  : '○ Скрыт'}
+              </span>
+            </div>
+
+            <span style={{
+              color: '#a855f7',
+              fontSize: 22,
+            }}>
+              ›
+            </span>
+          </div>
+
+          <div style={{
+            display: 'flex',
+            gap: 8,
+            marginTop: 14,
+          }}>
+            {[
+              { label: 'Вкусов', value: p.flavors || 0 },
+              { label: 'Остаток', value: p.stock || 0 },
+              { label: 'Порогов', value: p.prices || 0 },
+            ].map(stat => (
+              <div key={stat.label} style={adminMiniStat}>
+                <div style={{
+                  fontSize: 17,
+                  fontWeight: 700,
+                }}>
+                  {stat.value}
+                </div>
+                <div style={{
+                  fontSize: 11,
+                  color: '#aaa',
+                  marginTop: 4,
+                }}>
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </button>
       ))
