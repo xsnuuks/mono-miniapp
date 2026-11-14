@@ -6357,6 +6357,8 @@ onChange={field.name === 'phone'
       }}
       style={{ display: 'grid', gap: 14 }}
     >
+      {retailCheckoutStep === 1 && (
+    <>
       <div style={{
         fontSize: 17,
         fontWeight: 800,
@@ -6387,6 +6389,8 @@ onChange={field.name === 'phone'
           />
         </label>
       ))}
+      </>
+  )}
 
       {retailCheckoutStep === 2 && (
   <>
