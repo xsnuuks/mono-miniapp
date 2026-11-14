@@ -3820,6 +3820,74 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
               ♙ Введите данные
             </div>
 
+            <div style={{ marginBottom: 16 }}>
+  <label style={{
+    display: 'block',
+    color: '#b8a8dc',
+    fontSize: 13,
+    marginBottom: 8,
+  }}>
+    Страна *
+  </label>
+
+  <select
+    value={wholesaleCountry}
+    onChange={e => {
+      const country = e.target.value
+
+      setWholesaleCountry(country)
+      setWholesaleCarrier('')
+
+      setWholesaleContact(prev => ({
+        ...prev,
+        phone: WHOLESALE_DIAL_CODES[country] || '',
+      }))
+    }}
+    style={{
+      ...inputStyle,
+      background: '#161616',
+      width: '100%',
+      boxSizing: 'border-box',
+      padding: 14,
+      marginBottom: 0,
+    }}
+  >
+    {[
+      ['PL', 'Польша'],
+      ['AT', 'Австрия'],
+      ['BE', 'Бельгия'],
+      ['BG', 'Болгария'],
+      ['HU', 'Венгрия'],
+      ['DE', 'Германия'],
+      ['GR', 'Греция'],
+      ['DK', 'Дания'],
+      ['IE', 'Ирландия'],
+      ['ES', 'Испания'],
+      ['IT', 'Италия'],
+      ['CY', 'Кипр'],
+      ['LV', 'Латвия'],
+      ['LT', 'Литва'],
+      ['LU', 'Люксембург'],
+      ['MT', 'Мальта'],
+      ['NL', 'Нидерланды'],
+      ['PT', 'Португалия'],
+      ['RO', 'Румыния'],
+      ['SK', 'Словакия'],
+      ['SI', 'Словения'],
+      ['FI', 'Финляндия'],
+      ['FR', 'Франция'],
+      ['HR', 'Хорватия'],
+      ['CZ', 'Чехия'],
+      ['SE', 'Швеция'],
+      ['EE', 'Эстония'],
+    ].map(([code, name]) => (
+      <option key={code} value={code}>
+        {name}
+      </option>
+    ))}
+  </select>
+</div>
+            
             {[
               {
                 name: 'first_name',
@@ -3863,7 +3931,11 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
                 <input
                   name={field.name}
                   type={field.type}
-                  defaultValue={field.value}
+                  value={field.name === 'phone' ? wholesaleContact.phone : undefined}
+defaultValue={field.name !== 'phone' ? field.value : undefined}
+onChange={field.name === 'phone'
+  ? e => setWholesaleContact(prev => ({ ...prev, phone: e.target.value }))
+  : undefined}
                   placeholder={field.placeholder}
                   required
                   style={{
