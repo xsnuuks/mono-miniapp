@@ -4262,9 +4262,46 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
         <button
           type="button"
           disabled={totalQty === 0 || !activeTier}
-          onClick={() =>
-            showToast('Следующий шаг — подключение розничной корзины')
-          }
+          onClick={() => {
+  const selected = retailFlavors.filter(
+    f => (retailQty[f.id] || 0) > 0
+  )
+
+  setRetailCart(prev => {
+    const updated = [...prev]
+
+    for (const flavor of selected) {
+      const quantity = retailQty[flavor.id] || 0
+
+      const existingIndex = updated.findIndex(
+        item =>
+          item.productId === Number(product.id) &&
+          item.flavorId === Number(flavor.id)
+      )
+
+      if (existingIndex >= 0) {
+        updated[existingIndex] = {
+          ...updated[existingIndex],
+          quantity: updated[existingIndex].quantity + quantity,
+        }
+      } else {
+        updated.push({
+          productId: Number(product.id),
+          productName: product.name,
+          flavorId: Number(flavor.id),
+          flavorName: flavor.name,
+          quantity,
+        })
+      }
+    }
+
+    return updated
+  })
+
+  setRetailQty({})
+  showToast('Товары добавлены в корзину')
+  setScreen('cart')
+}}
           style={{
             ...adminPrimaryBtn,
             width: '100%',
