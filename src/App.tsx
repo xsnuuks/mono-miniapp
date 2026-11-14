@@ -1169,14 +1169,8 @@ async function deleteOrder(orderId: number) {
   if (screen === 'info') {
   return (
     <div key={screen} style={page}>
+      <RetailTopBar wholesale={priceMode === 'wholesale'} />
       <div style={{ ...title, marginBottom: 20 }}>Инфо</div>
-      <div style={{
-  display: 'flex',
-  justifyContent: 'flex-end',
-  marginBottom: 16,
-}}>
-  <RetailDeliverySelector />
-</div>
 
       <button
         onClick={() => setScreen('catalog')}
