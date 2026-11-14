@@ -6053,6 +6053,71 @@ onChange={field.name === 'phone'
     0
   )
 
+    async function submitRetailOrder() {
+  if (retailOrderRequestRef.current || retailOrderId !== null) return
+
+  if (retailCart.length === 0 || hasMissingPrices) {
+    showToast('Проверьте товары и цены')
+    return
+  }
+
+  if (deliveryType !== 'delivery' || !retailDeliverySaved) {
+    showToast('Сначала заполните данные доставки')
+    return
+  }
+
+  if (!retailRequestIdRef.current) {
+    retailRequestIdRef.current = crypto.randomUUID()
+  }
+
+  retailOrderRequestRef.current = true
+  setRetailOrderSubmitting(true)
+
+  try {
+    const response = await fetch(`${API_URL}/api/retail/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        request_id: retailRequestIdRef.current,
+        user_id: tgUser?.id ?? null,
+        delivery_type: 'delivery',
+        first_name: retailDeliveryData.firstName,
+        last_name: retailDeliveryData.lastName,
+        phone: retailDeliveryData.phone,
+        email: retailDeliveryData.email,
+        city: retailDeliveryData.city,
+        postal_code: retailDeliveryData.postalCode,
+        street: retailDeliveryData.street,
+        house: retailDeliveryData.house,
+        apartment: retailDeliveryData.apartment,
+        payment_method: retailPaymentMethod,
+        items: retailCart.map(item => ({
+          product_id: item.productId,
+          flavor_id: item.flavorId,
+          quantity: item.quantity,
+        })),
+      }),
+    })
+
+    const result = await response.json()
+
+    if (!response.ok || !result.ok) {
+      throw new Error(result.detail || 'Не удалось создать заказ')
+    }
+
+    setRetailOrderId(Number(result.order_id))
+    setRetailCheckoutStep(4)
+    showToast(`Заказ №${result.order_id} создан`)
+  } catch (error) {
+    showToast(
+      error instanceof Error ? error.message : 'Ошибка отправки заказа'
+    )
+  } finally {
+    retailOrderRequestRef.current = false
+    setRetailOrderSubmitting(false)
+  }
+}
+
   return (
     <div key={screen} style={page}>
       <RetailTopBar />
