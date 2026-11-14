@@ -1953,17 +1953,171 @@ flavors: flavors
         <h2 style={{ margin: '16px 0 16px', fontSize: 22 }}>Цены · {product?.name}</h2>
 
         {tiers.map(t => (
-          <div key={t.id} style={{ ...card, marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>От {t.min_qty} шт · {t.price} €</div>
-            <button
-              onClick={async () => {
-                await fetch(`${API_URL}/api/wholesale/tiers/${t.id}`, { method: 'DELETE' })
-                setTiers(tiers.filter(x => x.id !== t.id))
-              }}
-              style={{ background: 'transparent', border: 'none', color: '#f66', fontSize: 18 }}
-            >×</button>
-          </div>
-        ))}
+  <form
+    key={t.id}
+    onSubmit={async (e) => {
+      e.preventDefault()
+
+      const fd = new FormData(e.currentTarget)
+      const min = Number(fd.get('min_qty'))
+      const cost = Number(fd.get('price'))
+
+      if (
+        !Number.isInteger(min) ||
+        min < 1 ||
+        !Number.isFinite(cost) ||
+        cost <= 0
+      ) {
+        showToast('Проверь количество и цену')
+        return
+      }
+
+      fd.set('min_qty', String(min))
+      fd.set('price', String(cost))
+
+      try {
+        const r = await fetch(
+          `${API_URL}/api/wholesale/tiers/${t.id}`,
+          {
+            method: 'PATCH',
+            headers: {
+              'X-Admin-Id': String(tgUser?.id || ''),
+            },
+            body: fd,
+          }
+        )
+
+        if (!r.ok) throw new Error('Ошибка сохранения')
+
+        setTiers(prev => prev.map(item =>
+          item.id === t.id
+            ? { ...item, min_qty: min, price: cost }
+            : item
+        ))
+
+        await loadWholesaleProducts()
+        showToast('Цена сохранена')
+      } catch {
+        showToast('Не удалось сохранить цену')
+      }
+    }}
+    style={{
+      ...card,
+      marginBottom: 12,
+      borderRadius: 18,
+      border: '1px solid rgba(168,85,247,0.25)',
+      padding: 16,
+    }}
+  >
+    <div style={{
+      fontSize: 15,
+      fontWeight: 700,
+      marginBottom: 14,
+    }}>
+      Ценовой порог
+    </div>
+
+    <div style={{ display: 'flex', gap: 10 }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{
+          fontSize: 12,
+          color: '#aaa',
+          marginBottom: 7,
+        }}>
+          От количества
+        </div>
+
+        <input
+          name="min_qty"
+          type="number"
+          min="1"
+          step="1"
+          defaultValue={t.min_qty}
+          style={inputStyle}
+          required
+        />
+      </div>
+
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{
+          fontSize: 12,
+          color: '#aaa',
+          marginBottom: 7,
+        }}>
+          Цена за шт. (€)
+        </div>
+
+        <input
+          name="price"
+          type="number"
+          min="0.01"
+          step="0.01"
+          defaultValue={t.price}
+          style={inputStyle}
+          required
+        />
+      </div>
+    </div>
+
+    <div style={{ display: 'flex', gap: 10 }}>
+      <button
+        type="submit"
+        style={{
+          ...btnMain,
+          flex: 1,
+          width: 'auto',
+          padding: 12,
+          background: '#7c3aed',
+          border: 'none',
+          fontSize: 13,
+        }}
+      >
+        Сохранить
+      </button>
+
+      <button
+        type="button"
+        onClick={async () => {
+          if (!confirm('Удалить этот ценовой порог?')) return
+
+          try {
+            const r = await fetch(
+              `${API_URL}/api/wholesale/tiers/${t.id}`,
+              {
+                method: 'DELETE',
+                headers: {
+                  'X-Admin-Id': String(tgUser?.id || ''),
+                },
+              }
+            )
+
+            if (!r.ok) throw new Error('Ошибка удаления')
+
+            setTiers(prev => prev.filter(
+              item => item.id !== t.id
+            ))
+
+            await loadWholesaleProducts()
+            showToast('Порог удалён')
+          } catch {
+            showToast('Не удалось удалить порог')
+          }
+        }}
+        style={{
+          padding: '12px 16px',
+          borderRadius: 12,
+          border: '1px solid rgba(255,80,80,0.25)',
+          background: 'rgba(255,80,80,0.08)',
+          color: '#ff8585',
+          fontWeight: 700,
+          cursor: 'pointer',
+        }}
+      >
+        Удалить
+      </button>
+    </div>
+  </form>
+))}
 
         <div style={{ ...card, marginTop: 16 }}>
           <input style={inputStyle} placeholder="От кол-ва (шт)" value={minQty} onChange={e => setMinQty(e.target.value)} />
