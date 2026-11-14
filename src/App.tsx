@@ -6312,6 +6312,7 @@ onChange={field.name === 'phone'
 
   return (
     <div key={screen} style={page}>
+      <RetailTopBar wholesale={priceMode === 'wholesale'} />
       <div style={title}>Корзина</div>
 
       {cart.length === 0 && retailCart.length === 0 && wholesaleCart.length === 0 && (
@@ -6385,7 +6386,6 @@ onChange={field.name === 'phone'
 
       {retailCart.length > 0 && (
   <div>
-    <RetailDeliverySelector />
 
     <div style={{
       ...adminCard,
