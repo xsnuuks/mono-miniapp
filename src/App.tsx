@@ -6083,7 +6083,7 @@ onChange={field.name === 'phone'
       body: JSON.stringify({
         request_id: retailRequestIdRef.current,
         user_id: tgUser?.id ?? null,
-        delivery_type: 'delivery',
+        delivery_type: deliveryType,
         first_name: retailDeliveryData.firstName,
         last_name: retailDeliveryData.lastName,
         phone: retailDeliveryData.phone,
@@ -6260,6 +6260,40 @@ onChange={field.name === 'phone'
 
   <div style={{ fontSize: 13, color: '#aaa' }}>
     Выберите удобный способ оплаты
+    {([
+    { id: 'usdt', label: 'USDT · Криптовалюта' },
+    { id: 'uah', label: 'Банковский перевод UAH' },
+    { id: 'cash', label: 'Наличные при получении' },
+  ] as const).map(method => (
+    <button
+      key={method.id}
+      type="button"
+      onClick={() => setRetailPaymentMethod(method.id)}
+      style={{
+        padding: 16,
+        borderRadius: 12,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 12,
+        color: '#fff',
+        fontWeight: 600,
+        textAlign: 'left',
+        background: retailPaymentMethod === method.id
+          ? 'rgba(168,85,247,0.18)'
+          : '#17131d',
+        border: retailPaymentMethod === method.id
+          ? '1px solid #a855f7'
+          : '1px solid rgba(255,255,255,0.15)',
+        cursor: 'pointer',
+      }}
+    >
+      <span>{method.label}</span>
+      <span style={{ color: '#c084fc', fontSize: 20 }}>
+        {retailPaymentMethod === method.id ? '◉' : '○'}
+      </span>
+    </button>
+  ))}
     <div style={{
   borderTop: '1px solid rgba(255,255,255,0.12)',
   marginTop: 12,
@@ -6299,41 +6333,6 @@ onChange={field.name === 'phone'
   </div>
 </div>
   </div>
-
-  {([
-    { id: 'usdt', label: 'USDT · Криптовалюта' },
-    { id: 'uah', label: 'Банковский перевод UAH' },
-    { id: 'cash', label: 'Наличные при получении' },
-  ] as const).map(method => (
-    <button
-      key={method.id}
-      type="button"
-      onClick={() => setRetailPaymentMethod(method.id)}
-      style={{
-        padding: 16,
-        borderRadius: 12,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        gap: 12,
-        color: '#fff',
-        fontWeight: 600,
-        textAlign: 'left',
-        background: retailPaymentMethod === method.id
-          ? 'rgba(168,85,247,0.18)'
-          : '#17131d',
-        border: retailPaymentMethod === method.id
-          ? '1px solid #a855f7'
-          : '1px solid rgba(255,255,255,0.15)',
-        cursor: 'pointer',
-      }}
-    >
-      <span>{method.label}</span>
-      <span style={{ color: '#c084fc', fontSize: 20 }}>
-        {retailPaymentMethod === method.id ? '◉' : '○'}
-      </span>
-    </button>
-  ))}
 </div>
 
           <button
