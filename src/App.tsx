@@ -4292,6 +4292,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
           flavorId: Number(flavor.id),
           flavorName: flavor.name,
           quantity,
+          stock: Number(flavor.stock) || 0,
         })
       }
     }
