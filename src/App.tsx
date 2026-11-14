@@ -1434,6 +1434,73 @@ async function deleteOrder(orderId: number) {
   )
 }
 
+  async function finishWholesaleDrag(categoryId: string) {
+  const drag = wholesaleDragRef.current
+
+  wholesaleDragRef.current = null
+  setWholesaleDraggingId(null)
+  setWholesaleDragTargetId(null)
+
+  if (!drag || categoryId === 'all') return
+  if (drag.fromId === drag.toId) return
+
+  const categoryProducts = wholesaleProducts.filter(
+    p => String(p.category_id) === categoryId
+  )
+
+  const fromIndex = categoryProducts.findIndex(
+    p => Number(p.id) === drag.fromId
+  )
+  const toIndex = categoryProducts.findIndex(
+    p => Number(p.id) === drag.toId
+  )
+
+  if (fromIndex < 0 || toIndex < 0) return
+
+  const reordered = [...categoryProducts]
+  const [moved] = reordered.splice(fromIndex, 1)
+  reordered.splice(toIndex, 0, moved)
+
+  const ids = reordered.map(p => Number(p.id))
+
+  setWholesaleProducts(prev => {
+    let index = 0
+
+    return prev.map(p => {
+      if (String(p.category_id) !== categoryId) return p
+      return reordered[index++]
+    })
+  })
+
+  try {
+    const response = await fetch(
+      `${API_URL}/api/wholesale/products/reorder`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Id': String(tgUser?.id || ''),
+        },
+        body: JSON.stringify({
+          category_id: Number(categoryId),
+          product_ids: ids,
+        }),
+      }
+    )
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`)
+    }
+
+    await loadWholesaleProducts()
+    showToast('Порядок товаров сохранён')
+  } catch (error) {
+    console.error('Wholesale reorder error:', error)
+    await loadWholesaleProducts()
+    showToast('Не удалось сохранить порядок')
+  }
+}
+  
 if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
   const catId = screen.replace('admin_wholesale_', '')
   const catName: string = ({
