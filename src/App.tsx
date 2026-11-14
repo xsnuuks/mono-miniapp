@@ -275,7 +275,23 @@ const [wholesaleCart, setWholesaleCart] = useState<{
   const [productName, setProductName] = useState('')
   const [optCat, setOptCat] = useState('all')
   const [priceMode, setPriceMode] = useState<'retail' | 'wholesale'>('retail')
-  const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup')
+  const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>(() => {
+  try {
+    return localStorage.getItem('puffy_retail_delivery') === 'delivery'
+      ? 'delivery'
+      : 'pickup'
+  } catch {
+    return 'pickup'
+  }
+})
+
+useEffect(() => {
+  try {
+    localStorage.setItem('puffy_retail_delivery', deliveryType)
+  } catch {
+    // Настройка продолжит работать в текущем сеансе
+  }
+}, [deliveryType])
   const [ageConfirmed, setAgeConfirmed] = useState(false)
 
 function confirmAge() {
@@ -860,6 +876,47 @@ async function deleteOrder(orderId: number) {
     showToast('Удалено')
   }
 
+  function RetailDeliverySelector() {
+  return (
+    <div style={{
+      display: 'flex',
+      gap: 8,
+      padding: 5,
+      borderRadius: 14,
+      background: '#211629',
+      border: '1px solid rgba(168,85,247,0.3)',
+      marginBottom: 18,
+    }}>
+      {([
+        { id: 'pickup', label: '📍 Самовывоз' },
+        { id: 'delivery', label: '🚚 Доставка GLS' },
+      ] as const).map(option => (
+        <button
+          key={option.id}
+          type="button"
+          onClick={() => setDeliveryType(option.id)}
+          style={{
+            flex: 1,
+            minWidth: 0,
+            padding: '13px 8px',
+            borderRadius: 11,
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: 12,
+            fontWeight: 700,
+            color: '#fff',
+            background: deliveryType === option.id
+              ? 'linear-gradient(90deg,#7c3aed,#c026d3)'
+              : 'transparent',
+          }}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+  
   function BottomNav() {
   if (
     [
