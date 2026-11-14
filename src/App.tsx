@@ -4111,33 +4111,44 @@ onChange={field.name === 'phone'
             </div>
 
             <div style={{ marginBottom: 18 }}>
-              <label style={deliveryLabel}>
-                Страна доставки *
-              </label>
+  <div style={{
+    color: '#b8a8dc',
+    fontSize: 13,
+    marginBottom: 8,
+  }}>
+    Страна доставки
+  </div>
 
-              <select
-                value={wholesaleCountry}
-                onChange={e => {
-                  const country = e.target.value
-                  setWholesaleCountry(country)
+  <div style={{
+    background: '#161616',
+    border: '1px solid rgba(255,255,255,0.12)',
+    borderRadius: 12,
+    padding: 14,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+  }}>
+    <span style={{ fontSize: 18 }}>📍</span>
 
-                  if (
-                    country !== 'DE' &&
-                    wholesaleCarrier === 'GLS'
-                  ) {
-                    setWholesaleCarrier('')
-                  }
-                }}
-                style={deliveryField}
-                required
-              >
-                {countries.map(([code, name]) => (
-                  <option key={code} value={code}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-            </div>
+    <span style={{
+      color: '#fff',
+      fontSize: 14,
+      fontWeight: 600,
+    }}>
+      {countries.find(
+        ([code]) => code === wholesaleCountry
+      )?.[1] || 'Страна не выбрана'}
+    </span>
+  </div>
+
+  <div style={{
+    color: '#888',
+    fontSize: 11,
+    marginTop: 7,
+  }}>
+    Изменить страну можно на предыдущем шаге
+  </div>
+</div>
 
             <div style={{ marginBottom: 18 }}>
               <label style={deliveryLabel}>
