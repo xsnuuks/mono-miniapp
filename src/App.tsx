@@ -2037,15 +2037,27 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
           }}>
             <div>Выбрано: {totalQty} шт.</div>
 
-            <div style={{
-              fontSize: 20,
-              fontWeight: 700,
-              marginTop: 8,
-            }}>
-              Итого: {totalPrice === null
-                ? 'Порог не достигнут'
-                : `${totalPrice.toFixed(2)} €`}
-            </div>
+            <div style={{ marginTop: 12 }}>
+  <button
+    type="button"
+    onClick={() => setScreen('cart')}
+    style={{
+      ...btnMain,
+      width: '100%',
+      padding: 16,
+    }}
+  >
+    Перейти в корзину
+  </button>
+  <p style={{
+    fontSize: 12,
+    color: '#aaa',
+    textAlign: 'center',
+    marginTop: 10,
+  }}>
+    Итоговая стоимость рассчитывается в корзине
+  </p>
+</div>
           </div>
         </div>
       </div>
