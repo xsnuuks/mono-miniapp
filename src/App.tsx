@@ -319,12 +319,39 @@ async function loadRetailProducts() {
     }
 
     const data = await response.json()
+    const list = Array.isArray(data)
+      ? data
+      : (data.products || [])
 
-    setRetailProducts(
-      Array.isArray(data)
-        ? data
-        : (data.products || [])
+    const productsWithPrices = await Promise.all(
+      list.map(async (p: any) => {
+        try {
+          const r = await fetch(
+            `${API_URL}/api/retail/products/${p.id}/tiers`
+          )
+
+          if (!r.ok) throw new Error('Ошибка загрузки цен')
+
+          const result = await r.json()
+
+          return {
+            ...p,
+            retail_tiers: (
+              Array.isArray(result)
+                ? result
+                : (result.tiers || [])
+            ).sort(
+              (a: any, b: any) =>
+                Number(a.min_qty) - Number(b.min_qty)
+            ),
+          }
+        } catch {
+          return { ...p, retail_tiers: [] }
+        }
+      })
     )
+
+    setRetailProducts(productsWithPrices)
   } catch (error) {
     console.error('Retail products error:', error)
     showToast('Не удалось загрузить розничные товары')
