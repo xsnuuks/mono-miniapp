@@ -6236,17 +6236,186 @@ onChange={field.name === 'phone'
           </p>
 
           <div style={{
-            marginTop: 16,
-            padding: 14,
-            borderRadius: 12,
-            border: '1px solid rgba(168,85,247,0.25)',
-            color: '#c084fc',
-            fontSize: 13,
-          }}>
-            Следующий этап — контактные данные и адрес GLS.
-          </div>
+  marginTop: 22,
+  paddingTop: 18,
+  borderTop: '1px solid rgba(255,255,255,0.12)',
+}}>
+  {retailDeliverySaved ? (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <div style={{
+        color: '#d8b4fe',
+        fontWeight: 700,
+        fontSize: 17,
+      }}>
+        ✓ Данные получателя заполнены
+      </div>
+
+      <div style={{
+        background: '#17131d',
+        borderRadius: 12,
+        padding: 14,
+        lineHeight: 1.8,
+        fontSize: 13,
+      }}>
+        <strong>
+          {retailDeliveryData.firstName} {retailDeliveryData.lastName}
+        </strong>
+        <div>{retailDeliveryData.phone}</div>
+        <div>{retailDeliveryData.email}</div>
+        <div style={{ marginTop: 8 }}>
+          {retailDeliveryData.street} {retailDeliveryData.house}
+          {retailDeliveryData.apartment
+            ? `, кв. ${retailDeliveryData.apartment}`
+            : ''}
         </div>
-      )}
+        <div>
+          {retailDeliveryData.postalCode} {retailDeliveryData.city}
+        </div>
+        <div>Германия · GLS</div>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setRetailDeliverySaved(false)}
+        style={{ ...adminActionBtn, width: '100%' }}
+      >
+        Изменить данные
+      </button>
+    </div>
+  ) : (
+    <form
+      onSubmit={e => {
+        e.preventDefault()
+
+        const fd = new FormData(e.currentTarget)
+        const get = (key: string) =>
+          String(fd.get(key) || '').trim()
+
+        const data = {
+          firstName: get('firstName'),
+          lastName: get('lastName'),
+          phone: get('phone'),
+          email: get('email'),
+          city: get('city'),
+          postalCode: get('postalCode'),
+          street: get('street'),
+          house: get('house'),
+          apartment: get('apartment'),
+        }
+
+        if (
+          !data.firstName ||
+          !data.lastName ||
+          !data.phone ||
+          !data.email ||
+          !data.city ||
+          !data.postalCode ||
+          !data.street ||
+          !data.house
+        ) {
+          showToast('Заполните обязательные поля')
+          return
+        }
+
+        if (!/^\+49[0-9\s()-]{6,18}$/.test(data.phone)) {
+          showToast('Проверьте номер телефона Германии')
+          return
+        }
+
+        setRetailDeliveryData(data)
+        setRetailDeliverySaved(true)
+        showToast('Контакты и адрес заполнены')
+      }}
+      style={{ display: 'grid', gap: 14 }}
+    >
+      <div style={{
+        fontSize: 17,
+        fontWeight: 800,
+        marginBottom: 4,
+      }}>
+        Контактные данные
+      </div>
+
+      {[
+        ['firstName', 'Имя', 'Ваше имя', 'text'],
+        ['lastName', 'Фамилия', 'Ваша фамилия', 'text'],
+        ['phone', 'Телефон', '+49...', 'tel'],
+        ['email', 'Email', 'example@mail.com', 'email'],
+      ].map(([name, label, placeholder, type]) => (
+        <label key={name} style={{ display: 'grid', gap: 7 }}>
+          <span style={{ fontSize: 13, color: '#c6b8d4' }}>
+            {label} *
+          </span>
+          <input
+            name={name}
+            type={type}
+            defaultValue={
+              retailDeliveryData[name as keyof typeof retailDeliveryData]
+            }
+            placeholder={placeholder}
+            required
+            style={{ ...inputStyle, marginBottom: 0, boxSizing: 'border-box' }}
+          />
+        </label>
+      ))}
+
+      <div style={{
+        fontSize: 17,
+        fontWeight: 800,
+        marginTop: 8,
+      }}>
+        Адрес доставки
+      </div>
+
+      <div style={{
+        background: 'rgba(168,85,247,0.08)',
+        border: '1px solid rgba(168,85,247,0.2)',
+        padding: 13,
+        borderRadius: 12,
+        fontSize: 13,
+      }}>
+        Германия · Доставка GLS
+      </div>
+
+      {[
+        ['city', 'Город', 'Например, Stuttgart', true],
+        ['postalCode', 'Почтовый индекс', 'Например, 70173', true],
+        ['street', 'Улица', 'Название улицы', true],
+        ['house', 'Номер дома', 'Например, 12A', true],
+        ['apartment', 'Квартира / дополнение', 'Необязательно', false],
+      ].map(([name, label, placeholder, required]) => (
+        <label key={String(name)} style={{ display: 'grid', gap: 7 }}>
+          <span style={{ fontSize: 13, color: '#c6b8d4' }}>
+            {label}{required ? ' *' : ''}
+          </span>
+          <input
+            name={String(name)}
+            defaultValue={
+              retailDeliveryData[
+                String(name) as keyof typeof retailDeliveryData
+              ]
+            }
+            placeholder={String(placeholder)}
+            required={Boolean(required)}
+            style={{ ...inputStyle, marginBottom: 0, boxSizing: 'border-box' }}
+          />
+        </label>
+      ))}
+
+      <button
+        type="submit"
+        style={{
+          ...adminPrimaryBtn,
+          width: '100%',
+          padding: 16,
+          marginTop: 8,
+        }}
+      >
+        Сохранить и проверить данные
+      </button>
+    </form>
+  )}
+</div>
 
       <BottomNav />
     </div>
