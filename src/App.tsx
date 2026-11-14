@@ -6360,6 +6360,8 @@ onChange={field.name === 'phone'
         </label>
       ))}
 
+      {retailCheckoutStep === 2 && (
+  <>
       <div style={{
         fontSize: 17,
         fontWeight: 800,
