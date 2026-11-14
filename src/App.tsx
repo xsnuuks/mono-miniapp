@@ -275,6 +275,19 @@ const [wholesaleCart, setWholesaleCart] = useState<{
   const [productName, setProductName] = useState('')
   const [optCat, setOptCat] = useState('all')
   const [priceMode, setPriceMode] = useState<'retail' | 'wholesale'>('retail')
+  const [retailDeliveryData, setRetailDeliveryData] = useState({
+  firstName: '',
+  lastName: '',
+  phone: '+49',
+  email: '',
+  city: '',
+  postalCode: '',
+  street: '',
+  house: '',
+  apartment: '',
+})
+
+const [retailDeliverySaved, setRetailDeliverySaved] = useState(false)
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>(() => {
   try {
     return localStorage.getItem('puffy_retail_delivery') === 'delivery'
