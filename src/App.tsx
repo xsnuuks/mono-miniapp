@@ -5878,7 +5878,6 @@ onChange={field.name === 'phone'
   </button>
 </div>
       {loading ? <div style={{ color: '#a0a0a0', marginBottom: 12 }}>Загрузка...</div> : null}
-      {!loading && products.length === 0 ? <div style={card}>Товаров пока нет</div> : null}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         {priceMode === 'wholesale' ? (
   <>
