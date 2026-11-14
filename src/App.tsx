@@ -1617,6 +1617,24 @@ async function deleteOrder(orderId: number) {
       ✓ Завершён
     </button>
   )}
+          {order.status !== 'done' && order.status !== 'cancelled' && (
+  <button
+    type="button"
+    onClick={() => {
+      if (window.confirm('Отменить заказ и вернуть товары на склад?')) {
+        setRetailOrderStatus(order.id, 'cancelled')
+      }
+    }}
+    style={{
+      ...adminActionBtn,
+      flex: 1,
+      border: '1px solid rgba(239,68,68,0.4)',
+      color: '#f87171',
+    }}
+  >
+    ✕ Отменить
+  </button>
+)}
 </div>
       </div>
     ))
