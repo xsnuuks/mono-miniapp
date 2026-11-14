@@ -1703,6 +1703,7 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
     ›
   </span>
 </div>
+</div>            
 
           <div style={{
             display: 'flex',
