@@ -256,14 +256,15 @@ const [wholesaleAddress, setWholesaleAddress] = useState({
   flavorId: number
   flavorName: string
   quantity: number
+  stock: number
 }[]>([])
-  const [wholesaleCart, setWholesaleCart] = useState<{
+
+const [wholesaleCart, setWholesaleCart] = useState<{
   productId: number
   productName: string
   flavorId: number
   flavorName: string
   quantity: number
-  stock: number
 }[]>([])
   const [tiers, setTiers] = useState<any[]>([])
   const [flavors, setFlavors] = useState<any[]>([])
