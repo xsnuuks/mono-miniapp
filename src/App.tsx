@@ -6260,6 +6260,44 @@ onChange={field.name === 'phone'
 
   <div style={{ fontSize: 13, color: '#aaa' }}>
     Выберите удобный способ оплаты
+    <div style={{
+  borderTop: '1px solid rgba(255,255,255,0.12)',
+  marginTop: 12,
+  paddingTop: 16,
+  display: 'grid',
+  gap: 14,
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    fontSize: 14,
+  }}>
+    <span>Товары</span>
+    <span>{retailTotal.toFixed(2)} €</span>
+  </div>
+
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    fontSize: 14,
+  }}>
+    <span>Самовывоз</span>
+    <span>0,00 €</span>
+  </div>
+
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderTop: '1px solid rgba(255,255,255,0.12)',
+    paddingTop: 16,
+  }}>
+    <span style={{ fontSize: 16 }}>К оплате</span>
+    <strong style={{ fontSize: 24, color: '#c084fc' }}>
+      {hasMissingPrices ? 'Цена уточняется' : `${retailTotal.toFixed(2)} €`}
+    </strong>
+  </div>
+</div>
   </div>
 
   {([
