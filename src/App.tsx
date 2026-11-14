@@ -1477,6 +1477,101 @@ async function deleteOrder(orderId: number) {
   )
 }
 
+  if (screen === 'admin_retail') {
+  const categories = [
+    { id: 'all', name: 'Все' },
+    { id: '1', name: 'Жижи' },
+    { id: '2', name: 'Одноразки' },
+    { id: '3', name: 'Поды' },
+    { id: '4', name: 'Картриджи' },
+    { id: '5', name: 'Снюс' },
+  ]
+
+  return (
+    <div key={screen} style={page}>
+      <div style={{ padding: '16px 0 90px' }}>
+        <button
+          type="button"
+          onClick={() => setScreen('admin')}
+          style={backBtn}
+        >
+          ← Назад
+        </button>
+
+        <h2 style={{ fontSize: 24, margin: '10px 0 6px' }}>
+          Розница
+        </h2>
+
+        <p style={{
+          color: '#aaa',
+          fontSize: 13,
+          marginBottom: 22,
+        }}>
+          Управление розничным ассортиментом
+        </p>
+
+        <div style={{ display: 'grid', gap: 10 }}>
+          {categories.map(category => {
+            const count = retailProducts.filter(
+              product =>
+                category.id === 'all' ||
+                String(product.category_id) === category.id
+            ).length
+
+            return (
+              <button
+                key={category.id}
+                type="button"
+                onClick={() =>
+                  setScreen(
+                    `admin_retail_${category.id}` as Screen
+                  )
+                }
+                style={{
+                  ...adminCard,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  color: '#fff',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  padding: 18,
+                }}
+              >
+                <div>
+                  <div style={{
+                    fontWeight: 700,
+                    fontSize: 16,
+                  }}>
+                    {category.name}
+                  </div>
+
+                  <div style={{
+                    color: '#999',
+                    fontSize: 12,
+                    marginTop: 6,
+                  }}>
+                    {count} товаров
+                  </div>
+                </div>
+
+                <span style={{
+                  color: '#a855f7',
+                  fontSize: 25,
+                }}>
+                  ›
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+      <BottomNav />
+    </div>
+  )
+}
+  
     if (screen === 'admin_wholesale') {
   return (
     <div key={screen} style={page}>
