@@ -6067,7 +6067,11 @@ onChange={field.name === 'phone'
         marginBottom: 20,
       }}>
         <h2 style={{ margin: 0, fontSize: 22 }}>
-          {retailCheckoutStep === 1 ? 'Контактные данные' : 'Адрес доставки'}
+          {retailCheckoutStep === 1
+  ? 'Контактные данные'
+  : retailCheckoutStep === 2
+    ? 'Адрес доставки'
+    : 'Проверка заказа'}
         </h2>
 
       </div>
