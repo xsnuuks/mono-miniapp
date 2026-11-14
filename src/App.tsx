@@ -2061,7 +2061,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
       padding: 16,
     }}
   >
-    Перейти в корзину
+    Перейти в корзину ({wholesaleCart.reduce((sum, item) => sum + item.quantity, 0) + totalQty} шт.)
   </button>
   <p style={{
     fontSize: 12,
