@@ -1584,7 +1584,7 @@ async function deleteOrder(orderId: number) {
               <div style={{ fontSize: 13, color: '#c0c0c0', marginBottom: 8 }}>
                 Статус:{' '}
                 {o.status === 'progress'
-                  ? 'в процессе'
+  ? 'ожидает
                   : o.status === 'done'
                     ? 'выполнен'
                     : o.status === 'cancelled'
@@ -1605,9 +1605,6 @@ async function deleteOrder(orderId: number) {
                 <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 8 }}>{o.total} €</div>
               ) : null}
               <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' as const }}>
-                <button onClick={() => setOrderStatus(o.id, 'progress')} style={{ ...btnMain, flex: 1 }}>
-                  В процессе
-                </button>
                 <button onClick={() => setOrderStatus(o.id, 'done')} style={{ ...btnMain, flex: 1 }}>
                   Выполнен
                 </button>
