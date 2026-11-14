@@ -5999,76 +5999,366 @@ onChange={field.name === 'phone'
 </div>
       )}
 
-      {retailCart.length > 0 && (
-  <div style={{ ...adminCard, marginBottom: 18 }}>
-    <h2 style={{ marginTop: 0 }}>🛍 Розница</h2>
+      {retailCart.length > 0 && (() => {
+  const getProductQty = (productId: number) =>
+    retailCart
+      .filter(item => item.productId === productId)
+      .reduce((sum, item) => sum + item.quantity, 0)
 
-    {retailCart.map(item => {
-      const product = retailProducts.find(
-        p => Number(p.id) === item.productId
+  const getUnitPrice = (productId: number) => {
+    const product = retailProducts.find(
+      p => Number(p.id) === productId
+    )
+
+    const qty = getProductQty(productId)
+
+    const tiers = [...(product?.retail_tiers || [])]
+      .sort((a: any, b: any) =>
+        Number(a.min_qty) - Number(b.min_qty)
       )
 
-      const productQty = retailCart
-        .filter(row => row.productId === item.productId)
-        .reduce((sum, row) => sum + row.quantity, 0)
+    const activeTier = tiers
+      .filter((tier: any) =>
+        qty >= Number(tier.min_qty)
+      )
+      .pop()
 
-      const tiers = [...(product?.retail_tiers || [])]
-        .sort((a: any, b: any) =>
-          Number(a.min_qty) - Number(b.min_qty)
-        )
+    return activeTier
+      ? Number(activeTier.price)
+      : null
+  }
 
-      const tier = tiers.filter(
-        (t: any) => productQty >= Number(t.min_qty)
-      ).pop()
+  const retailCount = retailCart.reduce(
+    (sum, item) => sum + item.quantity, 0
+  )
 
-      const unitPrice = tier ? Number(tier.price) : 0
+  const retailTotal = retailCart.reduce(
+    (sum, item) => {
+      const price = getUnitPrice(item.productId)
+      return sum + (price ?? 0) * item.quantity
+    },
+    0
+  )
 
-      return (
-        <div
-          key={`${item.productId}-${item.flavorId}`}
-          style={{
-            padding: '14px 0',
-            borderBottom: '1px solid rgba(255,255,255,0.1)',
-          }}
-        >
-          <div style={{ fontWeight: 700 }}>
-            {item.productName}
-          </div>
+  const hasMissingPrices = retailCart.some(
+    item => getUnitPrice(item.productId) === null
+  )
 
+  return (
+    <div style={{ ...adminCard, marginBottom: 18 }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 18,
+      }}>
+        <div>
           <div style={{
-            color: '#aaa',
+            fontSize: 21,
+            fontWeight: 800,
+          }}>
+            Розница
+          </div>
+          <div style={{
             fontSize: 12,
+            color: '#999',
             marginTop: 5,
           }}>
-            {item.flavorName}
-          </div>
-
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: 10,
-            fontSize: 13,
-          }}>
-            <span>{item.quantity} шт.</span>
-            <strong>
-              {tier
-                ? `${(unitPrice * item.quantity).toFixed(2)} €`
-                : 'Цена не задана'}
-            </strong>
+            {retailCount} шт. в корзине
           </div>
         </div>
-      )
-    })}
 
-    <div style={{
-      color: '#aaa',
-      fontSize: 12,
-      marginTop: 14,
-    }}>
-      Оформление новой розницы подключим следующим шагом
+        <span style={adminBadge(true)}>
+          От 1 шт.
+        </span>
+      </div>
+
+      <div style={{ display: 'grid', gap: 12 }}>
+        {retailCart.map(item => {
+          const product = retailProducts.find(
+            p => Number(p.id) === item.productId
+          )
+
+          const unitPrice = getUnitPrice(item.productId)
+          const subtotal = (unitPrice ?? 0) * item.quantity
+          const stock = Number(item.stock) || 0
+
+          return (
+            <div
+              key={`${item.productId}-${item.flavorId}`}
+              style={{
+                background: 'rgba(255,255,255,0.035)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: 15,
+                padding: 12,
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                gap: 12,
+                marginBottom: 14,
+              }}>
+                <div style={{
+                  width: 68,
+                  height: 68,
+                  flexShrink: 0,
+                  borderRadius: 12,
+                  background: '#292035',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  {product?.photo_url ? (
+                    <img
+                      src={photoUrl(product.photo_url) || ''}
+                      alt={item.productName}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                      }}
+                    />
+                  ) : (
+                    <span style={{ fontSize: 26 }}>📦</span>
+                  )}
+                </div>
+
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{
+                    fontWeight: 700,
+                    fontSize: 14,
+                    overflowWrap: 'anywhere',
+                  }}>
+                    {item.productName}
+                  </div>
+
+                  <div style={{
+                    color: '#aaa',
+                    fontSize: 12,
+                    marginTop: 6,
+                  }}>
+                    {item.flavorName}
+                  </div>
+
+                  <div style={{
+                    color: '#c084fc',
+                    fontSize: 12,
+                    marginTop: 7,
+                  }}>
+                    {unitPrice !== null
+                      ? `${unitPrice.toFixed(2)} € / шт.`
+                      : 'Цена не задана'}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  aria-label="Удалить вкус"
+                  onClick={() => {
+                    setRetailCart(prev =>
+                      prev.filter(row =>
+                        !(
+                          row.productId === item.productId &&
+                          row.flavorId === item.flavorId
+                        )
+                      )
+                    )
+                    showToast('Товар удалён')
+                  }}
+                  style={{
+                    alignSelf: 'flex-start',
+                    border: 'none',
+                    background: 'rgba(255,90,90,0.10)',
+                    color: '#ff8585',
+                    borderRadius: 10,
+                    padding: '8px 11px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 10,
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  border: '1px solid rgba(168,85,247,0.4)',
+                  borderRadius: 12,
+                  overflow: 'hidden',
+                  background: '#29183c',
+                }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRetailCart(prev =>
+                        prev
+                          .map(row =>
+                            row.productId === item.productId &&
+                            row.flavorId === item.flavorId
+                              ? {
+                                  ...row,
+                                  quantity: row.quantity - 1,
+                                }
+                              : row
+                          )
+                          .filter(row => row.quantity > 0)
+                      )
+                    }}
+                    style={{
+                      width: 42,
+                      height: 42,
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#fff',
+                      fontSize: 22,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    −
+                  </button>
+
+                  <span style={{
+                    minWidth: 32,
+                    textAlign: 'center',
+                    fontWeight: 800,
+                  }}>
+                    {item.quantity}
+                  </span>
+
+                  <button
+                    type="button"
+                    disabled={item.quantity >= stock}
+                    onClick={() => {
+                      setRetailCart(prev =>
+                        prev.map(row =>
+                          row.productId === item.productId &&
+                          row.flavorId === item.flavorId
+                            ? {
+                                ...row,
+                                quantity: Math.min(
+                                  row.stock,
+                                  row.quantity + 1
+                                ),
+                              }
+                            : row
+                        )
+                      )
+                    }}
+                    style={{
+                      width: 42,
+                      height: 42,
+                      background: 'rgba(168,85,247,0.18)',
+                      border: 'none',
+                      color: '#fff',
+                      fontSize: 22,
+                      cursor: item.quantity >= stock
+                        ? 'not-allowed'
+                        : 'pointer',
+                      opacity: item.quantity >= stock ? 0.4 : 1,
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+
+                <strong style={{
+                  color: '#fff',
+                  fontSize: 16,
+                  whiteSpace: 'nowrap',
+                }}>
+                  {unitPrice !== null
+                    ? `${subtotal.toFixed(2)} €`
+                    : '—'}
+                </strong>
+              </div>
+
+              <div style={{
+                color: '#888',
+                fontSize: 11,
+                marginTop: 10,
+              }}>
+                В наличии: {stock} шт.
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      <div style={{
+        marginTop: 20,
+        paddingTop: 18,
+        borderTop: '1px solid rgba(255,255,255,0.12)',
+      }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: 12,
+          fontSize: 13,
+          color: '#aaa',
+        }}>
+          <span>Количество товаров</span>
+          <strong style={{ color: '#fff' }}>
+            {retailCount} шт.
+          </strong>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 12,
+        }}>
+          <strong style={{ fontSize: 16 }}>
+            Итого
+          </strong>
+
+          <strong style={{
+            fontSize: 24,
+            color: '#c084fc',
+          }}>
+            {hasMissingPrices
+              ? 'Цена не задана'
+              : `${retailTotal.toFixed(2)} €`}
+          </strong>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        disabled
+        style={{
+          ...adminPrimaryBtn,
+          width: '100%',
+          marginTop: 20,
+          padding: 16,
+          fontSize: 15,
+          opacity: 0.5,
+          cursor: 'not-allowed',
+        }}
+      >
+        Оформить розничный заказ
+      </button>
+
+      <div style={{
+        marginTop: 12,
+        color: '#888',
+        textAlign: 'center',
+        fontSize: 12,
+        lineHeight: 1.6,
+      }}>
+        Следующий этап — новое оформление розничного заказа.
+        Пока заказ не создаётся и оплата не производится.
+      </div>
     </div>
-  </div>
-)}
+  )
+})()}
       {cart.length > 0 && (
         <div style={{ ...card, marginBottom: 18 }}>
           <h2>🛍 Розница</h2>
