@@ -1614,6 +1614,88 @@ flavors: flavors
         <button onClick={() => setScreen(`admin_wholesale_${product.category}` as any)} style={backBtn}>← Назад</button>
         <h2 style={{ margin: '16px 0 16px', fontSize: 22 }}>{product.name}</h2>
 
+        <div style={{ ...card, marginBottom: 16 }}>
+  <div style={{ fontWeight: 600, marginBottom: 12 }}>
+    Фотография товара
+  </div>
+
+  {product.photo_url && (
+    <img
+      src={photoUrl(product.photo_url) || ''}
+      alt={product.name}
+      style={{
+        width: '100%',
+        maxHeight: 250,
+        objectFit: 'contain',
+        borderRadius: 12,
+        marginBottom: 12,
+      }}
+    />
+  )}
+
+  <label
+    style={{
+      ...btnMain,
+      display: 'block',
+      textAlign: 'center',
+      boxSizing: 'border-box',
+    }}
+  >
+    {product.photo_url ? 'Заменить фото' : 'Выбрать фото'}
+
+    <input
+      type="file"
+      accept="image/jpeg,image/png,image/webp"
+      style={{ display: 'none' }}
+      onChange={async (e) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        if (file.size > 5 * 1024 * 1024) {
+          showToast('Максимальный размер фото — 5 МБ')
+          return
+        }
+
+        const initData =
+          (window as any).Telegram?.WebApp?.initData
+
+        if (!initData) {
+          showToast('Открой админку через Telegram')
+          return
+        }
+
+        const formData = new FormData()
+        formData.append('file', file)
+
+        try {
+          const response = await fetch(
+            `${API_URL}/api/wholesale/products/${product.id}/photo`,
+            {
+              method: 'POST',
+              headers: {
+                'X-Telegram-Init-Data': initData,
+              },
+              body: formData,
+            }
+          )
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`)
+          }
+
+          await loadWholesaleProducts()
+          showToast('Фотография сохранена')
+        } catch (error) {
+          console.error('Photo upload error:', error)
+          showToast('Ошибка загрузки фотографии')
+        } finally {
+          e.target.value = ''
+        }
+      }}
+    />
+  </label>
+</div>
+
         <div style={card}>
           <div style={{ fontWeight: 600, marginBottom: 4 }}>{product.name}</div>
           <div style={{ fontSize: 13, color: '#888' }}>
