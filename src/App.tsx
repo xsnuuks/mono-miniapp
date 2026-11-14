@@ -1542,6 +1542,7 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
         <button
           key={p.id}
           type="button"
+          data-wholesale-sort-id={p.id}
           onClick={() =>
             setScreen(`admin_wholesale_product_${p.id}` as any)
           }
@@ -1603,13 +1604,105 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
               </span>
             </div>
 
-            <span style={{
-              color: '#a855f7',
-              fontSize: 22,
-            }}>
-              ›
-            </span>
-          </div>
+            <div style={{
+  display: 'flex',
+  alignItems: 'center',
+  gap: 10,
+}}>
+  {catId !== 'all' && (
+    <span
+      role="button"
+      aria-label={`Переместить ${p.name}`}
+      onClick={e => {
+        e.preventDefault()
+        e.stopPropagation()
+      }}
+      onPointerDown={e => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        e.currentTarget.setPointerCapture(e.pointerId)
+
+        wholesaleDragRef.current = {
+          fromId: Number(p.id),
+          toId: Number(p.id),
+        }
+
+        setWholesaleDraggingId(Number(p.id))
+        setWholesaleDragTargetId(Number(p.id))
+      }}
+      onPointerMove={e => {
+        const drag = wholesaleDragRef.current
+        if (!drag || drag.fromId !== Number(p.id)) return
+
+        const element = document.elementFromPoint(
+          e.clientX,
+          e.clientY
+        ) as HTMLElement | null
+
+        const target = element?.closest(
+          '[data-wholesale-sort-id]'
+        )
+
+        const targetId = Number(
+          target?.getAttribute('data-wholesale-sort-id')
+        )
+
+        const valid = wholesaleProducts.some(
+          item =>
+            Number(item.id) === targetId &&
+            String(item.category_id) === catId
+        )
+
+        if (valid) {
+          drag.toId = targetId
+          setWholesaleDragTargetId(targetId)
+        }
+      }}
+      onPointerUp={e => {
+        e.preventDefault()
+        e.stopPropagation()
+        void finishWholesaleDrag(catId)
+      }}
+      onPointerCancel={() => {
+        wholesaleDragRef.current = null
+        setWholesaleDraggingId(null)
+        setWholesaleDragTargetId(null)
+      }}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 42,
+        height: 48,
+        borderRadius: 12,
+        background:
+          wholesaleDraggingId === Number(p.id)
+            ? 'rgba(168,85,247,0.3)'
+            : 'rgba(168,85,247,0.12)',
+        border:
+          wholesaleDragTargetId === Number(p.id) &&
+          wholesaleDraggingId !== null
+            ? '2px solid #a855f7'
+            : '1px solid rgba(168,85,247,0.25)',
+        color: '#d8b4fe',
+        fontSize: 28,
+        cursor: 'grab',
+        touchAction: 'none',
+        userSelect: 'none',
+      }}
+    >
+      ⠿
+    </span>
+  )}
+
+  <span style={{
+    color: '#a855f7',
+    fontSize: 22,
+  }}>
+    ›
+  </span>
+</div>
 
           <div style={{
             display: 'flex',
