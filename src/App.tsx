@@ -263,6 +263,7 @@ const [wholesaleAddress, setWholesaleAddress] = useState({
   flavorId: number
   flavorName: string
   quantity: number
+  stock: number
 }[]>([])
   const [tiers, setTiers] = useState<any[]>([])
   const [flavors, setFlavors] = useState<any[]>([])
