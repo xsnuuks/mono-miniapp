@@ -877,44 +877,78 @@ async function deleteOrder(orderId: number) {
   }
 
   function RetailDeliverySelector() {
-  return (
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: 8,
-      padding: '11px 12px',
-      borderRadius: 13,
-      background: '#2b173d',
-      border: '1px solid rgba(168,85,247,0.45)',
-      color: '#fff',
-    }}>
-      <span style={{ fontSize: 17 }}>📍</span>
+  const [opened, setOpened] = useState(false)
 
-      <select
-        aria-label="Способ получения заказа"
-        value={deliveryType}
-        onChange={e =>
-          setDeliveryType(e.target.value as 'pickup' | 'delivery')
-        }
+  return (
+    <div style={{ position: 'relative', flexShrink: 0 }}>
+      <button
+        type="button"
+        onClick={() => setOpened(!opened)}
         style={{
-          background: 'transparent',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 7,
+          background: '#321b48',
+          border: '1px solid #7545a0',
           color: '#fff',
-          border: 'none',
-          outline: 'none',
-          fontSize: 13,
+          borderRadius: 13,
+          padding: '11px 12px',
+          fontSize: 12,
           fontWeight: 700,
           cursor: 'pointer',
-          maxWidth: 155,
+          whiteSpace: 'nowrap',
         }}
       >
-        <option value="pickup" style={{ color: '#111' }}>
-          Самовывоз
-        </option>
+        <span style={{ fontSize: 15 }}>⌖</span>
+        {deliveryType === 'pickup' ? 'Самовывоз' : 'Доставка'}
+        <span style={{ fontSize: 11 }}>⌄</span>
+      </button>
 
-        <option value="delivery" style={{ color: '#111' }}>
-          Доставка
-        </option>
-      </select>
+      {opened && (
+        <div style={{
+          position: 'absolute',
+          top: 'calc(100% + 7px)',
+          right: 0,
+          width: 170,
+          padding: 6,
+          borderRadius: 13,
+          background: '#24152f',
+          border: '1px solid #7545a0',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
+          zIndex: 100,
+        }}>
+          {([
+            { id: 'pickup', label: 'Самовывоз' },
+            { id: 'delivery', label: 'Доставка' },
+          ] as const).map(option => (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => {
+                setDeliveryType(option.id)
+                setOpened(false)
+              }}
+              style={{
+                width: '100%',
+                display: 'block',
+                textAlign: 'left',
+                background: deliveryType === option.id
+                  ? 'rgba(168,85,247,0.24)'
+                  : 'transparent',
+                border: 'none',
+                borderRadius: 9,
+                padding: '12px',
+                color: '#fff',
+                fontSize: 13,
+                cursor: 'pointer',
+              }}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
