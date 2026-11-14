@@ -20,7 +20,7 @@ type Screen =
   | 'catalog' | 'product' | 'cart' | 'checkout' | 'wholesale_checkout' | 'wholesale_delivery' | 'wholesale_review' | 'success' | 'conditions'
   | 'profile' | 'rules' | 'info' | 'delivery'
   | 'admin' | 'admin_orders' | 'admin_products' | 'admin_product_edit'
-  | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_wholesale' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale' | 'wholesale_product'
+  | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_retail' | 'admin_wholesale' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale' | 'wholesale_product'
 
 const CITIES = ['Reutlingen', 'Pfullingen', 'Eningen', 'Betzingen']
 const WHOLESALE_DIAL_CODES: Record<string, string> = {
