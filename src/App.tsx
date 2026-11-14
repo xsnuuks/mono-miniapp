@@ -6078,7 +6078,7 @@ onChange={field.name === 'phone'
       method: 'POST',
       headers: {
   'Content-Type': 'application/json',
-  'X-Telegram-Init-Data': window.Telegram?.WebApp?.initData || '',
+  'X-Telegram-Init-Data': (window as any).Telegram?.WebApp?.initData || '',
 },
       body: JSON.stringify({
         request_id: retailRequestIdRef.current,
