@@ -232,7 +232,7 @@ const [wholesaleDragTargetId, setWholesaleDragTargetId] =
   const [wholesaleContact, setWholesaleContact] = useState({
   first_name: '',
   last_name: '',
-  phone: '',
+  phone: '+49',
   email: '',
 })
 
