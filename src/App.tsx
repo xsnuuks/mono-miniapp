@@ -6321,11 +6321,11 @@ onChange={field.name === 'phone'
 }
         
         const data = {
-          firstName: get('firstName'),
-          lastName: get('lastName'),
-          phone: get('phone'),
-          email: get('email'),
-          city: get('city'),
+  firstName: retailDeliveryData.firstName,
+  lastName: retailDeliveryData.lastName,
+  phone: retailDeliveryData.phone,
+  email: retailDeliveryData.email,
+  city: get('city'),
           postalCode: get('postalCode'),
           street: get('street'),
           house: get('house'),
