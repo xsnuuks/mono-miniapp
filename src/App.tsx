@@ -1795,36 +1795,90 @@ flavors: flavors
   </div>
 
   <div style={{ display: 'grid', gap: 10 }}>
-    <button
-      type="button"
-      style={{ ...adminActionBtn, textAlign: 'left' }}
-      onClick={async () => {
-        const newName = prompt('Новое название', product.name)
-        if (!newName?.trim() || newName.trim() === product.name) return
+    <form
+  key={`edit-name-${product.id}`}
+  onSubmit={async (e) => {
+    e.preventDefault()
 
-        const fd = new FormData()
-        fd.append('name', newName.trim())
+    const form = e.currentTarget
+    const fd = new FormData(form)
+    const newName = String(fd.get('name') || '').trim()
 
-        const response = await fetch(
-          `${API_URL}/api/wholesale/products/${product.id}`,
-          {
-            method: 'PATCH',
-            headers: { 'X-Admin-Id': String(tgUser?.id || '') },
-            body: fd,
-          }
-        )
+    if (!newName) {
+      showToast('Введите название товара')
+      return
+    }
 
-        if (!response.ok) {
-          showToast('Не удалось изменить название')
-          return
+    if (newName === product.name) {
+      showToast('Название не изменилось')
+      return
+    }
+
+    const data = new FormData()
+    data.append('name', newName)
+
+    try {
+      const response = await fetch(
+        `${API_URL}/api/wholesale/products/${product.id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'X-Admin-Id': String(tgUser?.id || ''),
+          },
+          body: data,
         }
+      )
 
-        await loadWholesaleProducts()
-        showToast('Название обновлено')
-      }}
-    >
-      ✎　Название товара
-    </button>
+      if (!response.ok) {
+        throw new Error('Ошибка сохранения')
+      }
+
+      await loadWholesaleProducts()
+      showToast('Название обновлено')
+    } catch {
+      showToast('Не удалось сохранить название')
+    }
+  }}
+  style={{
+    display: 'grid',
+    gap: 10,
+    padding: 12,
+    borderRadius: 14,
+    background: 'rgba(168,85,247,0.06)',
+    border: '1px solid rgba(168,85,247,0.18)',
+  }}
+>
+  <div style={{
+    fontSize: 14,
+    fontWeight: 700,
+  }}>
+    ✎ Название товара
+  </div>
+
+  <input
+    name="name"
+    defaultValue={product.name}
+    placeholder="Введите название"
+    maxLength={120}
+    required
+    style={{
+      ...inputStyle,
+      marginBottom: 0,
+      boxSizing: 'border-box',
+    }}
+  />
+
+  <button
+    type="submit"
+    style={{
+      ...adminPrimaryBtn,
+      width: '100%',
+      padding: 13,
+    }}
+  >
+    Сохранить название
+  </button>
+</form>
 
     <button
       type="button"
