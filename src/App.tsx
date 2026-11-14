@@ -879,40 +879,42 @@ async function deleteOrder(orderId: number) {
   function RetailDeliverySelector() {
   return (
     <div style={{
-      display: 'flex',
+      display: 'inline-flex',
+      alignItems: 'center',
       gap: 8,
-      padding: 5,
-      borderRadius: 14,
-      background: '#211629',
-      border: '1px solid rgba(168,85,247,0.3)',
-      marginBottom: 18,
+      padding: '11px 12px',
+      borderRadius: 13,
+      background: '#2b173d',
+      border: '1px solid rgba(168,85,247,0.45)',
+      color: '#fff',
     }}>
-      {([
-        { id: 'pickup', label: '📍 Самовывоз' },
-        { id: 'delivery', label: '🚚 Доставка GLS' },
-      ] as const).map(option => (
-        <button
-          key={option.id}
-          type="button"
-          onClick={() => setDeliveryType(option.id)}
-          style={{
-            flex: 1,
-            minWidth: 0,
-            padding: '13px 8px',
-            borderRadius: 11,
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: 12,
-            fontWeight: 700,
-            color: '#fff',
-            background: deliveryType === option.id
-              ? 'linear-gradient(90deg,#7c3aed,#c026d3)'
-              : 'transparent',
-          }}
-        >
-          {option.label}
-        </button>
-      ))}
+      <span style={{ fontSize: 17 }}>📍</span>
+
+      <select
+        aria-label="Способ получения заказа"
+        value={deliveryType}
+        onChange={e =>
+          setDeliveryType(e.target.value as 'pickup' | 'delivery')
+        }
+        style={{
+          background: 'transparent',
+          color: '#fff',
+          border: 'none',
+          outline: 'none',
+          fontSize: 13,
+          fontWeight: 700,
+          cursor: 'pointer',
+          maxWidth: 155,
+        }}
+      >
+        <option value="pickup" style={{ color: '#111' }}>
+          Самовывоз
+        </option>
+
+        <option value="delivery" style={{ color: '#111' }}>
+          Доставка GLS
+        </option>
+      </select>
     </div>
   )
 }
