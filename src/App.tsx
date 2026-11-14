@@ -5938,6 +5938,245 @@ onChange={field.name === 'phone'
     </div>
   )
 }
+
+  if (screen === 'retail_checkout') {
+  const retailCount = retailCart.reduce(
+    (sum, item) => sum + item.quantity, 0
+  )
+
+  const getRetailPrice = (productId: number) => {
+    const product = retailProducts.find(
+      p => Number(p.id) === productId
+    )
+
+    const quantity = retailCart
+      .filter(item => item.productId === productId)
+      .reduce((sum, item) => sum + item.quantity, 0)
+
+    const tier = [...(product?.retail_tiers || [])]
+      .filter((t: any) => quantity >= Number(t.min_qty))
+      .sort((a: any, b: any) =>
+        Number(b.min_qty) - Number(a.min_qty)
+      )[0]
+
+    return tier ? Number(tier.price) : null
+  }
+
+  const hasMissingPrices = retailCart.some(
+    item => getRetailPrice(item.productId) === null
+  )
+
+  const retailTotal = retailCart.reduce(
+    (sum, item) =>
+      sum + (getRetailPrice(item.productId) ?? 0) * item.quantity,
+    0
+  )
+
+  return (
+    <div key={screen} style={page}>
+      <button
+        type="button"
+        style={backBtn}
+        onClick={() => setScreen('cart')}
+      >
+        ← Назад в корзину
+      </button>
+
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 12,
+        marginBottom: 20,
+      }}>
+        <h2 style={{ margin: 0, fontSize: 22 }}>
+          Оформление заказа
+        </h2>
+
+        <RetailDeliverySelector />
+      </div>
+
+      <div style={{ ...adminCard, marginBottom: 16 }}>
+        <div style={{
+          fontSize: 17,
+          fontWeight: 700,
+          marginBottom: 16,
+        }}>
+          Ваш заказ
+        </div>
+
+        {retailCart.map(item => {
+          const price = getRetailPrice(item.productId)
+
+          return (
+            <div
+              key={`${item.productId}-${item.flavorId}`}
+              style={{
+                padding: '12px 0',
+                borderBottom: '1px solid #333',
+              }}
+            >
+              <div style={{ fontWeight: 700, fontSize: 14 }}>
+                {item.productName}
+              </div>
+
+              <div style={{
+                color: '#aaa',
+                fontSize: 12,
+                marginTop: 5,
+              }}>
+                {item.flavorName}
+              </div>
+
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginTop: 8,
+                fontSize: 13,
+              }}>
+                <span>{item.quantity} шт.</span>
+                <strong>
+                  {price === null
+                    ? 'Цена не задана'
+                    : `${(price * item.quantity).toFixed(2)} €`}
+                </strong>
+              </div>
+            </div>
+          )
+        })}
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: 20,
+          alignItems: 'center',
+        }}>
+          <div>
+            <div style={{ fontWeight: 700 }}>Товары</div>
+            <div style={{ color: '#aaa', fontSize: 12 }}>
+              {retailCount} шт.
+            </div>
+          </div>
+
+          <strong style={{ color: '#c084fc', fontSize: 23 }}>
+            {hasMissingPrices
+              ? '—'
+              : `${retailTotal.toFixed(2)} €`}
+          </strong>
+        </div>
+      </div>
+
+      {deliveryType === 'pickup' ? (
+        <div style={{ ...adminCard, marginBottom: 16 }}>
+          <div style={{
+            fontSize: 18,
+            fontWeight: 700,
+            marginBottom: 12,
+          }}>
+            📍 Самовывоз
+          </div>
+
+          <p style={{
+            color: '#c6b8d4',
+            fontSize: 14,
+            lineHeight: 1.7,
+          }}>
+            Свяжитесь с менеджером, чтобы уточнить
+            доступные города самовывоза и согласовать
+            место получения заказа.
+          </p>
+
+          <div style={{
+            margin: '16px 0',
+            color: '#34d399',
+            fontSize: 13,
+          }}>
+            Доплата за доставку отсутствует
+          </div>
+
+          <button
+            type="button"
+            onClick={() =>
+              window.open('https://t.me/optpuffy', '_blank')
+            }
+            style={{
+              ...adminPrimaryBtn,
+              width: '100%',
+              padding: 16,
+            }}
+          >
+            Написать менеджеру
+          </button>
+
+          <p style={{
+            color: '#999',
+            fontSize: 12,
+            lineHeight: 1.6,
+            marginTop: 14,
+          }}>
+            Место получения и способ оплаты согласовываются
+            с менеджером. Само открытие чата не создаёт заказ.
+          </p>
+        </div>
+      ) : (
+        <div style={{ ...adminCard, marginBottom: 16 }}>
+          <div style={{
+            fontSize: 18,
+            fontWeight: 700,
+            marginBottom: 12,
+          }}>
+            🚚 Доставка GLS
+          </div>
+
+          <div style={{
+            color: '#aaa',
+            fontSize: 13,
+            marginBottom: 14,
+          }}>
+            Страна доставки: Германия
+          </div>
+
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: 12,
+            fontSize: 14,
+          }}>
+            <span>Стоимость доставки</span>
+            <strong style={{ color: '#c084fc' }}>
+              {retailCount <= 10
+                ? 'От 5,89 €'
+                : 'Индивидуальный расчёт'}
+            </strong>
+          </div>
+
+          <p style={{
+            color: '#999',
+            fontSize: 12,
+            lineHeight: 1.7,
+            marginTop: 16,
+          }}>
+            Точная стоимость зависит от посылки.
+            В указанную сумму товаров доставка не включена.
+          </p>
+
+          <div style={{
+            marginTop: 16,
+            padding: 14,
+            borderRadius: 12,
+            border: '1px solid rgba(168,85,247,0.25)',
+            color: '#c084fc',
+            fontSize: 13,
+          }}>
+            Следующий этап — контактные данные и адрес GLS.
+          </div>
+        </div>
+      )}
+
+      <BottomNav />
+    </div>
+  )
+}
   
   if (screen === 'cart') {
   const retailTotal = cart.reduce(
