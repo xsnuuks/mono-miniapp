@@ -1937,7 +1937,6 @@ flavors: flavors
   Удалить товар
 </button>
         </div>
-      </div>
       <BottomNav />
     </div>
   )
