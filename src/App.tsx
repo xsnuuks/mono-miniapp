@@ -7205,9 +7205,12 @@ onChange={field.name === 'phone'
 
     showToast(`Оптовый заказ №${result.order_id} оформлен!`)
   } catch (error) {
-    showToast(
-      error instanceof Error ? error.message : 'Ошибка оформления заказа'
-    )
+  const message = error instanceof Error
+    ? error.message
+    : 'Неизвестная ошибка оформления заказа'
+
+  alert('Ошибка заказа: ' + message)
+  showToast(message)
   } finally {
     wholesaleSubmittingRef.current = false
     setWholesaleSubmitting(false)
