@@ -221,6 +221,9 @@ function App() {
   const [retailProducts, setRetailProducts] = useState<any[]>([])
   const [editingRetailProductId, setEditingRetailProductId] = useState<number | null>(null)
   const [editingRetailFlavors, setEditingRetailFlavors] = useState<any[]>([])
+  const [editingRetailTiers, setEditingRetailTiers] = useState<
+  { min_qty: number; price: number }[]
+>([])
   const wholesaleDragRef = useRef<{
   fromId: number
   toId: number
