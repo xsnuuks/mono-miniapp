@@ -1205,7 +1205,7 @@ async function deleteOrder(orderId: number) {
           style={{
             position: 'fixed',
             inset: 0,
-            zIndex: 9999,
+            zIndex: 999999,
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'center',
@@ -1218,7 +1218,7 @@ async function deleteOrder(orderId: number) {
             style={{
               width: '100%',
               maxWidth: 480,
-              padding: '12px 18px 28px',
+              padding: '12px 18px calc(28px + env(safe-area-inset-bottom, 0px))',
               borderRadius: '26px 26px 0 0',
               border: '1px solid #49345c',
               borderBottom: 0,
