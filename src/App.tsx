@@ -1583,28 +1583,34 @@ async function deleteOrder(orderId: number) {
         </button>
       </div>
 
-      <div style={{
-        ...adminCard,
-        textAlign: 'center',
-        padding: 24,
-      }}>
-        <div style={{ fontSize: 28, marginBottom: 12 }}>📦</div>
-        <div style={{ fontSize: 16, fontWeight: 700 }}>
-          Оптовые заказы
+      <div style={{ marginTop: 16 }}>
+  {adminWholesaleOrdersLoading ? (
+    <div style={adminCard}>Загружаем оптовые заказы...</div>
+  ) : adminWholesaleOrders.length === 0 ? (
+    <div style={adminCard}>Оптовых заказов пока нет</div>
+  ) : (
+    adminWholesaleOrders.map((order: any) => (
+      <div key={order.id} style={{ ...adminCard, marginBottom: 12 }}>
+        <strong>Оптовый заказ №{order.id}</strong>
+        <div>Статус: {order.status}</div>
+        <div>Покупатель: {order.first_name} {order.last_name}</div>
+        <div>Телефон: {order.phone}</div>
+        <div>Страна: {order.country}</div>
+        <div style={{ marginTop: 10 }}>
+          {(order.items || []).map((item: any) => (
+            <div key={item.id}>
+              {item.product_name} — {item.flavor_name},
+              {' '}{item.quantity} шт. × {Number(item.unit_price).toFixed(2)} €
+            </div>
+          ))}
         </div>
-        <div style={{
-          color: '#aaa',
-          fontSize: 13,
-          marginTop: 8,
-          lineHeight: 1.6,
-        }}>
-          Здесь будут отображаться заказы оптовых покупателей
-          после подключения их сохранения в Railway.
+        <div style={{ marginTop: 12, fontWeight: 700 }}>
+          Итого: {Number(order.items_total).toFixed(2)} €
         </div>
       </div>
-    </div>
-  )
-}
+    ))
+  )}
+</div>
   
        if (screen === 'admin_orders') {
     return (
