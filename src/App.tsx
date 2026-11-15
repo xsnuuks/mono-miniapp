@@ -2182,14 +2182,76 @@ async function deleteOrder(orderId: number) {
         Редактирование товара
       </div>
 
-      <div style={{ marginBottom: 8 }}>
-        Название: {product.name}
-      </div>
+      <label style={{ display: 'grid', gap: 8, marginBottom: 16 }}>
+  <span style={{ fontSize: 13, color: '#aaa' }}>
+    Название товара
+  </span>
+  <input
+    key={product.id}
+    id="retail-edit-name"
+    defaultValue={product.name}
+    style={{
+      ...inputStyle,
+      width: '100%',
+      boxSizing: 'border-box',
+    }}
+  />
+</label>
 
       <div style={{ marginBottom: 16, color: '#aaa' }}>
         ID товара: {product.id}
       </div>
 
+      <button
+  type="button"
+  onClick={async () => {
+    const input = document.getElementById('retail-edit-name') as HTMLInputElement | null
+    const name = input?.value.trim() || ''
+
+    if (!name) {
+      showToast('Введите название товара')
+      return
+    }
+
+    try {
+      const response = await fetch(
+        `${API_URL}/api/retail/products/${product.id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Telegram-Init-Data': (window as any).Telegram?.WebApp?.initData || '',
+          },
+          body: JSON.stringify({
+            name,
+            description: product.description || '',
+            is_visible: Number(product.is_visible ?? 1) !== 0,
+          }),
+        }
+      )
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.detail || 'Ошибка сохранения')
+      }
+
+      await loadRetailProducts()
+      setEditingRetailProductId(null)
+      showToast('Товар успешно обновлён')
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Ошибка сохранения')
+    }
+  }}
+  style={{
+    ...adminPrimaryBtn,
+    width: '100%',
+    marginBottom: 10,
+  }}
+>
+  💾 Сохранить изменения
+</button>
+      
       <button
         type="button"
         onClick={() => setEditingRetailProductId(null)}
