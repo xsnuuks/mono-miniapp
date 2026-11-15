@@ -837,6 +837,10 @@ async function loadWholesaleProducts() {
     loadRetailOrders()
   }
 
+    if (screen === 'admin_wholesale_orders') {
+    loadAdminWholesaleOrders()
+  }
+
   if (screen === 'profile') {
     loadMyRetailOrders()
     loadMyWholesaleOrders()
