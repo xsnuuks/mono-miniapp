@@ -798,6 +798,40 @@ async function loadWholesaleProducts() {
   }
 }
 
+  async function loadAdminWholesaleOrders() {
+  setAdminWholesaleOrdersLoading(true)
+
+  try {
+    const initData = (window as any).Telegram?.WebApp?.initData || ''
+
+    if (!initData) {
+      throw new Error('Откройте магазин через Telegram')
+    }
+
+    const response = await fetch(`${API_URL}/api/admin/wholesale/orders`, {
+      headers: {
+        'X-Telegram-Init-Data': initData,
+      },
+    })
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}))
+      throw new Error(error.detail || 'Не удалось загрузить оптовые заказы')
+    }
+
+    const data = await response.json()
+    setAdminWholesaleOrders(data.orders || [])
+  } catch (error) {
+    showToast(
+      error instanceof Error
+        ? error.message
+        : 'Ошибка загрузки оптовых заказов'
+    )
+  } finally {
+    setAdminWholesaleOrdersLoading(false)
+  }
+}
+
   useEffect(() => {
   if (screen === 'admin_orders') {
     loadRetailOrders()
