@@ -2240,6 +2240,26 @@ async function deleteOrder(orderId: number) {
         throw new Error(result.detail || 'Ошибка сохранения')
       }
 
+      const tiersResponse = await fetch(
+  `${API_URL}/api/retail/products/${product.id}/tiers`,
+  {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Telegram-Init-Data':
+        (window as any).Telegram?.WebApp?.initData || '',
+    },
+    body: JSON.stringify({
+      tiers: editingRetailTiers,
+    }),
+  }
+)
+
+if (!tiersResponse.ok) {
+  const error = await tiersResponse.json().catch(() => ({}))
+  throw new Error(error.detail || 'Ошибка сохранения цен')
+}
+      
       for (const flavor of editingRetailFlavors) {
   const flavorName = String(flavor.name).trim()
   const stock = Number(flavor.stock)
@@ -2307,6 +2327,81 @@ async function deleteOrder(orderId: number) {
     Вкусы и остатки
   </div>
 
+        <div style={{ ...adminCard, marginBottom: 16, padding: 14 }}>
+  <div style={{ fontWeight: 700, marginBottom: 12 }}>
+    💶 Цены товара
+  </div>
+
+  {editingRetailTiers.map((tier, index) => (
+    <div
+      key={index}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 38px',
+        gap: 8,
+        marginBottom: 10,
+      }}
+    >
+      <input
+        type="number"
+        min="1"
+        value={tier.min_qty}
+        onChange={e =>
+          setEditingRetailTiers(prev =>
+            prev.map((t, i) =>
+              i === index
+                ? { ...t, min_qty: Number(e.target.value) }
+                : t
+            )
+          )
+        }
+        placeholder="От шт."
+        style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+      />
+      <input
+        type="number"
+        min="0.01"
+        step="0.01"
+        value={tier.price}
+        onChange={e =>
+          setEditingRetailTiers(prev =>
+            prev.map((t, i) =>
+              i === index
+                ? { ...t, price: Number(e.target.value) }
+                : t
+            )
+          )
+        }
+        placeholder="Цена €"
+        style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+      />
+      <button
+        type="button"
+        onClick={() =>
+          setEditingRetailTiers(prev =>
+            prev.filter((_, i) => i !== index)
+          )
+        }
+        style={{ ...adminActionBtn, color: '#f87171' }}
+      >
+        ×
+      </button>
+    </div>
+  ))}
+
+  <button
+    type="button"
+    onClick={() =>
+      setEditingRetailTiers(prev => [
+        ...prev,
+        { min_qty: 1, price: 0 },
+      ])
+    }
+    style={{ ...adminActionBtn, width: '100%' }}
+  >
+    + Добавить цену
+  </button>
+</div>
   {editingRetailFlavors.length === 0 ? (
     <div style={{ color: '#aaa', fontSize: 13 }}>
       Вкусы не найдены
@@ -2494,6 +2589,22 @@ async function deleteOrder(orderId: number) {
   setEditingRetailFlavors([])
 
   try {
+    const tiersResponse = await fetch(
+  `${API_URL}/api/retail/products/${productId}/tiers`
+)
+
+if (!tiersResponse.ok) {
+  throw new Error('Не удалось загрузить цены товара')
+}
+
+const tiersData = await tiersResponse.json()
+
+setEditingRetailTiers(
+  (tiersData.tiers || []).map((tier: any) => ({
+    min_qty: Number(tier.min_qty),
+    price: Number(tier.price),
+  }))
+)
     const response = await fetch(
   `${API_URL}/api/retail/products/${productId}/flavors`,
   {
