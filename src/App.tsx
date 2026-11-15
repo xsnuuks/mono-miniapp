@@ -1589,26 +1589,102 @@ async function deleteOrder(orderId: number) {
   ) : adminWholesaleOrders.length === 0 ? (
     <div style={adminCard}>Оптовых заказов пока нет</div>
   ) : (
-    adminWholesaleOrders.map((order: any) => (
-      <div key={order.id} style={{ ...adminCard, marginBottom: 12 }}>
-        <strong>Оптовый заказ №{order.id}</strong>
-        <div>Статус: {order.status}</div>
-        <div>Покупатель: {order.first_name} {order.last_name}</div>
-        <div>Телефон: {order.phone}</div>
-        <div>Страна: {order.country}</div>
-        <div style={{ marginTop: 10 }}>
-          {(order.items || []).map((item: any) => (
-            <div key={item.id}>
-              {item.product_name} — {item.flavor_name},
-              {' '}{item.quantity} шт. × {Number(item.unit_price).toFixed(2)} €
-            </div>
-          ))}
+    adminWholesaleOrders.map((order: any) => {
+  const statusLabel =
+    order.status === 'completed' ? 'Выполнен' :
+    order.status === 'cancelled' ? 'Отменён' : 'Новый'
+
+  const statusColor =
+    order.status === 'completed' ? '#22c55e' :
+    order.status === 'cancelled' ? '#ef4444' : '#f59e0b'
+
+  const quantity = (order.items || []).reduce(
+    (sum: number, item: any) => sum + Number(item.quantity || 0), 0
+  )
+
+  return (
+    <details key={order.id} style={{
+      ...adminCard,
+      marginBottom: 12,
+      border: '1px solid #49305f'
+    }}>
+      <summary style={{ cursor: 'pointer', listStyle: 'none' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 12,
+          gap: 8
+        }}>
+          <strong>Заказ №{order.id}</strong>
+          <span style={{
+            color: statusColor,
+            fontSize: 12,
+            fontWeight: 700
+          }}>
+            {statusLabel}
+          </span>
         </div>
-        <div style={{ marginTop: 12, fontWeight: 700 }}>
-          Итого: {Number(order.items_total).toFixed(2)} €
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 8
+        }}>
+          <span style={{ fontSize: 12, color: '#aaa' }}>
+            {order.created_at?.replace('T', ' ').slice(0, 16)}
+          </span>
+          <strong style={{ color: '#c084fc' }}>
+            {Number(order.items_total).toFixed(2)} €
+          </strong>
+        </div>
+
+        <div style={{ fontSize: 12, color: '#999', marginTop: 8 }}>
+          {quantity} шт. · Нажмите для подробностей
+        </div>
+      </summary>
+
+      <div style={{
+        borderTop: '1px solid #49305f',
+        marginTop: 16,
+        paddingTop: 16,
+        fontSize: 13,
+        lineHeight: 1.8
+      }}>
+        <div><strong>Покупатель:</strong> {order.first_name} {order.last_name}</div>
+        <div><strong>Телефон:</strong> {order.phone}</div>
+        <div><strong>Email:</strong> {order.email || 'Не указан'}</div>
+        <div><strong>Страна:</strong> {order.country}</div>
+        <div><strong>Город:</strong> {order.city}</div>
+        <div><strong>Индекс:</strong> {order.postal_code}</div>
+        <div><strong>Улица:</strong> {order.street}</div>
+        <div><strong>Дом:</strong> {order.house}</div>
+        <div><strong>Оплата:</strong> {order.payment_method}</div>
+        <div><strong>Telegram ID:</strong> {order.user_id}</div>
+
+        <div style={{ marginTop: 14, fontWeight: 700 }}>Товары</div>
+        {(order.items || []).map((item: any) => (
+          <div key={item.id} style={{
+            padding: '10px 0',
+            borderBottom: '1px solid #333'
+          }}>
+            <strong>{item.product_name}</strong>
+            <div>{item.flavor_name}</div>
+            <div>
+              {item.quantity} шт. × {Number(item.unit_price).toFixed(2)} €
+              {' = '}{Number(item.line_total).toFixed(2)} €
+            </div>
+          </div>
+        ))}
+
+        <div style={{ marginTop: 14, fontWeight: 700, color: '#c084fc' }}>
+          Итого без доставки: {Number(order.items_total).toFixed(2)} €
         </div>
       </div>
-    ))
+    </details>
+  )
+})
   )}
 </div>
       </div>
