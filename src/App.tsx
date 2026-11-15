@@ -799,6 +799,7 @@ async function loadWholesaleProducts() {
   useEffect(() => {
   if (screen === 'admin_orders') {
     loadRetailOrders()
+    loadMyWholesaleOrders()
   }
 
   if (screen === 'profile') {
