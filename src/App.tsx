@@ -7150,7 +7150,7 @@ onChange={field.name === 'phone'
           disabled={
             !wholesalePayment ||
             count < 20 ||
-            rows.some(item => !item.hasPrice)
+            rows.some(item => !item.hasPrice) ||
             wholesaleSubmitting
           }
           onClick={async () => {
