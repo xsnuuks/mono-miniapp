@@ -2249,6 +2249,59 @@ async function deleteOrder(orderId: number) {
   />
 </label>
 
+      <div style={{ marginBottom: 16 }}>
+  <div style={{ fontSize: 13, color: '#aaa', marginBottom: 8 }}>
+    Фотография товара
+  </div>
+
+  <input
+    type="file"
+    accept="image/jpeg,image/png,image/webp"
+    style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+    onChange={async (e) => {
+      const file = e.target.files?.[0]
+      if (!file) return
+
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('Фото не должно превышать 5 МБ')
+        return
+      }
+
+      const formData = new FormData()
+      formData.append('file', file)
+
+      try {
+        const response = await fetch(
+          `${API_URL}/api/retail/products/${product.id}/photo`,
+          {
+            method: 'POST',
+            headers: {
+              'X-Telegram-Init-Data':
+                (window as any).Telegram?.WebApp?.initData || '',
+            },
+            body: formData,
+          }
+        )
+
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({}))
+          throw new Error(error.detail || 'Ошибка загрузки фото')
+        }
+
+        await loadRetailProducts()
+        showToast('Фотография обновлена')
+      } catch (error) {
+        showToast(
+          error instanceof Error ? error.message : 'Ошибка загрузки фото'
+        )
+      }
+    }}
+  />
+  <div style={{ fontSize: 12, color: '#888', marginTop: 6 }}>
+    JPG, PNG или WEBP · максимум 5 МБ
+  </div>
+</div>
+
       <div style={{ marginBottom: 16, color: '#aaa' }}>
         ID товара: {product.id}
       </div>
