@@ -1829,10 +1829,14 @@ const statusColor =
     </div>
   ) : (
     retailOrders.map((order: any) => (
-      <div
-        key={`retail-${order.id}`}
-        style={{ ...adminCard, marginBottom: 12 }}
-      >
+  <details
+    key={`retail-${order.id}`}
+    style={{ ...adminCard, marginBottom: 12 }}
+  >
+    <summary style={{
+      cursor: 'pointer',
+      listStyle: 'none',
+    }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -1865,6 +1869,7 @@ const statusColor =
           {' · '}
           Telegram ID: {order.user_id ?? '—'}
         </div>
+      </summary>
 
         <div style={{
           display: 'grid',
@@ -2011,7 +2016,7 @@ const statusColor =
   🗑 Удалить
 </button>
 </div>
-      </div>
+      </details>
     ))
   )}
           
