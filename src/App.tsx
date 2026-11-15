@@ -220,6 +220,7 @@ function App() {
   const [wholesaleProducts, setWholesaleProducts] = useState<any[]>([])
   const [retailProducts, setRetailProducts] = useState<any[]>([])
   const [editingRetailProductId, setEditingRetailProductId] = useState<number | null>(null)
+  const [editingRetailFlavors, setEditingRetailFlavors] = useState<any[]>([])
   const wholesaleDragRef = useRef<{
   fromId: number
   toId: number
