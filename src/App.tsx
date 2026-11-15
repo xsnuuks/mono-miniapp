@@ -1849,10 +1849,10 @@ const statusColor =
           }}>
             {({
   new: 'Новый',
-  progress: 'В обработке',
-  shipped: 'Отправлен',
   done: 'Выполнен',
   cancelled: 'Отменён',
+  progress: 'В обработке',
+  shipped: 'Отправлен',
 } as Record<string, string>)[order.status] || order.status}
           </span>
         </div>
