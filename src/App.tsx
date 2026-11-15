@@ -722,6 +722,10 @@ async function loadWholesaleProducts() {
   if (screen === 'admin_orders') {
     loadRetailOrders()
   }
+
+  if (screen === 'profile') {
+    loadMyRetailOrders()
+  }
 }, [screen])
 
   async function setRetailOrderStatus(orderId: number, status: string) {
