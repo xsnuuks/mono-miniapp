@@ -1715,6 +1715,47 @@ async function deleteOrder(orderId: number) {
     ✕ Отменить
   </button>
 )}
+          <button
+  type="button"
+  onClick={async () => {
+    if (!window.confirm(
+      `Удалить заказ №${order.id} из админки? История заказа сохранится.`
+    )) return
+
+    try {
+      const response = await fetch(
+        `${API_URL}/api/admin/retail/orders/${order.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'X-Telegram-Init-Data':
+              (window as any).Telegram?.WebApp?.initData || '',
+          },
+        }
+      )
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}))
+        throw new Error(error.detail || 'Не удалось удалить заказ')
+      }
+
+      await loadRetailOrders()
+      showToast('Заказ удалён из админки')
+    } catch (error) {
+      showToast(
+        error instanceof Error ? error.message : 'Ошибка удаления'
+      )
+    }
+  }}
+  style={{
+    ...adminActionBtn,
+    flex: 1,
+    border: '1px solid rgba(239,68,68,0.4)',
+    color: '#f87171',
+  }}
+>
+  🗑 Удалить
+</button>
 </div>
       </div>
     ))
