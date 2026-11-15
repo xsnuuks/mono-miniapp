@@ -2423,8 +2423,14 @@ async function deleteOrder(orderId: number) {
         }
 
         const flavorsResponse = await fetch(
-          `${API_URL}/api/retail/products/${product.id}/flavors`
-        )
+  `${API_URL}/api/retail/products/${product.id}/flavors`,
+  {
+    headers: {
+      'X-Telegram-Init-Data':
+        (window as any).Telegram?.WebApp?.initData || '',
+    },
+  }
+)
         const flavorsData = await flavorsResponse.json()
 
         setEditingRetailFlavors(flavorsData.flavors || [])
@@ -2486,8 +2492,14 @@ async function deleteOrder(orderId: number) {
 
   try {
     const response = await fetch(
-      `${API_URL}/api/retail/products/${productId}/flavors`
-    )
+  `${API_URL}/api/retail/products/${productId}/flavors`,
+  {
+    headers: {
+      'X-Telegram-Init-Data':
+        (window as any).Telegram?.WebApp?.initData || '',
+    },
+  }
+)
 
     if (!response.ok) {
       throw new Error('Не удалось загрузить вкусы')
