@@ -1164,76 +1164,278 @@ async function deleteOrder(orderId: number) {
   const [opened, setOpened] = useState(false)
 
   return (
-    <div style={{ position: 'relative', flexShrink: 0 }}>
+    <>
       <button
         type="button"
-        onClick={() => setOpened(!opened)}
+        onClick={() => setOpened(true)}
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-          gap: 7,
-          background: '#321b48',
-          border: '1px solid #7545a0',
+          gap: 8,
+          padding: '11px 13px',
+          borderRadius: 14,
+          border: '1px solid #65447e',
+          background: '#24192f',
           color: '#fff',
-          borderRadius: 13,
-          padding: '11px 12px',
           fontSize: 12,
-          fontWeight: 700,
+          fontWeight: 600,
           cursor: 'pointer',
           whiteSpace: 'nowrap',
         }}
       >
-        <span style={{ fontSize: 15 }}>⌖</span>
+        <svg width="17" height="17" viewBox="0 0 24 24"
+          fill="none" stroke="#c39af7" strokeWidth="1.8"
+          strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/>
+          <circle cx="12" cy="10" r="2.5"/>
+        </svg>
+
         {deliveryType === 'pickup' ? 'Самовывоз' : 'Доставка'}
-        <span style={{ fontSize: 11 }}>⌄</span>
+
+        <svg width="14" height="14" viewBox="0 0 24 24"
+          fill="none" stroke="#b9a5ca" strokeWidth="2"
+          strokeLinecap="round" strokeLinejoin="round">
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
       </button>
 
       {opened && (
-        <div style={{
-          position: 'absolute',
-          top: 'calc(100% + 7px)',
-          right: 0,
-          width: 170,
-          padding: 6,
-          borderRadius: 13,
-          background: '#24152f',
-          border: '1px solid #7545a0',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
-          zIndex: 100,
-        }}>
-          {([
-            { id: 'pickup', label: 'Самовывоз' },
-            { id: 'delivery', label: 'Доставка' },
-          ] as const).map(option => (
+        <div
+          onClick={() => setOpened(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+            background: 'rgba(0,0,0,0.75)',
+            backdropFilter: 'blur(7px)',
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              width: '100%',
+              maxWidth: 480,
+              padding: '12px 18px 28px',
+              borderRadius: '26px 26px 0 0',
+              border: '1px solid #49345c',
+              borderBottom: 0,
+              background: '#110d18',
+              boxShadow: '0 -15px 60px rgba(0,0,0,0.5)',
+              maxHeight: '88vh',
+              overflowY: 'auto',
+            }}
+          >
+            <div style={{
+              width: 38,
+              height: 4,
+              background: '#59466c',
+              borderRadius: 20,
+              margin: '0 auto 25px',
+            }}/>
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              gap: 12,
+              marginBottom: 25,
+            }}>
+              <div>
+                <div style={{
+                  color: '#ad80ea',
+                  fontSize: 11,
+                  letterSpacing: '0.12em',
+                  fontWeight: 700,
+                  marginBottom: 9,
+                }}>
+                  PUFFY STORE
+                </div>
+
+                <div style={{
+                  color: '#fff',
+                  fontSize: 23,
+                  fontWeight: 750,
+                  letterSpacing: '-0.03em',
+                }}>
+                  Как получить заказ?
+                </div>
+
+                <div style={{
+                  color: '#a99bb4',
+                  fontSize: 13,
+                  marginTop: 8,
+                }}>
+                  Выберите удобный способ получения
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setOpened(false)}
+                style={{
+                  background: '#251b30',
+                  border: '1px solid #483454',
+                  borderRadius: '50%',
+                  width: 34,
+                  height: 34,
+                  flexShrink: 0,
+                  color: '#d7c6e7',
+                  fontSize: 21,
+                  cursor: 'pointer',
+                }}
+              >
+                ×
+              </button>
+            </div>
+
+            {([
+              {
+                id: 'pickup',
+                title: 'Самовывоз',
+                description: 'По договорённости с менеджером',
+              },
+              {
+                id: 'delivery',
+                title: 'Доставка',
+                description: 'Отправка по Германии',
+              },
+            ] as const).map(option => {
+              const active = deliveryType === option.id
+
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => setDeliveryType(option.id)}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 13,
+                    textAlign: 'left',
+                    padding: 15,
+                    marginBottom: 11,
+                    borderRadius: 17,
+                    border: active
+                      ? '2px solid #a65af0'
+                      : '1px solid #45344f',
+                    background: active ? '#281936' : '#1b1523',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  <div style={{
+                    width: 44,
+                    height: 44,
+                    flexShrink: 0,
+                    borderRadius: 13,
+                    background: active ? '#793ac1' : '#30263b',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    {option.id === 'pickup' ? (
+                      <svg width="23" height="23" viewBox="0 0 24 24"
+                        fill="none" stroke="white" strokeWidth="1.8"
+                        strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/>
+                        <circle cx="12" cy="10" r="2.5"/>
+                      </svg>
+                    ) : (
+                      <svg width="23" height="23" viewBox="0 0 24 24"
+                        fill="none" stroke="white" strokeWidth="1.8"
+                        strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M10 17h4V5H2v12h3"/>
+                        <path d="M14 9h4l4 4v4h-3"/>
+                        <circle cx="7.5" cy="17.5" r="2.5"/>
+                        <circle cx="16.5" cy="17.5" r="2.5"/>
+                      </svg>
+                    )}
+                  </div>
+
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{
+                      fontSize: 15,
+                      fontWeight: 700,
+                      marginBottom: 5,
+                    }}>
+                      {option.title}
+                    </div>
+                    <div style={{
+                      fontSize: 12,
+                      color: '#b4a6c1',
+                      lineHeight: 1.4,
+                    }}>
+                      {option.description}
+                    </div>
+                  </div>
+
+                  <div style={{
+                    width: 21,
+                    height: 21,
+                    borderRadius: '50%',
+                    flexShrink: 0,
+                    border: active
+                      ? '2px solid #ba80fc'
+                      : '2px solid #766381',
+                    background: active ? '#a65af0' : 'transparent',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    {active && (
+                      <svg width="13" height="13" viewBox="0 0 24 24"
+                        fill="none" stroke="white" strokeWidth="3"
+                        strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m5 12 4 4L19 6"/>
+                      </svg>
+                    )}
+                  </div>
+                </button>
+              )
+            })}
+
+            <div style={{
+              background: '#1b1523',
+              borderRadius: 14,
+              padding: 15,
+              marginTop: 10,
+              marginBottom: 20,
+              color: '#b8a9c5',
+              fontSize: 12,
+              lineHeight: 1.6,
+            }}>
+              {deliveryType === 'pickup'
+                ? 'Место и возможность самовывоза согласовываются индивидуально с менеджером.'
+                : 'Доставка осуществляется по Германии. Стоимость рассчитывается индивидуально и не входит в сумму товаров.'}
+            </div>
+
             <button
-              key={option.id}
               type="button"
-              onClick={() => {
-                setDeliveryType(option.id)
-                setOpened(false)
-              }}
+              onClick={() => setOpened(false)}
               style={{
                 width: '100%',
-                display: 'block',
-                textAlign: 'left',
-                background: deliveryType === option.id
-                  ? 'rgba(168,85,247,0.24)'
-                  : 'transparent',
-                border: 'none',
-                borderRadius: 9,
-                padding: '12px',
+                padding: '16px',
+                borderRadius: 14,
+                border: 0,
+                background: 'linear-gradient(100deg, #7436e7, #c115ce)',
                 color: '#fff',
-                fontSize: 13,
+                fontSize: 15,
+                fontWeight: 700,
                 cursor: 'pointer',
+                boxShadow: '0 8px 24px rgba(140,55,225,0.22)',
               }}
             >
-              {option.label}
+              Продолжить
             </button>
-          ))}
+          </div>
         </div>
       )}
-    </div>
+    </>
   )
 }
 
