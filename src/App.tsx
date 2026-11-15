@@ -1591,7 +1591,13 @@ async function deleteOrder(orderId: number) {
             padding: '6px 10px',
             fontSize: 12,
           }}>
-            {order.status === 'new' ? 'Новый' : order.status}
+            {({
+  new: 'Новый',
+  progress: 'В обработке',
+  shipped: 'Отправлен',
+  done: 'Выполнен',
+  cancelled: 'Отменён',
+} as Record<string, string>)[order.status] || order.status}
           </span>
         </div>
 
