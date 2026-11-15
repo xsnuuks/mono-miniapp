@@ -897,7 +897,10 @@ async function loadWholesaleProducts() {
   }
 }, [screen])
 
-  async function setRetailOrderStatus(orderId: number, status: string) {
+  async function setRetailOrderStatus(
+  orderId: number,
+  status: 'done' | 'cancelled'
+) {
   try {
     const initData = (window as any).Telegram?.WebApp?.initData || ''
 
@@ -1933,44 +1936,39 @@ const statusColor =
             Стоимость GLS рассчитывается отдельно
           </div>
         )}
-        <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
-  {order.delivery_type === 'delivery' && order.status === 'new' && (
-    <button
-      type="button"
-      onClick={() => setRetailOrderStatus(order.id, 'shipped')}
-      style={{ ...adminActionBtn, flex: 1 }}
-    >
-      📦 Отправлен
-    </button>
-  )}
+        <div style={{ display: 'flex', gap: 8, marginTop: 14, flexWrap: 'wrap' }}>
+  {order.status === 'new' && (
+    <>
+      <button
+        type="button"
+        onClick={() => {
+          if (window.confirm(`Выполнить заказ №${order.id}?`)) {
+            setRetailOrderStatus(order.id, 'done')
+          }
+        }}
+        style={{ ...adminPrimaryBtn, flex: 1 }}
+      >
+        ✓ Выполнен
+      </button>
 
-  {order.status !== 'done' && order.status !== 'cancelled' && (
-    <button
-      type="button"
-      onClick={() => setRetailOrderStatus(order.id, 'done')}
-      style={{ ...adminPrimaryBtn, flex: 1 }}
-    >
-      ✓ Выполнен
-    </button>
+      <button
+        type="button"
+        onClick={() => {
+          if (window.confirm(`Отменить заказ №${order.id} и вернуть товары на склад?`)) {
+            setRetailOrderStatus(order.id, 'cancelled')
+          }
+        }}
+        style={{
+          ...adminActionBtn,
+          flex: 1,
+          border: '1px solid rgba(239,68,68,0.4)',
+          color: '#f87171',
+        }}
+      >
+        ✕ Отменён
+      </button>
+    </>
   )}
-          {order.status !== 'cancelled' && (
-  <button
-    type="button"
-    onClick={() => {
-      if (window.confirm('Отменить заказ и вернуть товары на склад?')) {
-        setRetailOrderStatus(order.id, 'cancelled')
-      }
-    }}
-    style={{
-      ...adminActionBtn,
-      flex: 1,
-      border: '1px solid rgba(239,68,68,0.4)',
-      color: '#f87171',
-    }}
-  >
-    ✕ Отменить
-  </button>
-)}
           <button
   type="button"
   onClick={async () => {
