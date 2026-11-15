@@ -5188,6 +5188,113 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   const name = tgUser?.first_name || 'Клиент'
   const letter = name.charAt(0).toUpperCase()
   const photo = (tgUser as any)?.photo_url || null
+          const selectedOrder = myRetailOrders.find(
+  (order: any) => order.id === selectedRetailOrderId
+)
+
+if (selectedOrder) {
+  return (
+    <div key="retail-order-details" style={page}>
+      <button
+        type="button"
+        onClick={() => setSelectedRetailOrderId(null)}
+        style={backBtn}
+      >
+        ← Назад к заказам
+      </button>
+
+      <div style={{ ...title, marginBottom: 20 }}>
+        Информация о заказе
+      </div>
+
+      <div style={{ ...adminCard, marginBottom: 16 }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: 12,
+          marginBottom: 14,
+        }}>
+          <strong>Заказ №{selectedOrder.id}</strong>
+          <strong style={{ color: '#c084fc' }}>
+            {Number(selectedOrder.items_total).toFixed(2)} €
+          </strong>
+        </div>
+
+        <div style={{ fontSize: 13, color: '#aaa', lineHeight: 2 }}>
+          <div>
+            Дата: {selectedOrder.created_at?.replace('T', ' ').slice(0, 16)}
+          </div>
+          <div>
+            Получение: {selectedOrder.delivery_type === 'pickup'
+              ? 'Самовывоз'
+              : 'GLS · Германия'}
+          </div>
+          <div>
+            Оплата: {selectedOrder.payment_method === 'cash'
+              ? 'Наличные'
+              : selectedOrder.payment_method === 'usdt'
+                ? 'USDT'
+                : 'Банковский перевод UAH'}
+          </div>
+          <div>
+            Статус: {selectedOrder.status === 'new'
+              ? 'Новый'
+              : selectedOrder.status === 'shipped'
+                ? 'Отправлен'
+                : selectedOrder.status === 'done'
+                  ? 'Завершён'
+                  : 'Отменён'}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ ...adminCard, marginBottom: 16 }}>
+        <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>
+          Товары
+        </div>
+
+        {(selectedOrder.items || []).map((item: any, index: number) => (
+          <div
+            key={index}
+            style={{
+              padding: '12px 0',
+              borderBottom: '1px solid rgba(255,255,255,0.1)',
+            }}
+          >
+            <div style={{ fontWeight: 700 }}>{item.product_name}</div>
+            <div style={{ fontSize: 13, color: '#aaa', marginTop: 5 }}>
+              {item.flavor_name} · {item.quantity} шт.
+            </div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginTop: 8,
+              fontSize: 13,
+            }}>
+              <span>{Number(item.unit_price).toFixed(2)} €/шт.</span>
+              <strong>{Number(item.line_total).toFixed(2)} €</strong>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{
+        ...adminCard,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 24,
+      }}>
+        <strong>Итого за товары</strong>
+        <strong style={{ fontSize: 22, color: '#c084fc' }}>
+          {Number(selectedOrder.items_total).toFixed(2)} €
+        </strong>
+      </div>
+
+      <BottomNav />
+    </div>
+  )
+}
 
   return (
     <div key={screen} style={page}>
