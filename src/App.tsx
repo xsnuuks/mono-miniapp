@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 
 const API_URL = 'https://web-production-8afa.up.railway.app'
 const ADMIN_ID = 7875371978
@@ -1199,7 +1200,7 @@ async function deleteOrder(orderId: number) {
         </svg>
       </button>
 
-      {opened && (
+      {opened && createPortal(
         <div
           onClick={() => setOpened(false)}
           style={{
@@ -1433,7 +1434,8 @@ async function deleteOrder(orderId: number) {
               Продолжить
             </button>
           </div>
-        </div>
+        </div>,
+      document.body
       )}
     </>
   )
