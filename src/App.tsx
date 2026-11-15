@@ -666,6 +666,37 @@ async function loadWholesaleProducts() {
     if (r.ok) setOrders(await r.json())
   }
 
+  async function loadMyRetailOrders() {
+  setMyRetailOrdersLoading(true)
+
+  try {
+    const initData = (window as any).Telegram?.WebApp?.initData || ''
+
+    if (!initData) {
+      throw new Error('Откройте магазин через Telegram')
+    }
+
+    const response = await fetch(`${API_URL}/api/retail/my-orders`, {
+      headers: {
+        'X-Telegram-Init-Data': initData,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Не удалось загрузить заказы')
+    }
+
+    const data = await response.json()
+    setMyRetailOrders(data.orders || [])
+  } catch (error) {
+    showToast(
+      error instanceof Error ? error.message : 'Ошибка загрузки заказов'
+    )
+  } finally {
+    setMyRetailOrdersLoading(false)
+  }
+}
+
   async function loadRetailOrders() {
   try {
     const initData = (window as any).Telegram?.WebApp?.initData || ''
