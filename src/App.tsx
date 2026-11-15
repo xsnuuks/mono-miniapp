@@ -2314,7 +2314,7 @@ async function deleteOrder(orderId: number) {
         key={flavor.id}
         style={{
           display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1fr) 80px 38px',
+          gridTemplateColumns: 'minmax(0, 1fr) 75px 85px',
           gap: 10,
           marginBottom: 12,
         }}
@@ -2352,49 +2352,28 @@ async function deleteOrder(orderId: number) {
         />
         <button
   type="button"
-  title="Удалить вкус"
-  onClick={async () => {
-    if (!window.confirm(`Удалить вкус «${flavor.name}»?`)) return
-
-    try {
-      const response = await fetch(
-        `${API_URL}/api/retail/flavors/${flavor.id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'X-Telegram-Init-Data':
-              (window as any).Telegram?.WebApp?.initData || '',
-          },
-        }
+  title={Number(flavor.is_active ?? 1) !== 0 ? 'Скрыть вкус' : 'Показать вкус'}
+  onClick={() => {
+    setEditingRetailFlavors(prev =>
+      prev.map(f =>
+        f.id === flavor.id
+          ? { ...f, is_active: Number(f.is_active ?? 1) === 0 ? 1 : 0 }
+          : f
       )
-
-      if (!response.ok) {
-        const error = await response.json().catch(() => ({}))
-        throw new Error(error.detail || 'Не удалось удалить вкус')
-      }
-
-      setEditingRetailFlavors(prev =>
-        prev.filter(f => f.id !== flavor.id)
-      )
-
-      await loadRetailProducts()
-      showToast('Вкус удалён')
-    } catch (error) {
-      showToast(
-        error instanceof Error ? error.message : 'Ошибка удаления вкуса'
-      )
-    }
+    )
   }}
   style={{
-    border: '1px solid rgba(239,68,68,0.4)',
-    background: 'rgba(239,68,68,0.1)',
-    color: '#f87171',
+    padding: '10px 8px',
     borderRadius: 10,
+    border: '1px solid rgba(168,85,247,0.35)',
+    background: 'rgba(168,85,247,0.1)',
+    color: '#d8b4fe',
     cursor: 'pointer',
-    fontSize: 18,
+    fontSize: 12,
+    fontWeight: 700,
   }}
 >
-  ×
+  {Number(flavor.is_active ?? 1) !== 0 ? 'Скрыть' : 'Показать'}
 </button>
       </div>
     ))
