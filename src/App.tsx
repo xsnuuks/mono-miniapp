@@ -2163,6 +2163,9 @@ async function deleteOrder(orderId: number) {
             {categoryProducts.map(p => (
               <div
   key={p.id}
+  onClick={() => {
+    setEditingRetailProductId(Number(p.id))
+  }}
   style={{
     ...adminCard,
     cursor: 'pointer',
