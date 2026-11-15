@@ -9331,48 +9331,46 @@ showToast('Адрес сохранён')
 </div>
       <div style={{
   display: 'flex',
-  background: 'rgba(255,255,255,0.06)',
-  borderRadius: 14,
-  padding: 4,
-  marginBottom: 16,
-  gap: 4,
+  background: '#1C1426',
+  border: '1px solid #574169',
+  borderRadius: 17,
+  padding: 5,
+  marginBottom: 22,
+  gap: 5,
 }}>
-  <button
-    onClick={() => setPriceMode('retail')}
-    style={{
-      flex: 1,
-      padding: '10px 16px',
-      borderRadius: 10,
-      border: 0,
-      background: priceMode === 'retail' 
-        ? 'linear-gradient(90deg, #7c3aed, #a855f7)' 
-        : 'transparent',
-      color: '#fff',
-      fontWeight: 600,
-      fontSize: 15,
-      cursor: 'pointer',
-    }}
-  >
-    Розница
-  </button>
-  <button
-    onClick={() => setPriceMode('wholesale')}
-    style={{
-      flex: 1,
-      padding: '10px 16px',
-      borderRadius: 10,
-      border: 0,
-      background: priceMode === 'wholesale' 
-        ? 'linear-gradient(90deg, #7c3aed, #a855f7)' 
-        : 'transparent',
-      color: '#fff',
-      fontWeight: 600,
-      fontSize: 15,
-      cursor: 'pointer',
-    }}
-  >
-    Опт
-  </button>
+  {([
+    { id: 'retail', label: 'Розница' },
+    { id: 'wholesale', label: 'Опт' },
+  ] as const).map(option => {
+    const active = priceMode === option.id
+
+    return (
+      <button
+        key={option.id}
+        type="button"
+        onClick={() => setPriceMode(option.id)}
+        style={{
+          flex: 1,
+          padding: '13px 16px',
+          borderRadius: 12,
+          border: 0,
+          background: active
+            ? 'linear-gradient(100deg, #7134EA, #B316CF)'
+            : 'transparent',
+          color: active ? '#FFFFFF' : '#C0B2CB',
+          fontSize: 14,
+          fontWeight: active ? 700 : 600,
+          cursor: 'pointer',
+          transition: 'background 0.2s ease, color 0.2s ease',
+          boxShadow: active
+            ? '0 4px 16px rgba(145, 55, 225, 0.22)'
+            : 'none',
+        }}
+      >
+        {option.label}
+      </button>
+    )
+  })}
 </div>
       {loading ? <div style={{ color: '#a0a0a0', marginBottom: 12 }}>Загрузка...</div> : null}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
