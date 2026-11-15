@@ -194,6 +194,8 @@ function App() {
   const [orders, setOrders] = useState<any[]>([])
   const [retailOrders, setRetailOrders] = useState<any[]>([])
   const [myRetailOrders, setMyRetailOrders] = useState<any[]>([])
+  const [myWholesaleOrders, setMyWholesaleOrders] = useState<any[]>([])
+  const [myWholesaleOrdersLoading, setMyWholesaleOrdersLoading] = useState(false)
   const [selectedRetailOrderId, setSelectedRetailOrderId] = useState<number | null>(null)
   const [myRetailOrdersLoading, setMyRetailOrdersLoading] = useState(false)
   const [users, setUsers] = useState<any[]>([])
