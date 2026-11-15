@@ -1697,7 +1697,7 @@ async function deleteOrder(orderId: number) {
       ✓ Выполнен
     </button>
   )}
-          {order.status !== 'done' && order.status !== 'cancelled' && (
+          {order.status !== 'cancelled' && (
   <button
     type="button"
     onClick={() => {
