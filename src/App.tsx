@@ -2353,6 +2353,91 @@ async function deleteOrder(orderId: number) {
     ))
   )}
 </div>
+
+      <div style={{
+  ...adminCard,
+  marginBottom: 14,
+  padding: 14,
+}}>
+  <div style={{ fontWeight: 700, marginBottom: 12 }}>
+    + Добавить новый вкус
+  </div>
+
+  <form
+    onSubmit={async e => {
+      e.preventDefault()
+
+      const form = e.currentTarget
+      const data = new FormData(form)
+      const name = String(data.get('name') || '').trim()
+      const stock = Number(data.get('stock'))
+
+      if (!name || !Number.isInteger(stock) || stock < 0) {
+        showToast('Укажите название и правильный остаток')
+        return
+      }
+
+      try {
+        const response = await fetch(
+          `${API_URL}/api/retail/products/${product.id}/flavors`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Telegram-Init-Data':
+                (window as any).Telegram?.WebApp?.initData || '',
+            },
+            body: JSON.stringify({ name, stock }),
+          }
+        )
+
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({}))
+          throw new Error(error.detail || 'Ошибка добавления вкуса')
+        }
+
+        const flavorsResponse = await fetch(
+          `${API_URL}/api/retail/products/${product.id}/flavors`
+        )
+        const flavorsData = await flavorsResponse.json()
+
+        setEditingRetailFlavors(flavorsData.flavors || [])
+        await loadRetailProducts()
+        form.reset()
+        showToast('Вкус добавлен')
+      } catch (error) {
+        showToast(
+          error instanceof Error ? error.message : 'Ошибка добавления'
+        )
+      }
+    }}
+    style={{ display: 'grid', gap: 10 }}
+  >
+    <input
+      name="name"
+      placeholder="Название нового вкуса"
+      required
+      style={inputStyle}
+    />
+
+    <input
+      name="stock"
+      type="number"
+      min="0"
+      defaultValue="0"
+      required
+      placeholder="Остаток"
+      style={inputStyle}
+    />
+
+    <button
+      type="submit"
+      style={{ ...adminPrimaryBtn, width: '100%' }}
+    >
+      + Добавить вкус
+    </button>
+  </form>
+</div>
       
       <button
         type="button"
