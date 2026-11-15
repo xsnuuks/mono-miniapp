@@ -2251,6 +2251,71 @@ async function deleteOrder(orderId: number) {
 >
   💾 Сохранить изменения
 </button>
+
+      <div style={{
+  marginBottom: 18,
+  padding: 14,
+  background: '#17131d',
+  borderRadius: 12,
+}}>
+  <div style={{
+    fontSize: 16,
+    fontWeight: 700,
+    marginBottom: 14,
+  }}>
+    Вкусы и остатки
+  </div>
+
+  {editingRetailFlavors.length === 0 ? (
+    <div style={{ color: '#aaa', fontSize: 13 }}>
+      Вкусы не найдены
+    </div>
+  ) : (
+    editingRetailFlavors.map((flavor: any) => (
+      <div
+        key={flavor.id}
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 90px',
+          gap: 10,
+          marginBottom: 12,
+        }}
+      >
+        <input
+          defaultValue={flavor.name}
+          onChange={e => {
+            setEditingRetailFlavors(prev =>
+              prev.map(f =>
+                f.id === flavor.id
+                  ? { ...f, name: e.target.value }
+                  : f
+              )
+            )
+          }}
+          placeholder="Название вкуса"
+          style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+        />
+
+        <input
+          type="number"
+          min="0"
+          defaultValue={flavor.stock}
+          onChange={e => {
+            setEditingRetailFlavors(prev =>
+              prev.map(f =>
+                f.id === flavor.id
+                  ? { ...f, stock: Number(e.target.value) }
+                  : f
+              )
+            )
+          }}
+          placeholder="Остаток"
+          style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+        />
+      </div>
+    ))
+  )}
+</div>
       
       <button
         type="button"
