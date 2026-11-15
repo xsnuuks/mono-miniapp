@@ -275,6 +275,9 @@ const [wholesaleCart, setWholesaleCart] = useState<{
   flavorName: string
   quantity: number
 }[]>([])
+  const [wholesaleSubmitting, setWholesaleSubmitting] = useState(false)
+  const wholesaleRequestIdRef = useRef<string | null>(null)
+  const wholesaleSubmittingRef = useRef(false)
   const [tiers, setTiers] = useState<any[]>([])
   const [flavors, setFlavors] = useState<any[]>([])
   const [minQty, setMinQty] = useState('')
@@ -7148,10 +7151,67 @@ onChange={field.name === 'phone'
             !wholesalePayment ||
             count < 20 ||
             rows.some(item => !item.hasPrice)
+            wholesaleSubmitting
           }
-          onClick={() =>
-            showToast('Следующий шаг — экран подтверждения')
-          }
+          onClick={async () => {
+  if (wholesaleSubmittingRef.current) return
+
+  wholesaleSubmittingRef.current = true
+  setWholesaleSubmitting(true)
+
+  if (!wholesaleRequestIdRef.current) {
+    wholesaleRequestIdRef.current = crypto.randomUUID()
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/api/wholesale/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Telegram-Init-Data':
+          (window as any).Telegram?.WebApp?.initData || '',
+      },
+      body: JSON.stringify({
+        request_id: wholesaleRequestIdRef.current,
+        first_name: wholesaleContact.first_name,
+        last_name: wholesaleContact.last_name,
+        phone: wholesaleContact.phone,
+        email: wholesaleContact.email,
+        country: wholesaleCountry,
+        city: wholesaleAddress.city,
+        postal_code: wholesaleAddress.postal_code,
+        street: wholesaleAddress.street,
+        house: wholesaleAddress.house,
+        payment_method: wholesalePayment.toLowerCase(),
+        items: wholesaleCart.map(item => ({
+          product_id: item.productId,
+          flavor_id: item.flavorId,
+          quantity: item.quantity,
+        })),
+      }),
+    })
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw new Error(result.detail || 'Ошибка оформления заказа')
+    }
+
+    setWholesaleCart([])
+    wholesaleRequestIdRef.current = null
+    await loadWholesaleProducts()
+    setScreen('wholesale')
+
+    showToast(`Оптовый заказ №${result.order_id} оформлен!`)
+  } catch (error) {
+    showToast(
+      error instanceof Error ? error.message : 'Ошибка оформления заказа'
+    )
+  } finally {
+    wholesaleSubmittingRef.current = false
+    setWholesaleSubmitting(false)
+  }
+}}
           style={{
             ...adminPrimaryBtn,
             width: '100%',
@@ -7160,7 +7220,7 @@ onChange={field.name === 'phone'
             opacity: wholesalePayment && count >= 20 ? 1 : 0.5,
           }}
         >
-          Продолжить
+          {wholesaleSubmitting ? 'Оформляем заказ...' : 'Оформить заказ'}
         </button>
 
         <div style={{
