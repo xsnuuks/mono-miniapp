@@ -5347,6 +5347,105 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     </div>
   </div>
 )}
+
+      <div style={{ marginTop: 24, marginBottom: 90 }}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 14,
+  }}>
+    <div style={{ fontSize: 20, fontWeight: 800 }}>
+      📦 Заказы
+    </div>
+    <span style={{
+      background: '#302039',
+      color: '#d8b4fe',
+      borderRadius: 20,
+      padding: '5px 12px',
+      fontSize: 12,
+    }}>
+      {myRetailOrders.length}
+    </span>
+  </div>
+
+  {myRetailOrdersLoading ? (
+    <div style={{ ...adminCard, color: '#aaa' }}>
+      Загружаем заказы...
+    </div>
+  ) : myRetailOrders.length === 0 ? (
+    <div style={{ ...adminCard, color: '#aaa' }}>
+      У вас пока нет заказов
+    </div>
+  ) : (
+    myRetailOrders.map((order: any) => (
+      <button
+        key={order.id}
+        type="button"
+        onClick={() => setSelectedRetailOrderId(order.id)}
+        style={{
+          ...adminCard,
+          width: '100%',
+          textAlign: 'left',
+          marginBottom: 12,
+          cursor: 'pointer',
+          color: '#fff',
+        }}
+      >
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 12,
+        }}>
+          <strong>Заказ №{order.id}</strong>
+          <span style={{
+            background: 'rgba(168,85,247,0.16)',
+            color: '#d8b4fe',
+            padding: '5px 10px',
+            borderRadius: 20,
+            fontSize: 12,
+          }}>
+            {order.status === 'new' ? 'Новый'
+              : order.status === 'shipped' ? 'Отправлен'
+              : order.status === 'done' ? 'Завершён'
+              : 'Отменён'}
+          </span>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: 12,
+          marginBottom: 8,
+        }}>
+          <span style={{ fontSize: 13, color: '#aaa' }}>
+            {order.delivery_type === 'pickup' ? 'Самовывоз' : 'GLS · Германия'}
+          </span>
+          <strong style={{ color: '#c084fc', fontSize: 18 }}>
+            {Number(order.items_total).toFixed(2)} €
+          </strong>
+        </div>
+
+        <div style={{ fontSize: 12, color: '#999' }}>
+          {order.created_at?.replace('T', ' ').slice(0, 16)}
+          {' · '}
+          {(order.items || []).reduce(
+            (sum: number, item: any) => sum + Number(item.quantity), 0
+          )} шт.
+        </div>
+
+        <div style={{
+          color: '#c084fc',
+          fontSize: 13,
+          marginTop: 12,
+        }}>
+          Подробнее →
+        </div>
+      </button>
+    ))
+  )}
+</div>
       
       <BottomNav />
     </div>
