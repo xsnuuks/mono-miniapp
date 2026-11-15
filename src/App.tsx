@@ -832,6 +832,56 @@ async function loadWholesaleProducts() {
   }
 }
 
+  async function setWholesaleOrderStatus(
+  orderId: number,
+  status: 'done' | 'cancelled'
+) {
+  const action = status === 'done' ? 'выполнить' : 'отменить'
+
+  if (!window.confirm(`Вы действительно хотите ${action} заказ №${orderId}?`)) {
+    return
+  }
+
+  try {
+    const initData = (window as any).Telegram?.WebApp?.initData || ''
+
+    if (!initData) {
+      throw new Error('Откройте магазин через Telegram')
+    }
+
+    const response = await fetch(
+      `${API_URL}/api/admin/wholesale/orders/${orderId}/status`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Telegram-Init-Data': initData,
+        },
+        body: JSON.stringify({ status }),
+      }
+    )
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw new Error(result.detail || 'Не удалось изменить статус')
+    }
+
+    await loadAdminWholesaleOrders()
+    showToast(
+      status === 'done'
+        ? `Заказ №${orderId} выполнен`
+        : `Заказ №${orderId} отменён`
+    )
+  } catch (error) {
+    showToast(
+      error instanceof Error
+        ? error.message
+        : 'Ошибка изменения статуса'
+    )
+  }
+}
+
   useEffect(() => {
   if (screen === 'admin_orders') {
     loadRetailOrders()
@@ -1681,6 +1731,47 @@ async function deleteOrder(orderId: number) {
         <div style={{ marginTop: 14, fontWeight: 700, color: '#c084fc' }}>
           Итого без доставки: {Number(order.items_total).toFixed(2)} €
         </div>
+        {order.status === 'new' && (
+  <div style={{
+    display: 'flex',
+    gap: 10,
+    marginTop: 20
+  }}>
+    <button
+      type="button"
+      onClick={() => setWholesaleOrderStatus(order.id, 'done')}
+      style={{
+        flex: 1,
+        background: '#16a34a',
+        color: '#fff',
+        border: 'none',
+        borderRadius: 12,
+        padding: '14px 8px',
+        fontWeight: 700,
+        cursor: 'pointer'
+      }}
+    >
+      ✓ Выполнен
+    </button>
+
+    <button
+      type="button"
+      onClick={() => setWholesaleOrderStatus(order.id, 'cancelled')}
+      style={{
+        flex: 1,
+        background: '#dc2626',
+        color: '#fff',
+        border: 'none',
+        borderRadius: 12,
+        padding: '14px 8px',
+        fontWeight: 700,
+        cursor: 'pointer'
+      }}
+    >
+      ✕ Отменён
+    </button>
+  </div>
+)}
       </div>
     </details>
   )
