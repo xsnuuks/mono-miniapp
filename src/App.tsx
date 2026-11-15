@@ -9074,7 +9074,57 @@ showToast('Адрес сохранён')
   return (
     <div key={screen} style={{ ...page, position: 'relative' }}>
       <RetailTopBar wholesale={priceMode === 'wholesale'} />
-<div style={{ fontSize: 13, color: '#8a8a8a', marginBottom: 16, letterSpacing: '0.04em' }}>Каталог</div>
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 16,
+  marginBottom: 22,
+  paddingTop: 8,
+}}>
+  <div>
+    <div style={{
+      color: '#BB94F5',
+      fontSize: 11,
+      fontWeight: 700,
+      letterSpacing: '0.16em',
+      marginBottom: 7,
+    }}>
+      PUFFY STORE
+    </div>
+    <div style={{
+      color: '#FFFFFF',
+      fontSize: 27,
+      fontWeight: 750,
+      letterSpacing: '-0.04em',
+      lineHeight: 1.15,
+    }}>
+      Каталог товаров
+    </div>
+    <div style={{
+      color: '#A9A4B3',
+      fontSize: 13,
+      marginTop: 8,
+    }}>
+      Выбирай то, что тебе подходит
+    </div>
+  </div>
+
+  <div style={{
+    width: 54,
+    height: 54,
+    flexShrink: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 17,
+    background: 'rgba(155, 101, 232, 0.13)',
+    border: '1px solid rgba(187, 148, 245, 0.20)',
+    fontSize: 25,
+  }}>
+    🛍️
+  </div>
+</div>
       <div style={{
   display: 'flex',
   background: 'rgba(255,255,255,0.06)',
