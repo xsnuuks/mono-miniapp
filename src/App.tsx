@@ -2161,9 +2161,12 @@ async function deleteOrder(orderId: number) {
           <div style={{ display: 'grid', gap: 12 }}>
             {categoryProducts.map(p => (
               <div
-                key={p.id}
-                style={adminCard}
-              >
+  key={p.id}
+  style={{
+    ...adminCard,
+    cursor: 'pointer',
+  }}
+>
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
