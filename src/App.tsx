@@ -669,6 +669,37 @@ async function loadWholesaleProducts() {
     if (r.ok) setOrders(await r.json())
   }
 
+  async function cancelMyRetailOrder(orderId: number) {
+  if (!window.confirm(`Отменить заказ №${orderId}?`)) return
+
+  try {
+    const initData = (window as any).Telegram?.WebApp?.initData || ''
+
+    const response = await fetch(
+      `${API_URL}/api/retail/my-orders/${orderId}/cancel`,
+      {
+        method: 'POST',
+        headers: {
+          'X-Telegram-Init-Data': initData,
+        },
+      }
+    )
+
+    const result = await response.json()
+
+    if (!response.ok || !result.ok) {
+      throw new Error(result.detail || 'Не удалось отменить заказ')
+    }
+
+    await loadMyRetailOrders()
+    showToast(`Заказ №${orderId} отменён`)
+  } catch (error) {
+    showToast(
+      error instanceof Error ? error.message : 'Ошибка отмены заказа'
+    )
+  }
+}
+
   async function loadMyRetailOrders() {
   setMyRetailOrdersLoading(true)
 
@@ -5293,6 +5324,27 @@ if (selectedOrder) {
           {Number(selectedOrder.items_total).toFixed(2)} €
         </strong>
       </div>
+
+      {selectedOrder.status === 'new' && (
+  <button
+    type="button"
+    onClick={() => cancelMyRetailOrder(selectedOrder.id)}
+    style={{
+      width: '100%',
+      padding: 16,
+      marginBottom: 24,
+      borderRadius: 14,
+      border: '1px solid rgba(239,68,68,0.5)',
+      background: 'rgba(239,68,68,0.1)',
+      color: '#f87171',
+      fontSize: 15,
+      fontWeight: 700,
+      cursor: 'pointer',
+    }}
+  >
+    ✕ Отменить заказ
+  </button>
+)}
 
       <BottomNav />
     </div>
