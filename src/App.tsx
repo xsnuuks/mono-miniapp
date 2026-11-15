@@ -193,6 +193,8 @@ function App() {
   const [submitting, setSubmitting] = useState(false)
   const [orders, setOrders] = useState<any[]>([])
   const [retailOrders, setRetailOrders] = useState<any[]>([])
+  const [adminWholesaleOrders, setAdminWholesaleOrders] = useState<any[]>([])
+  const [adminWholesaleOrdersLoading, setAdminWholesaleOrdersLoading] = useState(false)
   const [myRetailOrders, setMyRetailOrders] = useState<any[]>([])
   const [myWholesaleOrders, setMyWholesaleOrders] = useState<any[]>([])
   const [myWholesaleOrdersLoading, setMyWholesaleOrdersLoading] = useState(false)
