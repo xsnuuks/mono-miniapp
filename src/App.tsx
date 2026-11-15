@@ -1611,6 +1611,9 @@ async function deleteOrder(orderId: number) {
     ))
   )}
 </div>
+      </div>
+  )
+}
   
        if (screen === 'admin_orders') {
     return (
