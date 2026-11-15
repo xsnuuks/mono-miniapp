@@ -1694,7 +1694,7 @@ async function deleteOrder(orderId: number) {
       onClick={() => setRetailOrderStatus(order.id, 'done')}
       style={{ ...adminPrimaryBtn, flex: 1 }}
     >
-      ✓ Завершён
+      ✓ Выполнен
     </button>
   )}
           {order.status !== 'done' && order.status !== 'cancelled' && (
