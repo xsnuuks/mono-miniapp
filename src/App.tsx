@@ -2367,9 +2367,32 @@ async function deleteOrder(orderId: number) {
             {categoryProducts.map(p => (
               <div
   key={p.id}
-  onClick={() => {
-    setEditingRetailProductId(Number(p.id))
-  }}
+  onClick={async () => {
+  const productId = Number(p.id)
+
+  setEditingRetailProductId(productId)
+  setEditingRetailFlavors([])
+
+  try {
+    const response = await fetch(
+      `${API_URL}/api/retail/products/${productId}/flavors`
+    )
+
+    if (!response.ok) {
+      throw new Error('Не удалось загрузить вкусы')
+    }
+
+    const data = await response.json()
+
+    setEditingRetailFlavors(
+      Array.isArray(data.flavors) ? data.flavors : []
+    )
+  } catch (error) {
+    showToast(
+      error instanceof Error ? error.message : 'Ошибка загрузки вкусов'
+    )
+  }
+}}
   style={{
     ...adminCard,
     cursor: 'pointer',
