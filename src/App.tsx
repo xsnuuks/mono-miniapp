@@ -2160,6 +2160,46 @@ async function deleteOrder(orderId: number) {
           </div>
         ) : (
           <div style={{ display: 'grid', gap: 12 }}>
+            {editingRetailProductId !== null && (() => {
+  const product = retailProducts.find(
+    p => Number(p.id) === editingRetailProductId
+  )
+
+  if (!product) return null
+
+  return (
+    <div style={{
+      ...adminCard,
+      border: '1px solid #a855f7',
+      marginBottom: 16,
+      padding: 18,
+    }}>
+      <div style={{
+        fontSize: 18,
+        fontWeight: 800,
+        marginBottom: 12,
+      }}>
+        Редактирование товара
+      </div>
+
+      <div style={{ marginBottom: 8 }}>
+        Название: {product.name}
+      </div>
+
+      <div style={{ marginBottom: 16, color: '#aaa' }}>
+        ID товара: {product.id}
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setEditingRetailProductId(null)}
+        style={{ ...adminActionBtn, width: '100%' }}
+      >
+        Закрыть
+      </button>
+    </div>
+  )
+})()}
             {categoryProducts.map(p => (
               <div
   key={p.id}
