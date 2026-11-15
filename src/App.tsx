@@ -2236,6 +2236,42 @@ async function deleteOrder(orderId: number) {
         throw new Error(result.detail || 'Ошибка сохранения')
       }
 
+      for (const flavor of editingRetailFlavors) {
+  const flavorName = String(flavor.name).trim()
+  const stock = Number(flavor.stock)
+
+  if (!flavorName) {
+    throw new Error('Название вкуса не может быть пустым')
+  }
+
+  if (!Number.isInteger(stock) || stock < 0) {
+    throw new Error('Укажите корректный остаток для ' + flavorName)
+  }
+
+  const flavorResponse = await fetch(
+    `${API_URL}/api/retail/flavors/${flavor.id}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Telegram-Init-Data':
+          (window as any).Telegram?.WebApp?.initData || '',
+      },
+      body: JSON.stringify({
+        name: flavorName,
+        stock,
+      }),
+    }
+  )
+
+  if (!flavorResponse.ok) {
+    const error = await flavorResponse.json().catch(() => ({}))
+    throw new Error(
+      error.detail || `Не удалось сохранить вкус ${flavorName}`
+    )
+  }
+}
+      
       await loadRetailProducts()
       setEditingRetailProductId(null)
       showToast('Товар успешно обновлён')
