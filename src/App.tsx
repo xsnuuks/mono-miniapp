@@ -1641,12 +1641,12 @@ async function deleteOrder(orderId: number) {
   ) : (
     adminWholesaleOrders.map((order: any) => {
   const statusLabel =
-    order.status === 'completed' ? 'Выполнен' :
-    order.status === 'cancelled' ? 'Отменён' : 'Новый'
+  order.status === 'done' ? 'Выполнен' :
+  order.status === 'cancelled' ? 'Отменён' : 'Новый'
 
-  const statusColor =
-    order.status === 'completed' ? '#22c55e' :
-    order.status === 'cancelled' ? '#ef4444' : '#f59e0b'
+const statusColor =
+  order.status === 'done' ? '#22c55e' :
+  order.status === 'cancelled' ? '#ef4444' : '#f59e0b'
 
   const quantity = (order.items || []).reduce(
     (sum: number, item: any) => sum + Number(item.quantity || 0), 0
