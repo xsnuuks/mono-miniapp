@@ -2259,9 +2259,10 @@ async function deleteOrder(orderId: number) {
           (window as any).Telegram?.WebApp?.initData || '',
       },
       body: JSON.stringify({
-        name: flavorName,
-        stock,
-      }),
+  name: flavorName,
+  stock,
+  is_active: Number(flavor.is_active ?? 1) !== 0,
+}),
     }
   )
 
