@@ -6207,6 +6207,59 @@ if (selectedOrder) {
     ))
   )}
 </div>
+
+      <div style={{ marginTop: 24 }}>
+  <h3 style={{ marginBottom: 16 }}>
+    Оптовые заказы ({myWholesaleOrders.length})
+  </h3>
+
+  {myWholesaleOrdersLoading ? (
+    <div style={adminCard}>
+      Загружаем оптовые заказы...
+    </div>
+  ) : myWholesaleOrders.length === 0 ? (
+    <div style={adminCard}>
+      У вас пока нет оптовых заказов
+    </div>
+  ) : (
+    myWholesaleOrders.map((order: any) => (
+      <div key={order.id} style={{ ...adminCard, marginBottom: 12 }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: 10
+        }}>
+          <strong>Оптовый заказ №{order.id}</strong>
+          <span>{order.status}</span>
+        </div>
+
+        <div style={{ fontSize: 13, color: '#aaa' }}>
+          {order.created_at?.replace('T', ' ').slice(0, 16)}
+        </div>
+
+        <div style={{ marginTop: 12 }}>
+          {(order.items || []).map((item: any) => (
+            <div key={item.id} style={{ marginBottom: 8 }}>
+              {item.product_name} — {item.flavor_name}
+              <div style={{ color: '#aaa', fontSize: 12 }}>
+                {item.quantity} шт. × {Number(item.unit_price).toFixed(2)} €
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{
+          marginTop: 12,
+          fontWeight: 700,
+          fontSize: 18,
+          color: '#c084fc'
+        }}>
+          Итого: {Number(order.items_total).toFixed(2)} €
+        </div>
+      </div>
+    ))
+  )}
+</div>
       
       <BottomNav />
     </div>
