@@ -9305,13 +9305,6 @@ showToast('Адрес сохранён')
     }}>
       Каталог товаров
     </div>
-    <div style={{
-      color: '#A9A4B3',
-      fontSize: 13,
-      marginTop: 8,
-    }}>
-      Выбирай то, что тебе подходит
-    </div>
   </div>
 
   <div style={{
