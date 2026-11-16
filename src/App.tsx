@@ -6027,9 +6027,19 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   overflow: 'hidden',
 }}>
           {image && (
-  <div style={{
-    width: '100%',
-    height: 220,
+  <img
+    src={image}
+    alt={product.name}
+    style={{
+      display: 'block',
+      width: '100%',
+      height: 'auto',
+      borderRadius: 12,
+      marginBottom: 16,
+      objectFit: 'cover',
+    }}
+  />
+)}
     background: '#211B2A',
     borderRadius: 16,
     overflow: 'hidden',
