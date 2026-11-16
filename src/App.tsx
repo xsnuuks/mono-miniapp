@@ -6030,9 +6030,16 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
 )}
           
 
-          <h2 style={{ margin: '0 0 16px' }}>
-            {product.name}
-          </h2>
+          <div style={{
+  color: '#FFFFFF',
+  fontSize: 22,
+  fontWeight: 700,
+  letterSpacing: '-0.03em',
+  lineHeight: 1.3,
+  marginBottom: 20,
+}}>
+  {product.name}
+</div>
 
           <h3>Выберите вкусы</h3>
 
