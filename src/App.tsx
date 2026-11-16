@@ -3215,6 +3215,49 @@ if (!tiersResponse.ok) {
     </button>
   </form>
 </div>
+
+      <button
+  type="button"
+  onClick={async () => {
+    if (!window.confirm(`Удалить товар "${product.name}" из каталога?`)) return
+
+    try {
+      const response = await fetch(
+        `${API_URL}/api/retail/products/${product.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'X-Telegram-Init-Data':
+              (window as any).Telegram?.WebApp?.initData || '',
+          },
+        }
+      )
+
+      const result = await response.json()
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.detail || 'Не удалось удалить товар')
+      }
+
+      setEditingRetailProductId(null)
+      await loadRetailProducts()
+      showToast('Товар удалён из каталога')
+    } catch (error) {
+      showToast(
+        error instanceof Error ? error.message : 'Ошибка удаления'
+      )
+    }
+  }}
+  style={{
+    ...adminActionBtn,
+    width: '100%',
+    marginBottom: 10,
+    color: '#FCA5A5',
+    border: '1px solid rgba(248,113,113,0.35)',
+  }}
+>
+  Удалить товар
+</button>
       
       <button
         type="button"
