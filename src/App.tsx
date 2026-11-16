@@ -8835,7 +8835,28 @@ style={{
             fontWeight: 700,
             marginBottom: 12,
           }}>
-            🚚 Доставка GLS
+            <span style={{
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 10,
+}}>
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#C084FC"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect x="2" y="5" width="13" height="12" rx="2" />
+    <path d="M15 9h4l3 4v4h-7" />
+    <circle cx="6.5" cy="18" r="2" />
+    <circle cx="18.5" cy="18" r="2" />
+  </svg>
+  Доставка GLS
+</span>
           </div>
 
           <div style={{
