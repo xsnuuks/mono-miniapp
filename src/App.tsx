@@ -6906,13 +6906,23 @@ if (selectedOrder) {
     myWholesaleOrders.map((order: any) => (
       <div
   key={order.id}
+  onClick={() => {
+    setSelectedWholesaleOrderId(
+      selectedWholesaleOrderId === Number(order.id)
+        ? null
+        : Number(order.id)
+    )
+  }}
   style={{
     width: '100%',
     boxSizing: 'border-box',
     marginBottom: 12,
     padding: 18,
     background: '#1C1724',
-    border: '1px solid #3B2D49',
+    border: selectedWholesaleOrderId === Number(order.id)
+  ? '1px solid #A855F7'
+  : '1px solid #3B2D49',
+cursor: 'pointer',
     borderRadius: 18,
     color: '#FFFFFF',
   }}
