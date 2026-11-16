@@ -6858,10 +6858,7 @@ if (selectedOrder) {
   )}   
 </div>
 
-      <div style={{ marginTop: 24 }}>
-  <h3 style={{ marginBottom: 16 }}>
-    Оптовые заказы ({myWholesaleOrders.length})
-  </h3>
+      <div style={{ marginTop: 16 }}>
 
   {ordersTab !== 'wholesale' ? null : myWholesaleOrdersLoading ? (
     <div style={adminCard}>
