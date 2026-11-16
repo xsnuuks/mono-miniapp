@@ -9455,15 +9455,61 @@ showToast('Адрес сохранён')
 </button>
 
       <div style={{
-        marginTop: 12,
-        color: '#888',
-        textAlign: 'center',
-        fontSize: 12,
-        lineHeight: 1.6,
-      }}>
-        Следующий этап — новое оформление розничного заказа.
-        Пока заказ не создаётся и оплата не производится.
-      </div>
+  display: 'flex',
+  alignItems: 'flex-start',
+  gap: 12,
+  marginTop: 14,
+  padding: 15,
+  background: '#211929',
+  border: '1px solid #463454',
+  borderRadius: 16,
+}}>
+  <div style={{
+    color: '#C69AF5',
+    flexShrink: 0,
+  }}>
+    {deliveryType === 'pickup' ? (
+      <svg width="21" height="21" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" strokeWidth="1.8"
+        strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 0 1 16 0Z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </svg>
+    ) : (
+      <svg width="21" height="21" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" strokeWidth="1.8"
+        strokeLinecap="round" strokeLinejoin="round">
+        <path d="M10 17h4V5H2v12h3" />
+        <path d="M14 9h4l4 4v4h-3" />
+        <circle cx="7.5" cy="17.5" r="2.5" />
+        <circle cx="16.5" cy="17.5" r="2.5" />
+      </svg>
+    )}
+  </div>
+
+  <div style={{ flex: 1, minWidth: 0 }}>
+    <div style={{
+      color: '#FFFFFF',
+      fontSize: 13,
+      fontWeight: 700,
+      marginBottom: 6,
+    }}>
+      {deliveryType === 'pickup'
+        ? 'Самовывоз'
+        : 'Доставка по Германии'}
+    </div>
+
+    <div style={{
+      color: '#B8ABC5',
+      fontSize: 12,
+      lineHeight: 1.6,
+    }}>
+      {deliveryType === 'pickup'
+        ? 'Место и время получения согласовываются индивидуально с менеджером.'
+        : 'Стоимость доставки рассчитывается индивидуально и не входит в сумму товаров.'}
+    </div>
+  </div>
+</div>
     </div>
   )
 })()}
