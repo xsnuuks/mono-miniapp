@@ -9228,210 +9228,207 @@ showToast('Адрес сохранён')
           const stock = Number(item.stock) || 0
 
           return (
-            <div
-              key={`${item.productId}-${item.flavorId}`}
-              style={{
-                background: 'rgba(255,255,255,0.035)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: 15,
-                padding: 12,
-              }}
-            >
-              <div style={{
-                display: 'flex',
-                gap: 12,
-                marginBottom: 14,
-              }}>
-                <div style={{
-                  width: 68,
-                  height: 68,
-                  flexShrink: 0,
-                  borderRadius: 12,
-                  background: '#292035',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  {product?.photo_url ? (
-                    <img
-                      src={photoUrl(product.photo_url) || ''}
-                      alt={item.productName}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'contain',
-                      }}
-                    />
-                  ) : (
-                    <span style={{ fontSize: 26 }}>📦</span>
-                  )}
-                </div>
+  <div
+    key={`${item.productId}-${item.flavorId}`}
+    style={{
+      background: '#1D1725',
+      border: '1px solid #392C45',
+      borderRadius: 17,
+      padding: 14,
+      minWidth: 0,
+    }}
+  >
+    <div style={{
+      display: 'flex',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      gap: 12,
+    }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{
+          color: '#FFFFFF',
+          fontSize: 15,
+          fontWeight: 700,
+          overflowWrap: 'anywhere',
+        }}>
+          {item.productName}
+        </div>
 
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{
-                    fontWeight: 700,
-                    fontSize: 14,
-                    overflowWrap: 'anywhere',
-                  }}>
-                    {item.productName}
-                  </div>
+        <div style={{
+          color: '#B5A7C2',
+          fontSize: 12,
+          marginTop: 6,
+          overflowWrap: 'anywhere',
+        }}>
+          {item.flavorName}
+        </div>
+      </div>
 
-                  <div style={{
-                    color: '#aaa',
-                    fontSize: 12,
-                    marginTop: 6,
-                  }}>
-                    {item.flavorName}
-                  </div>
-
-                  <div style={{
-                    color: '#c084fc',
-                    fontSize: 12,
-                    marginTop: 7,
-                  }}>
-                    {unitPrice !== null
-                      ? `${unitPrice.toFixed(2)} € / шт.`
-                      : 'Цена не задана'}
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  aria-label="Удалить вкус"
-                  onClick={() => {
-                    setRetailCart(prev =>
-                      prev.filter(row =>
-                        !(
-                          row.productId === item.productId &&
-                          row.flavorId === item.flavorId
-                        )
-                      )
-                    )
-                    showToast('Товар удалён')
-                  }}
-                  style={{
-                    alignSelf: 'flex-start',
-                    border: 'none',
-                    background: 'rgba(255,90,90,0.10)',
-                    color: '#ff8585',
-                    borderRadius: 10,
-                    padding: '8px 11px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: 10,
-              }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: '1px solid rgba(168,85,247,0.4)',
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  background: '#29183c',
-                }}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setRetailCart(prev =>
-                        prev
-                          .map(row =>
-                            row.productId === item.productId &&
-                            row.flavorId === item.flavorId
-                              ? {
-                                  ...row,
-                                  quantity: row.quantity - 1,
-                                }
-                              : row
-                          )
-                          .filter(row => row.quantity > 0)
-                      )
-                    }}
-                    style={{
-                      width: 42,
-                      height: 42,
-                      background: 'transparent',
-                      border: 'none',
-                      color: '#fff',
-                      fontSize: 22,
-                      cursor: 'pointer',
-                    }}
-                  >
-                    −
-                  </button>
-
-                  <span style={{
-                    minWidth: 32,
-                    textAlign: 'center',
-                    fontWeight: 800,
-                  }}>
-                    {item.quantity}
-                  </span>
-
-                  <button
-                    type="button"
-                    disabled={item.quantity >= stock}
-                    onClick={() => {
-                      setRetailCart(prev =>
-                        prev.map(row =>
-                          row.productId === item.productId &&
-                          row.flavorId === item.flavorId
-                            ? {
-                                ...row,
-                                quantity: Math.min(
-                                  row.stock,
-                                  row.quantity + 1
-                                ),
-                              }
-                            : row
-                        )
-                      )
-                    }}
-                    style={{
-                      width: 42,
-                      height: 42,
-                      background: 'rgba(168,85,247,0.18)',
-                      border: 'none',
-                      color: '#fff',
-                      fontSize: 22,
-                      cursor: item.quantity >= stock
-                        ? 'not-allowed'
-                        : 'pointer',
-                      opacity: item.quantity >= stock ? 0.4 : 1,
-                    }}
-                  >
-                    +
-                  </button>
-                </div>
-
-                <strong style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  whiteSpace: 'nowrap',
-                }}>
-                  {unitPrice !== null
-                    ? `${subtotal.toFixed(2)} €`
-                    : '—'}
-                </strong>
-              </div>
-
-              <div style={{
-                color: '#888',
-                fontSize: 11,
-                marginTop: 10,
-              }}>
-                В наличии: {stock} шт.
-              </div>
-            </div>
+      <button
+        type="button"
+        aria-label="Удалить товар"
+        onClick={() => {
+          setRetailCart(prev =>
+            prev.filter(row =>
+              !(
+                row.productId === item.productId &&
+                row.flavorId === item.flavorId
+              )
+            )
           )
+          showToast('Товар удалён')
+        }}
+        style={{
+          background: 'transparent',
+          border: 'none',
+          color: '#A99DB4',
+          padding: 4,
+          cursor: 'pointer',
+          flexShrink: 0,
+        }}
+      >
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M3 6h18" />
+          <path d="M8 6V4h8v2" />
+          <path d="M19 6l-1 14H6L5 6" />
+          <path d="M10 10v6M14 10v6" />
+        </svg>
+      </button>
+    </div>
+
+    <div style={{
+      height: 1,
+      background: '#382C42',
+      margin: '14px 0',
+    }} />
+
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 8,
+    }}>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 5,
+        minWidth: 0,
+      }}>
+        <span style={{
+          color: '#A99DB4',
+          fontSize: 11,
+        }}>
+          {unitPrice !== null
+            ? `${unitPrice.toFixed(2)} €/шт.`
+            : 'Цена не задана'}
+        </span>
+
+        <strong style={{
+          color: '#CFA3FF',
+          fontSize: 17,
+          fontWeight: 700,
+          whiteSpace: 'nowrap',
+        }}>
+          {unitPrice !== null
+            ? `${subtotal.toFixed(2)} €`
+            : '—'}
+        </strong>
+      </div>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        flexShrink: 0,
+      }}>
+        <button
+          type="button"
+          aria-label="Уменьшить количество"
+          onClick={() => {
+            setRetailCart(prev =>
+              prev
+                .map(row =>
+                  row.productId === item.productId &&
+                  row.flavorId === item.flavorId
+                    ? { ...row, quantity: row.quantity - 1 }
+                    : row
+                )
+                .filter(row => row.quantity > 0)
+            )
+          }}
+          style={{
+            width: 34,
+            height: 34,
+            borderRadius: 10,
+            border: '1px solid #544166',
+            background: '#30243D',
+            color: '#FFFFFF',
+            fontSize: 20,
+            cursor: 'pointer',
+          }}
+        >
+          −
+        </button>
+
+        <span style={{
+          minWidth: 19,
+          textAlign: 'center',
+          color: '#FFFFFF',
+          fontSize: 14,
+          fontWeight: 700,
+        }}>
+          {item.quantity}
+        </span>
+
+        <button
+          type="button"
+          aria-label="Увеличить количество"
+          disabled={item.quantity >= stock}
+          onClick={() => {
+            setRetailCart(prev =>
+              prev.map(row =>
+                row.productId === item.productId &&
+                row.flavorId === item.flavorId
+                  ? {
+                      ...row,
+                      quantity: Math.min(
+                        row.stock,
+                        row.quantity + 1
+                      ),
+                    }
+                  : row
+              )
+            )
+          }}
+          style={{
+            width: 34,
+            height: 34,
+            borderRadius: 10,
+            border: 'none',
+            background: '#7737C2',
+            color: '#FFFFFF',
+            fontSize: 20,
+            cursor: item.quantity >= stock
+              ? 'not-allowed'
+              : 'pointer',
+            opacity: item.quantity >= stock ? 0.4 : 1,
+          }}
+        >
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+)
         })}
       </div>
 
