@@ -6018,7 +6018,14 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
           ← Назад
         </button>
 
-        <div style={{ ...card, marginBottom: 16 }}>
+        <div style={{
+  background: '#19151F',
+  border: '1px solid #342A40',
+  borderRadius: 20,
+  padding: 16,
+  marginBottom: 16,
+  overflow: 'hidden',
+}}>
           {image && (
             <img
               src={image}
