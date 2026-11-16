@@ -6054,13 +6054,19 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
                 <div
                   key={id}
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    gap: 10,
-                    padding: '14px 0',
-                    borderBottom: '1px solid #333',
-                  }}
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 12,
+  padding: '14px 12px',
+  marginBottom: 10,
+  border: qty > 0
+    ? '1px solid #8452B7'
+    : '1px solid #352B40',
+  borderRadius: 16,
+  background: qty > 0 ? '#24192F' : '#1C1624',
+  transition: 'background 0.2s ease, border-color 0.2s ease',
+}}
                 >
                   <div>
                     <div style={{ fontWeight: 600 }}>
