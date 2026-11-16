@@ -9600,120 +9600,159 @@ showToast('Адрес сохранён')
       const img = photoUrl(p.photo_url)
 
       return (
-        <div
-          key={p.id}
-          onClick={() => {
-  setSelectedRetailId(Number(p.id))
-  setScreen('retail_product')
-}}
+  <div
+    key={p.id}
+    onClick={() => {
+      setSelectedRetailId(Number(p.id))
+      setScreen('retail_product')
+    }}
+    style={{
+      background: '#19151F',
+      border: '1px solid #342A40',
+      borderRadius: 18,
+      overflow: 'hidden',
+      cursor: 'pointer',
+      display: 'flex',
+      flexDirection: 'column',
+      minWidth: 0,
+      transition: 'border-color 0.2s ease',
+    }}
+  >
+    <div style={{
+      width: '100%',
+      aspectRatio: '1 / 1',
+      background: '#292233',
+      overflow: 'hidden',
+    }}>
+      {img ? (
+        <img
+          src={img}
+          alt={p.name}
           style={{
-            background: '#1c1724',
-            border: '1px solid rgba(168,85,247,0.28)',
-            borderRadius: 16,
-            overflow: 'hidden',
-            cursor: 'pointer',
-            display: 'flex',
-            flexDirection: 'column',
-            minWidth: 0,
-          }}
-        >
-          <div style={{
+            display: 'block',
             width: '100%',
-            aspectRatio: '1 / 1',
-            background: '#292035',
-          }}>
-            {img ? (
-              <img
-                src={img}
-                alt={p.name}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-            ) : (
-              <div style={{
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#888',
-                fontSize: 12,
-              }}>
-                Нет фотографии
-              </div>
-            )}
-          </div>
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
+      ) : (
+        <div style={{
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#94899F',
+          fontSize: 12,
+        }}>
+          Нет фотографии
+        </div>
+      )}
+    </div>
 
+    <div style={{
+      padding: 13,
+      display: 'flex',
+      flexDirection: 'column',
+      flex: 1,
+      gap: 10,
+    }}>
+      <div style={{
+        color: '#F7F4FA',
+        fontSize: 14,
+        fontWeight: 700,
+        lineHeight: 1.35,
+        overflowWrap: 'anywhere',
+      }}>
+        {p.name}
+      </div>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 6,
+        fontSize: 11,
+        color: Number(p.stock || 0) > 0
+          ? '#8BD4A8'
+          : '#A89CAD',
+      }}>
+        <span style={{
+          width: 6,
+          height: 6,
+          flexShrink: 0,
+          borderRadius: '50%',
+          background: Number(p.stock || 0) > 0
+            ? '#72CB98'
+            : '#87798F',
+        }}/>
+        {Number(p.stock || 0) > 0
+          ? `В наличии: ${p.stock} шт.`
+          : 'Нет в наличии'}
+      </div>
+
+      <div style={{
+        marginTop: 'auto',
+        paddingTop: 11,
+        borderTop: '1px solid #352C3D',
+      }}>
+        {(p.retail_tiers || []).length > 0 ? (
           <div style={{
-            padding: 12,
             display: 'flex',
             flexDirection: 'column',
-            flex: 1,
-            gap: 10,
+            gap: 8,
           }}>
-            <div style={{
-              fontSize: 14,
-              fontWeight: 700,
-              overflowWrap: 'anywhere',
-            }}>
-              {p.name}
-            </div>
-
-            <div style={{
-              fontSize: 12,
-              color: '#34d399',
-            }}>
-              В наличии: {p.stock || 0} шт.
-            </div>
-
-            <div style={{
-              marginTop: 'auto',
-              borderTop: '1px solid rgba(255,255,255,0.12)',
-              paddingTop: 10,
-              color: '#b8a7c8',
-              fontSize: 12,
-            }}>
-              {(p.retail_tiers || []).length > 0 ? (
-  <div style={{ display: 'grid', gap: 8 }}>
-    {(p.retail_tiers || []).map((tier: any) => (
-      <div
-        key={tier.id}
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          gap: 8,
-          alignItems: 'center',
-          fontSize: 12,
-        }}
-      >
-        <span>От {tier.min_qty} шт.</span>
-        <strong style={{ color: '#fff' }}>
-          {Number(tier.price).toFixed(2)} €
-        </strong>
-      </div>
-    ))}
-  </div>
-) : (
-  <span>Цены уточняются</span>
-)}
-            </div>
-
-            <div style={{
-              background: 'linear-gradient(90deg, #7c3aed, #b21bd0)',
-              borderRadius: 10,
-              padding: 12,
-              textAlign: 'center',
-              fontSize: 12,
-              fontWeight: 700,
-              color: '#fff',
-            }}>
-              Выбрать вкусы
-            </div>
+            {(p.retail_tiers || []).map((tier: any) => (
+              <div
+                key={tier.id}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: 5,
+                }}
+              >
+                <span style={{
+                  color: '#A99EB3',
+                  fontSize: 11,
+                  whiteSpace: 'nowrap',
+                }}>
+                  От {tier.min_qty} шт.
+                </span>
+                <span style={{
+                  color: '#FFFFFF',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  whiteSpace: 'nowrap',
+                }}>
+                  {Number(tier.price).toFixed(2)} €
+                </span>
+              </div>
+            ))}
           </div>
-        </div>
-      )
+        ) : (
+          <span style={{
+            color: '#A99EB3',
+            fontSize: 12,
+          }}>
+            Цены уточняются
+          </span>
+        )}
+      </div>
+
+      <div style={{
+        background: '#7737C2',
+        borderRadius: 11,
+        padding: '12px 8px',
+        textAlign: 'center',
+        fontSize: 12,
+        fontWeight: 700,
+        color: '#FFFFFF',
+        marginTop: 2,
+      }}>
+        Выбрать вкусы
+      </div>
+    </div>
+  </div>
+)
     })}
 
   {retailProducts.filter(
