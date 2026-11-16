@@ -6947,7 +6947,9 @@ if (selectedOrder) {
         </div>
 
         <div style={{ fontSize: 13, color: '#aaa' }}>
-          {order.created_at?.replace('T', ' ').slice(0, 16)}
+          {order.created_at
+  ? `${order.created_at.slice(8, 10)}.${order.created_at.slice(5, 7)}.${order.created_at.slice(0, 4)} · ${order.created_at.slice(11, 16)}`
+  : 'Дата неизвестна'}
 {' · '}
 {(order.items || []).reduce(
   (sum: number, item: any) => sum + Number(item.quantity || 0),
