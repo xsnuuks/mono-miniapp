@@ -6863,7 +6863,7 @@ if (selectedOrder) {
     Оптовые заказы ({myWholesaleOrders.length})
   </h3>
 
-  {myWholesaleOrdersLoading ? (
+  {ordersTab !== 'wholesale' ? null : myWholesaleOrdersLoading ? (
     <div style={adminCard}>
       Загружаем оптовые заказы...
     </div>
