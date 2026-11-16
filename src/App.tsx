@@ -8759,17 +8759,43 @@ onChange={field.name === 'phone'
   </div>
 
   <div style={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderTop: '1px solid rgba(255,255,255,0.12)',
-    paddingTop: 16,
-  }}>
-    <span style={{ fontSize: 16 }}>К оплате</span>
-    <strong style={{ fontSize: 24, color: '#c084fc' }}>
-      {hasMissingPrices ? 'Цена уточняется' : `${retailTotal.toFixed(2)} €`}
-    </strong>
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 16,
+  padding: '18px 16px',
+  marginTop: 16,
+  background: '#271B34',
+  border: '1px solid #61417E',
+  borderRadius: 16,
+}}>
+  <div>
+    <div style={{
+      fontSize: 13,
+      color: '#BBAACB',
+      marginBottom: 5,
+    }}>
+      Итого к оплате
+    </div>
+    <div style={{
+      fontSize: 11,
+      color: '#93839F',
+    }}>
+      Стоимость товаров
+    </div>
   </div>
+
+  <strong style={{
+    fontSize: 26,
+    fontWeight: 800,
+    color: '#C084FC',
+    whiteSpace: 'nowrap',
+  }}>
+    {hasMissingPrices
+      ? 'Цена уточняется'
+      : `${retailTotal.toFixed(2)} €`}
+  </strong>
+</div>
 </div>
   </div>
 </div>
