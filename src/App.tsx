@@ -9306,21 +9306,6 @@ showToast('Адрес сохранён')
       Каталог товаров
     </div>
   </div>
-
-  <div style={{
-    width: 54,
-    height: 54,
-    flexShrink: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 17,
-    background: 'rgba(155, 101, 232, 0.13)',
-    border: '1px solid rgba(187, 148, 245, 0.20)',
-    fontSize: 25,
-  }}>
-    🛍️
-  </div>
 </div>
       <div style={{
   display: 'flex',
