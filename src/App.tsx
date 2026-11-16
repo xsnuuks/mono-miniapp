@@ -8298,9 +8298,10 @@ onChange={field.name === 'phone'
       p => Number(p.id) === productId
     )
 
-    const quantity = retailCart
-      .filter(item => item.productId === productId)
-      .reduce((sum, item) => sum + item.quantity, 0)
+    const quantity = retailCart.reduce(
+  (sum, item) => sum + item.quantity,
+  0
+)
 
     const tier = [...(product?.retail_tiers || [])]
       .filter((t: any) => quantity >= Number(t.min_qty))
@@ -9532,10 +9533,8 @@ showToast('Адрес сохранён')
       )}
       
       {retailCart.length > 0 && (() => {
-  const getProductQty = (productId: number) =>
-    retailCart
-      .filter(item => item.productId === productId)
-      .reduce((sum, item) => sum + item.quantity, 0)
+  const getProductQty = (_productId: number) =>
+  retailCart.reduce((sum, item) => sum + item.quantity, 0)
 
   const getUnitPrice = (productId: number) => {
     const product = retailProducts.find(
