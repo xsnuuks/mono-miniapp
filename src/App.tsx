@@ -6967,13 +6967,40 @@ if (selectedOrder) {
         </div>
 
         <div style={{
-          marginTop: 12,
-          fontWeight: 700,
-          fontSize: 18,
-          color: '#c084fc'
-        }}>
-          Итого: {Number(order.items_total).toFixed(2)} €
-        </div>
+  marginTop: 18,
+  paddingTop: 16,
+  borderTop: '1px solid #3B2D49',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 12,
+}}>
+  <div>
+    <div style={{
+      fontSize: 14,
+      fontWeight: 600,
+      color: '#FFFFFF',
+    }}>
+      Итого
+    </div>
+    <div style={{
+      fontSize: 11,
+      color: '#A99AB8',
+      marginTop: 4,
+    }}>
+      Без учёта доставки
+    </div>
+  </div>
+
+  <strong style={{
+    fontSize: 21,
+    fontWeight: 800,
+    color: '#C084FC',
+    whiteSpace: 'nowrap',
+  }}>
+    {Number(order.items_total).toFixed(2)} €
+  </strong>
+</div>
       </div>
     ))
   )}
