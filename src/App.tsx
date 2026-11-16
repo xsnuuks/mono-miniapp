@@ -5630,17 +5630,30 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   overflow: 'hidden',
 }}>
         {product.photo_url && (
-          <img
-            src={photoUrl(product.photo_url) || ''}
-            alt={product.name}
-            style={{
-              width: '100%',
-              maxHeight: 240,
-              objectFit: 'contain',
-              marginBottom: 14,
-            }}
-          />
-        )}
+  <div style={{
+    width: '100%',
+    height: 220,
+    background: '#211B2A',
+    borderRadius: 16,
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 18,
+  }}>
+    <img
+      src={photoUrl(product.photo_url) || ''}
+      alt={product.name}
+      style={{
+        width: '100%',
+        height: '100%',
+        objectFit: 'contain',
+        padding: 12,
+        boxSizing: 'border-box',
+      }}
+    />
+  </div>
+)}
 
         <div style={{ fontSize: 20, fontWeight: 800 }}>
           {product.name}
