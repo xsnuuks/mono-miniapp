@@ -6780,7 +6780,7 @@ if (selectedOrder) {
 </div>
   </div>
    
-  {myRetailOrdersLoading ? (
+  {ordersTab !== 'retail' ? null : myRetailOrdersLoading ? (
     <div style={{ ...adminCard, color: '#aaa' }}>
       Загружаем заказы...
     </div>
