@@ -198,6 +198,7 @@ function App() {
   const [adminWholesaleOrdersLoading, setAdminWholesaleOrdersLoading] = useState(false)
   const [myRetailOrders, setMyRetailOrders] = useState<any[]>([])
   const [myWholesaleOrders, setMyWholesaleOrders] = useState<any[]>([])
+  const [selectedWholesaleOrderId, setSelectedWholesaleOrderId] = useState<number | null>(null)
   const [ordersTab, setOrdersTab] = useState<'retail' | 'wholesale'>('retail')
   const [myWholesaleOrdersLoading, setMyWholesaleOrdersLoading] = useState(false)
   const [selectedRetailOrderId, setSelectedRetailOrderId] = useState<number | null>(null)
