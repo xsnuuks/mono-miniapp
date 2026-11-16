@@ -8024,10 +8024,12 @@ onChange={field.name === 'phone'
       throw new Error(result.detail || 'Ошибка оформления заказа')
     }
 
+    setWholesaleSuccessOrderId(Number(result.order_id))
     setWholesaleCart([])
     wholesaleRequestIdRef.current = null
-    await loadWholesaleProducts()
-    setScreen('wholesale')
+    setPriceMode('wholesale')
+    setScreen('wholesale_review')
+    void loadWholesaleProducts()
 
     showToast(`Оптовый заказ №${result.order_id} оформлен!`)
   } catch (error) {
