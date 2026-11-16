@@ -319,6 +319,7 @@ const [wholesaleCart, setWholesaleCart] = useState<{
   }
 }, [wholesaleCart])
   const [wholesaleSubmitting, setWholesaleSubmitting] = useState(false)
+  const [wholesaleSuccessOrderId, setWholesaleSuccessOrderId] = useState<number | null>(null)
   const wholesaleRequestIdRef = useRef<string | null>(null)
   const wholesaleSubmittingRef = useRef(false)
   const [tiers, setTiers] = useState<any[]>([])
