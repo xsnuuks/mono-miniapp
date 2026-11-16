@@ -9564,92 +9564,327 @@ showToast('Адрес сохранён')
       )}
 
       {wholesaleCart.length > 0 && (
-        <div style={{ ...card, marginBottom: 18 }}>
-          <h2>📦 Опт</h2>
+  <div style={{
+    background: '#19151F',
+    border: '1px solid #342A40',
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 18,
+  }}>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 18,
+      gap: 12,
+    }}>
+      <div>
+        <div style={{
+          color: '#FFFFFF',
+          fontSize: 20,
+          fontWeight: 700,
+        }}>
+          Опт
+        </div>
+        <div style={{
+          color: '#A99DB4',
+          fontSize: 12,
+          marginTop: 5,
+        }}>
+          {wholesaleCount} шт. в корзине
+        </div>
+      </div>
 
-          {wholesaleRows.map(item => (
-            <div
-              key={`${item.productId}-${item.flavorId}`}
-              style={{
-                padding: '12px 0',
-                borderBottom: '1px solid #333',
-              }}
-            >
-              <div style={{ fontWeight: 600 }}>
+      <span style={{
+        color: '#C69AF5',
+        background: '#2B1E39',
+        border: '1px solid #503762',
+        borderRadius: 12,
+        padding: '8px 10px',
+        fontSize: 12,
+        fontWeight: 600,
+      }}>
+        От 20 шт.
+      </span>
+    </div>
+
+    <div style={{
+      display: 'grid',
+      gap: 10,
+    }}>
+      {wholesaleRows.map(item => (
+        <div
+          key={`${item.productId}-${item.flavorId}`}
+          style={{
+            background: '#1D1725',
+            border: '1px solid #392C45',
+            borderRadius: 17,
+            padding: 14,
+            minWidth: 0,
+          }}
+        >
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            gap: 12,
+          }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{
+                color: '#FFFFFF',
+                fontSize: 15,
+                fontWeight: 700,
+                overflowWrap: 'anywhere',
+              }}>
                 {item.productName}
               </div>
 
-              <div style={{ color: '#aaa', fontSize: 13 }}>
-                {item.flavorName}
-              </div>
-
               <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-                marginTop: 10,
-              }}>
-                <button onClick={() =>
-                  changeWholesaleQty(item.flavorId, -1)
-                }>−</button>
-
-                <span>{item.quantity}</span>
-
-                <button onClick={() =>
-                  changeWholesaleQty(item.flavorId, 1)
-                }>+</button>
-
-                <span style={{ marginLeft: 'auto' }}>
-                  {item.hasPrice
-                    ? `${item.subtotal.toFixed(2)} €`
-                    : 'Цена не задана'}
-                </span>
-              </div>
-
-              <div style={{
-                color: '#aaa',
+                color: '#B5A7C2',
                 fontSize: 12,
                 marginTop: 6,
+                overflowWrap: 'anywhere',
+              }}>
+                {item.flavorName}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              aria-label="Удалить товар"
+              onClick={() =>
+                setWholesaleCart(prev =>
+                  prev.filter(row =>
+                    !(
+                      row.productId === item.productId &&
+                      row.flavorId === item.flavorId
+                    )
+                  )
+                )
+              }
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#A99DB4',
+                padding: 4,
+                cursor: 'pointer',
+                flexShrink: 0,
+              }}
+            >
+              <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 6h18" />
+                <path d="M8 6V4h8v2" />
+                <path d="M19 6l-1 14H6L5 6" />
+                <path d="M10 10v6M14 10v6" />
+              </svg>
+            </button>
+          </div>
+
+          <div style={{
+            height: 1,
+            background: '#382C42',
+            margin: '14px 0',
+          }} />
+
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 8,
+          }}>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 5,
+              minWidth: 0,
+            }}>
+              <span style={{
+                color: '#A99DB4',
+                fontSize: 11,
               }}>
                 {item.hasPrice
                   ? `${item.unitPrice.toFixed(2)} €/шт.`
-                  : 'Нет оптового прайса'}
-              </div>
+                  : 'Цена не задана'}
+              </span>
+
+              <strong style={{
+                color: '#CFA3FF',
+                fontSize: 17,
+                whiteSpace: 'nowrap',
+              }}>
+                {item.hasPrice
+                  ? `${item.subtotal.toFixed(2)} €`
+                  : '—'}
+              </strong>
             </div>
-          ))}
 
-          <div style={{ marginTop: 18 }}>
-            <div>Всего: {wholesaleCount} шт.</div>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              flexShrink: 0,
+            }}>
+              <button
+                type="button"
+                aria-label="Уменьшить количество"
+                onClick={() =>
+                  changeWholesaleQty(item.flavorId, -1)
+                }
+                style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: 10,
+                  border: '1px solid #544166',
+                  background: '#30243D',
+                  color: '#FFFFFF',
+                  fontSize: 20,
+                  cursor: 'pointer',
+                }}
+              >
+                −
+              </button>
 
-            <h2>
-              Итого: {wholesaleTotal.toFixed(2)} €
-            </h2>
+              <span style={{
+                color: '#FFFFFF',
+                fontWeight: 700,
+                fontSize: 14,
+                minWidth: 19,
+                textAlign: 'center',
+              }}>
+                {item.quantity}
+              </span>
 
-            {wholesaleCount < 20 && (
-              <p style={{ color: '#fbbf24' }}>
-                Для оформления нужно ещё {20 - wholesaleCount} шт.
-              </p>
-            )}
-
-            <button
-  type="button"
-  disabled={wholesaleCount < 20 || wholesaleRows.some(item => !item.hasPrice)}
-  onClick={() => setScreen('wholesale_checkout')}
-  style={{
-    ...adminPrimaryBtn,
-    width: '100%',
-    padding: 15,
-    marginTop: 12,
-    opacity: wholesaleCount < 20 ? 0.5 : 1,
-    cursor: wholesaleCount < 20 ? 'not-allowed' : 'pointer',
-  }}
->
-  Оформить оптовый заказ
-</button>
-
+              <button
+                type="button"
+                aria-label="Увеличить количество"
+                onClick={() =>
+                  changeWholesaleQty(item.flavorId, 1)
+                }
+                style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: 10,
+                  border: 'none',
+                  background: '#7737C2',
+                  color: '#FFFFFF',
+                  fontSize: 20,
+                  cursor: 'pointer',
+                }}
+              >
+                +
+              </button>
+            </div>
           </div>
         </div>
+      ))}
+    </div>
+
+    <div style={{
+      marginTop: 18,
+      paddingTop: 16,
+      borderTop: '1px solid #382C42',
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        color: '#B5A7C2',
+        fontSize: 13,
+        marginBottom: 12,
+      }}>
+        <span>Количество товаров</span>
+        <strong style={{ color: '#FFFFFF' }}>
+          {wholesaleCount} шт.
+        </strong>
+      </div>
+
+      {wholesaleCount < 20 && (
+        <div style={{
+          padding: 12,
+          borderRadius: 12,
+          background: '#2B2037',
+          color: '#CBA5F3',
+          fontSize: 12,
+          marginBottom: 14,
+        }}>
+          Для оформления добавьте ещё {20 - wholesaleCount} шт.
+        </div>
       )}
+
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 12,
+        marginBottom: 16,
+      }}>
+        <span style={{
+          color: '#FFFFFF',
+          fontSize: 16,
+          fontWeight: 700,
+        }}>
+          Итого
+        </span>
+
+        <strong style={{
+          color: '#C084FC',
+          fontSize: 24,
+          whiteSpace: 'nowrap',
+        }}>
+          {wholesaleTotal.toFixed(2)} €
+        </strong>
+      </div>
+
+      <button
+        type="button"
+        disabled={
+          wholesaleCount < 20 ||
+          wholesaleRows.some(item => !item.hasPrice)
+        }
+        onClick={() => setScreen('wholesale_checkout')}
+        style={{
+          width: '100%',
+          padding: '15px 18px',
+          background: '#7737C2',
+          border: 'none',
+          borderRadius: 14,
+          color: '#FFFFFF',
+          fontSize: 14,
+          fontWeight: 700,
+          cursor: wholesaleCount < 20
+            ? 'not-allowed'
+            : 'pointer',
+          opacity:
+            wholesaleCount < 20 ||
+            wholesaleRows.some(item => !item.hasPrice)
+              ? 0.45
+              : 1,
+        }}
+      >
+        Оформить оптовый заказ
+      </button>
+
+      <div style={{
+        color: '#A99DB4',
+        fontSize: 12,
+        lineHeight: 1.6,
+        textAlign: 'center',
+        marginTop: 12,
+      }}>
+        Доставка рассчитывается индивидуально и не входит
+        в стоимость товаров.
+      </div>
+    </div>
+  </div>
+)}
 
       <BottomNav />
     </div>
