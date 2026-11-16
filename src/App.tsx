@@ -307,6 +307,17 @@ const [wholesaleCart, setWholesaleCart] = useState<{
     return []
   }
 })
+  
+  useEffect(() => {
+  try {
+    localStorage.setItem(
+      'puffy_wholesale_cart_v1',
+      JSON.stringify(wholesaleCart)
+    )
+  } catch (error) {
+    console.error('Ошибка сохранения оптовой корзины:', error)
+  }
+}, [wholesaleCart])
   const [wholesaleSubmitting, setWholesaleSubmitting] = useState(false)
   const wholesaleRequestIdRef = useRef<string | null>(null)
   const wholesaleSubmittingRef = useRef(false)
