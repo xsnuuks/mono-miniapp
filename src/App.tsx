@@ -6968,7 +6968,10 @@ cursor: 'pointer',
 )} шт.
         </div>
 
-        <div style={{ marginTop: 12 }}>
+        <div style={{
+  marginTop: 12,
+  display: selectedWholesaleOrderId === Number(order.id) ? 'block' : 'none',
+}}
           {(order.items || []).map((item: any) => (
             <div key={item.id} style={{ marginBottom: 8 }}>
               {item.product_name} — {item.flavor_name}
