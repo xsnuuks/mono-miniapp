@@ -9219,9 +9219,6 @@ showToast('Адрес сохранён')
 
       <div style={{ display: 'grid', gap: 12 }}>
         {retailCart.map(item => {
-          const product = retailProducts.find(
-            p => Number(p.id) === item.productId
-          )
 
           const unitPrice = getUnitPrice(item.productId)
           const subtotal = (unitPrice ?? 0) * item.quantity
