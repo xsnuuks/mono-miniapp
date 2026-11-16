@@ -8687,7 +8687,93 @@ style={{
   </button>
 )}
 
-      {retailCheckoutStep === 4 && (
+      {retailCheckoutStep === 4 && retailOrderId !== null && (
+  <div style={{
+    background: '#19151F',
+    border: '1px solid #342A40',
+    borderRadius: 20,
+    padding: 24,
+    textAlign: 'center',
+    marginBottom: 16,
+  }}>
+    <div style={{
+      width: 64,
+      height: 64,
+      margin: '0 auto 18px',
+      borderRadius: '50%',
+      background: '#302041',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#C084FC',
+      fontSize: 32,
+    }}>
+      <svg width="32" height="32" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" strokeWidth="2.5"
+        strokeLinecap="round" strokeLinejoin="round">
+        <path d="m5 12 4 4L19 6" />
+      </svg>
+    </div>
+
+    <div style={{
+      fontSize: 22,
+      fontWeight: 800,
+      color: '#FFFFFF',
+      marginBottom: 10,
+    }}>
+      Заказ оформлен
+    </div>
+
+    <div style={{
+      fontSize: 13,
+      color: '#B5A7C2',
+      lineHeight: 1.6,
+      marginBottom: 22,
+    }}>
+      Заказ №{retailOrderId} успешно создан.
+      Менеджер свяжется с вами для уточнения деталей.
+    </div>
+
+    <button
+      type="button"
+      onClick={() => {
+        setScreen('profile')
+      }}
+      style={{
+        width: '100%',
+        padding: 15,
+        background: '#7737C2',
+        color: '#FFFFFF',
+        border: 'none',
+        borderRadius: 14,
+        fontWeight: 700,
+        marginBottom: 10,
+        cursor: 'pointer',
+      }}
+    >
+      Мои заказы
+    </button>
+
+    <button
+      type="button"
+      onClick={() => setScreen('catalog')}
+      style={{
+        width: '100%',
+        padding: 15,
+        background: '#292034',
+        color: '#FFFFFF',
+        border: '1px solid #463454',
+        borderRadius: 14,
+        fontWeight: 600,
+        cursor: 'pointer',
+      }}
+    >
+      Вернуться в каталог
+    </button>
+  </div>
+)}
+
+      {retailCheckoutStep === 4 && retailOrderId === null && (
   <div style={{
     display: 'grid',
     gap: 14,
