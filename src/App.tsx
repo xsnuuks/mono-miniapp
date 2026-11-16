@@ -6040,27 +6040,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     }}
   />
 )}
-    background: '#211B2A',
-    borderRadius: 16,
-    overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 18,
-  }}>
-    <img
-      src={image}
-      alt={product.name}
-      style={{
-        width: '100%',
-        height: '100%',
-        objectFit: 'contain',
-        padding: 12,
-        boxSizing: 'border-box',
-      }}
-    />
-  </div>
-)}
+          
 
           <h2 style={{ margin: '0 0 16px' }}>
             {product.name}
