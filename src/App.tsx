@@ -6156,21 +6156,34 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
 </div>
 
           {sortedTiers.map(t => (
-            <div
-              key={t.id ?? t.min_qty}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '8px 0',
-                color: '#ddd',
-              }}
-            >
-              <span>От {t.min_qty} шт.</span>
-              <strong>
-                {Number(t.price).toFixed(2)} €/шт.
-              </strong>
-            </div>
-          ))}
+  <div
+    key={t.id ?? t.min_qty}
+    style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      gap: 12,
+      padding: '9px 0',
+      borderBottom: '1px solid rgba(255,255,255,0.05)',
+    }}
+  >
+    <span style={{
+      color: '#B5A7C2',
+      fontSize: 13,
+    }}>
+      От {t.min_qty} шт.
+    </span>
+
+    <strong style={{
+      color: '#FFFFFF',
+      fontSize: 14,
+      fontWeight: 700,
+      whiteSpace: 'nowrap',
+    }}>
+      {Number(t.price).toFixed(2)} €/шт.
+    </strong>
+  </div>
+))}
 
           <div style={{
             borderTop: '1px solid #444',
