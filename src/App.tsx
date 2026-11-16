@@ -5951,14 +5951,21 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   setScreen('cart')
 }}
           style={{
-            ...adminPrimaryBtn,
-            width: '100%',
-            padding: 16,
-            opacity: totalQty > 0 && activeTier ? 1 : 0.5,
-          }}
-        >
-          Добавить выбранное
-        </button>
+  width: '100%',
+  padding: '15px 18px',
+  background: '#7737C2',
+  border: 'none',
+  borderRadius: 14,
+  color: '#FFFFFF',
+  fontSize: 14,
+  fontWeight: 700,
+  cursor: totalQty > 0 && activeTier ? 'pointer' : 'not-allowed',
+  opacity: totalQty > 0 && activeTier ? 1 : 0.45,
+  transition: 'opacity 0.2s ease',
+}}
+>
+  Добавить в корзину
+</button>
       </div>
 
       <BottomNav />
