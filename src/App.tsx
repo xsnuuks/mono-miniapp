@@ -5663,7 +5663,9 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
         {retailLoading ? (
           <div style={{ color: '#aaa' }}>Загрузка...</div>
         ) : (
-          retailFlavors.map(f => {
+          retailFlavors
+  .filter(f => Number(f.stock) > 0 && Number(f.is_active ?? 1) !== 0)
+  .map(f => {
             const quantity = retailQty[f.id] || 0
             const stock = Number(f.stock) || 0
 
@@ -5671,13 +5673,19 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
               <div
                 key={f.id}
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  gap: 12,
-                  padding: '14px 0',
-                  borderBottom: '1px solid rgba(168,85,247,0.2)',
-                }}
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 12,
+  padding: '14px 12px',
+  marginBottom: 10,
+  border: quantity > 0
+    ? '1px solid #8452B7'
+    : '1px solid #352B40',
+  borderRadius: 16,
+  background: quantity > 0 ? '#24192F' : '#1C1624',
+  transition: 'background 0.2s ease, border-color 0.2s ease',
+}}
               >
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 14, fontWeight: 700 }}>
