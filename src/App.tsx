@@ -5993,8 +5993,10 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     }
 
     const activeFlavors = wholesaleFlavors.filter(
-      f => Number(f.is_visible ?? 1) !== 0
-    )
+  f =>
+    Number(f.is_visible ?? 1) !== 0 &&
+    Number(f.stock) > 0
+)
 
     const sortedTiers = [...wholesaleTiers].sort(
       (a, b) => Number(a.min_qty) - Number(b.min_qty)
