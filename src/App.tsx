@@ -6795,13 +6795,19 @@ if (selectedOrder) {
         type="button"
         onClick={() => setSelectedRetailOrderId(order.id)}
         style={{
-          ...adminCard,
-          width: '100%',
-          textAlign: 'left',
-          marginBottom: 12,
-          cursor: 'pointer',
-          color: '#fff',
-        }}
+  width: '100%',
+  boxSizing: 'border-box',
+  textAlign: 'left',
+  marginBottom: 12,
+  padding: 18,
+  background: '#1C1724',
+  border: '1px solid #3B2D49',
+  borderRadius: 18,
+  color: '#FFFFFF',
+  cursor: 'pointer',
+  fontFamily: 'inherit',
+  transition: 'background 0.2s ease, border-color 0.2s ease',
+}}
       >
         <div style={{
           display: 'flex',
