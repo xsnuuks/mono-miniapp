@@ -7535,6 +7535,116 @@ onChange={field.name === 'phone'
 }
 
   if (screen === 'wholesale_review') {
+      if (wholesaleSuccessOrderId !== null) {
+    return (
+      <div style={page}>
+        <div style={{
+          background: '#19151F',
+          border: '1px solid #342A40',
+          borderRadius: 20,
+          padding: 24,
+          textAlign: 'center',
+          marginTop: 24,
+        }}>
+          <div style={{
+            width: 68,
+            height: 68,
+            borderRadius: '50%',
+            background: '#302041',
+            color: '#C084FC',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 20px',
+          }}>
+            <svg width="34" height="34" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor"
+              strokeWidth="2.5" strokeLinecap="round"
+              strokeLinejoin="round">
+              <path d="m5 12 4 4L19 6" />
+            </svg>
+          </div>
+
+          <h2 style={{
+            color: '#FFFFFF',
+            fontSize: 23,
+            margin: '0 0 12px',
+          }}>
+            Заказ оформлен
+          </h2>
+
+          <p style={{
+            color: '#B5A7C2',
+            fontSize: 13,
+            lineHeight: 1.7,
+            marginBottom: 22,
+          }}>
+            Оптовый заказ №{wholesaleSuccessOrderId} создан.
+            Менеджер свяжется с вами для уточнения деталей.
+          </p>
+
+          <div style={{
+            background: '#211929',
+            border: '1px solid #463454',
+            borderRadius: 14,
+            padding: 15,
+            marginBottom: 20,
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
+            <span style={{ color: '#B5A7C2' }}>
+              Статус
+            </span>
+            <strong style={{ color: '#C084FC' }}>
+              Новый
+            </strong>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              setWholesaleSuccessOrderId(null)
+              setScreen('profile')
+            }}
+            style={{
+              width: '100%',
+              padding: 15,
+              background: '#7737C2',
+              border: 'none',
+              borderRadius: 14,
+              color: '#FFFFFF',
+              fontWeight: 700,
+              marginBottom: 10,
+              cursor: 'pointer',
+            }}
+          >
+            Мои заказы
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setWholesaleSuccessOrderId(null)
+              setPriceMode('wholesale')
+              setScreen('catalog')
+            }}
+            style={{
+              width: '100%',
+              padding: 15,
+              background: '#292034',
+              border: '1px solid #463454',
+              borderRadius: 14,
+              color: '#FFFFFF',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            Вернуться в каталог
+          </button>
+        </div>
+      </div>
+    )
+  }
   const count = wholesaleCart.reduce(
     (sum, item) => sum + item.quantity, 0
   )
