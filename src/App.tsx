@@ -3077,6 +3077,49 @@ if (!tiersResponse.ok) {
 >
   {Number(flavor.is_active ?? 1) !== 0 ? 'Скрыть' : 'Показать'}
 </button>
+        <button
+  type="button"
+  onClick={async () => {
+    if (!window.confirm(`Удалить вкус "${flavor.name}"?`)) return
+
+    try {
+      const response = await fetch(
+        `${API_URL}/api/retail/flavors/${flavor.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'X-Telegram-Init-Data':
+              (window as any).Telegram?.WebApp?.initData || '',
+          },
+        }
+      )
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.detail || 'Ошибка удаления')
+      }
+
+      setEditingRetailFlavors(prev =>
+        prev.filter(f => f.id !== flavor.id)
+      )
+      await loadRetailProducts()
+      showToast('Вкус удалён')
+    } catch (error) {
+      showToast(
+        error instanceof Error ? error.message : 'Ошибка удаления'
+      )
+    }
+  }}
+  style={{
+    ...adminActionBtn,
+    gridColumn: '1 / -1',
+    color: '#FCA5A5',
+    border: '1px solid rgba(248,113,113,0.3)',
+  }}
+>
+  Удалить вкус
+</button>
       </div>
     ))
   )}
