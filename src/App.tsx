@@ -271,7 +271,15 @@ const [wholesaleAddress, setWholesaleAddress] = useState({
   flavorName: string
   quantity: number
   stock: number
-}[]>([])
+}[]>(() => {
+  try {
+    const saved = localStorage.getItem('puffy_retail_cart_v1')
+    const parsed = saved ? JSON.parse(saved) : []
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+})
 
 const [wholesaleCart, setWholesaleCart] = useState<{
   productId: number
