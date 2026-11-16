@@ -8095,9 +8095,11 @@ onChange={field.name === 'phone'
         </div>
 
         {retailCart.map(item => {
-          const price = getRetailPrice(item.productId)
+  const unitPrice = getRetailPrice(item.productId)
+  const subtotal = (unitPrice ?? 0) * item.quantity
+  const stock = Number(item.stock) || 0
 
-          return (
+  return (
   <div
     key={`${item.productId}-${item.flavorId}`}
     style={{
