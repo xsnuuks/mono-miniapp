@@ -6143,9 +6143,17 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
             })
           )}
 
-          <h3 style={{ marginTop: 24 }}>
-            Оптовые цены
-          </h3>
+          <div style={{
+  color: '#B5A7C2',
+  fontSize: 13,
+  fontWeight: 600,
+  marginTop: 18,
+  marginBottom: 10,
+  paddingTop: 16,
+  borderTop: '1px solid #382C42',
+}}>
+  Оптовые цены
+</div>
 
           {sortedTiers.map(t => (
             <div
