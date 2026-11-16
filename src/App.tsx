@@ -5613,12 +5613,37 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     <div key={screen} style={page}>
       <RetailTopBar />
       <button
-        type="button"
-        onClick={() => setScreen('catalog')}
-        style={backBtn}
-      >
-        ← Назад в каталог
-      </button>
+  type="button"
+  onClick={() => setScreen('catalog')}
+  style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+    padding: '10px 15px',
+    marginBottom: 16,
+    background: '#7737C2',
+    border: 'none',
+    borderRadius: 12,
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: 'pointer',
+  }}
+>
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m15 18-6-6 6-6" />
+  </svg>
+  Назад
+</button>
 
       <div style={{
   background: '#19151F',
