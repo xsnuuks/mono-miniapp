@@ -5863,20 +5863,45 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
         </div>
 
         <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: 22,
-          marginBottom: 18,
-        }}>
-          <strong>{totalQty} шт.</strong>
-          <strong style={{
-            fontSize: 24,
-            color: '#c084fc',
-          }}>
-            {totalPrice.toFixed(2)} €
-          </strong>
-        </div>
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 12,
+  marginTop: 16,
+  marginBottom: 14,
+  paddingTop: 16,
+  borderTop: '1px solid #382C42',
+}}>
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 5,
+  }}>
+    <span style={{
+      color: '#B5A7C2',
+      fontSize: 12,
+    }}>
+      Итого
+    </span>
+    <span style={{
+      color: '#FFFFFF',
+      fontSize: 14,
+      fontWeight: 600,
+    }}>
+      {totalQty} шт.
+    </span>
+  </div>
+
+  <strong style={{
+    fontSize: 26,
+    fontWeight: 750,
+    letterSpacing: '-0.03em',
+    color: '#C084FC',
+    whiteSpace: 'nowrap',
+  }}>
+    {totalPrice.toFixed(2)} €
+  </strong>
+</div>
 
         <button
           type="button"
