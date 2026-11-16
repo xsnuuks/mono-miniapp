@@ -9527,7 +9527,12 @@ showToast('Адрес сохранён')
       <button
   type="button"
   disabled={hasMissingPrices}
-  onClick={() => setScreen('retail_checkout')}
+  onClick={() => {
+  setRetailOrderId(null)
+  retailRequestIdRef.current = null
+  setRetailCheckoutStep(1)
+  setScreen('retail_checkout')
+}}
   style={{
     ...adminPrimaryBtn,
     width: '100%',
