@@ -5830,18 +5830,18 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
         )}
 
         <div style={{
-          marginTop: 22,
-          paddingTop: 16,
-          borderTop: '1px solid #444',
-        }}>
-          <div style={{
-            color: '#aaa',
-            fontSize: 12,
-            textAlign: 'center',
-            marginBottom: 14,
-          }}>
-            Цена за штуку
-          </div>
+  marginTop: 14,
+  paddingTop: 16,
+  borderTop: '1px solid #382C42',
+}}>
+  <div style={{
+    color: '#B5A7C2',
+    fontSize: 13,
+    fontWeight: 600,
+    marginBottom: 8,
+  }}>
+    Цены
+  </div>
 
           {tiers.map((tier: any) => (
             <div
