@@ -9142,17 +9142,31 @@ style={{
 
     <button
   type="button"
-  disabled
   onClick={submitRetailOrder}
+  disabled={
+    retailOrderSubmitting ||
+    hasMissingPrices ||
+    retailCart.length === 0
+  }
   style={{
     ...adminPrimaryBtn,
     width: '100%',
     padding: 16,
-    opacity: 0.5,
-    cursor: 'not-allowed',
+    borderRadius: 16,
+    fontSize: 16,
+    fontWeight: 700,
+    opacity:
+      retailOrderSubmitting ||
+      hasMissingPrices ||
+      retailCart.length === 0
+        ? 0.5
+        : 1,
+    cursor: retailOrderSubmitting ? 'wait' : 'pointer',
   }}
 >
-  Оформить заказ — скоро
+  {retailOrderSubmitting
+    ? 'Оформляем заказ...'
+    : 'Подтвердить заказ'}
 </button>
 
     <button
@@ -9171,8 +9185,6 @@ style={{
       fontSize: 13,
       textAlign: 'center',
     }}>
-      Подтверждение и отправку заказа подключим после
-      сохранения заказов на сервере.
     </div>
   </div>
 )}
