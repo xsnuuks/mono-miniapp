@@ -198,6 +198,7 @@ function App() {
   const [adminWholesaleOrdersLoading, setAdminWholesaleOrdersLoading] = useState(false)
   const [myRetailOrders, setMyRetailOrders] = useState<any[]>([])
   const [myWholesaleOrders, setMyWholesaleOrders] = useState<any[]>([])
+  const [ordersTab, setOrdersTab] = useState<'retail' | 'wholesale'>('retail')
   const [myWholesaleOrdersLoading, setMyWholesaleOrdersLoading] = useState(false)
   const [selectedRetailOrderId, setSelectedRetailOrderId] = useState<number | null>(null)
   const [myRetailOrdersLoading, setMyRetailOrdersLoading] = useState(false)
@@ -6744,17 +6745,39 @@ if (selectedOrder) {
     marginBottom: 14,
   }}>
     <div style={{ fontSize: 20, fontWeight: 800 }}>
-      📦 Заказы
+      Мои заказы
     </div>
-    <span style={{
-      background: '#302039',
-      color: '#d8b4fe',
-      borderRadius: 20,
-      padding: '5px 12px',
-      fontSize: 12,
-    }}>
-      {myRetailOrders.length}
-    </span>
+    <div style={{
+  display: 'flex',
+  gap: 4,
+  padding: 4,
+  background: '#211A2B',
+  border: '1px solid #3B2D49',
+  borderRadius: 14,
+}}>
+  {([
+    ['retail', 'Розница', myRetailOrders.length],
+    ['wholesale', 'Опт', myWholesaleOrders.length],
+  ] as const).map(([tab, label, count]) => (
+    <button
+      key={tab}
+      type="button"
+      onClick={() => setOrdersTab(tab)}
+      style={{
+        border: 'none',
+        borderRadius: 10,
+        padding: '10px 12px',
+        background: ordersTab === tab ? '#7244AB' : 'transparent',
+        color: ordersTab === tab ? '#FFFFFF' : '#B5A7C2',
+        fontSize: 12,
+        fontWeight: 700,
+        cursor: 'pointer',
+      }}
+    >
+      {label} ({count})
+    </button>
+  ))}
+</div>
   </div>
 
   {myRetailOrdersLoading ? (
