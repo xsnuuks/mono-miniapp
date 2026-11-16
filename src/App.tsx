@@ -5621,10 +5621,14 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
       </button>
 
       <div style={{
-        ...adminCard,
-        marginBottom: 16,
-        textAlign: 'center',
-      }}>
+  background: '#19151F',
+  border: '1px solid #342A40',
+  borderRadius: 20,
+  padding: 16,
+  marginBottom: 16,
+  textAlign: 'left',
+  overflow: 'hidden',
+}}>
         {product.photo_url && (
           <img
             src={photoUrl(product.photo_url) || ''}
