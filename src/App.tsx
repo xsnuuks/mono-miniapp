@@ -6779,8 +6779,7 @@ if (selectedOrder) {
   ))}
 </div>
   </div>
-
-  {ordersTab === 'retail' && (      
+   
   {myRetailOrdersLoading ? (
     <div style={{ ...adminCard, color: '#aaa' }}>
       Загружаем заказы...
@@ -6856,8 +6855,7 @@ if (selectedOrder) {
         </div>
       </button>
     ))
-  )}
-  )}      
+  )}   
 </div>
 
       <div style={{ marginTop: 24 }}>
