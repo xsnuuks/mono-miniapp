@@ -8754,8 +8754,12 @@ onChange={field.name === 'phone'
     justifyContent: 'space-between',
     fontSize: 14,
   }}>
-    <span>Самовывоз</span>
-    <span>0,00 €</span>
+    <span>
+  {deliveryType === 'pickup' ? 'Самовывоз' : 'Доставка GLS'}
+</span>
+<span>
+  {deliveryType === 'pickup' ? '0,00 €' : 'Рассчитывается отдельно'}
+</span>
   </div>
 
   <div style={{
