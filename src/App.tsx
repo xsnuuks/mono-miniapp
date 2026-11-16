@@ -6948,6 +6948,11 @@ if (selectedOrder) {
 
         <div style={{ fontSize: 13, color: '#aaa' }}>
           {order.created_at?.replace('T', ' ').slice(0, 16)}
+{' · '}
+{(order.items || []).reduce(
+  (sum: number, item: any) => sum + Number(item.quantity || 0),
+  0
+)} шт.
         </div>
 
         <div style={{ marginTop: 12 }}>
