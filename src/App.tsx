@@ -281,6 +281,17 @@ const [wholesaleAddress, setWholesaleAddress] = useState({
   }
 })
 
+  useEffect(() => {
+  try {
+    localStorage.setItem(
+      'puffy_retail_cart_v1',
+      JSON.stringify(retailCart)
+    )
+  } catch (error) {
+    console.error('Ошибка сохранения розничной корзины:', error)
+  }
+}, [retailCart])
+
 const [wholesaleCart, setWholesaleCart] = useState<{
   productId: number
   productName: string
