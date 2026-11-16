@@ -6186,11 +6186,32 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
 ))}
 
           <div style={{
-            borderTop: '1px solid #444',
-            marginTop: 20,
-            paddingTop: 16,
-          }}>
-            <div>Выбрано: {totalQty} шт.</div>
+  borderTop: '1px solid #382C42',
+  marginTop: 16,
+  paddingTop: 16,
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+  }}>
+    <span style={{
+      color: '#B5A7C2',
+      fontSize: 13,
+      fontWeight: 500,
+    }}>
+      Выбрано
+    </span>
+
+    <span style={{
+      color: '#C084FC',
+      fontSize: 18,
+      fontWeight: 700,
+    }}>
+      {totalQty} шт.
+    </span>
+  </div>
 
             <div style={{ marginTop: 12 }}>
   <button
