@@ -8706,23 +8706,26 @@ onChange={field.name === 'phone'
       type="button"
       onClick={() => setRetailPaymentMethod(method.id)}
       style={{
-        padding: 16,
-        borderRadius: 12,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        gap: 12,
-        color: '#fff',
-        fontWeight: 600,
-        textAlign: 'left',
-        background: retailPaymentMethod === method.id
-          ? 'rgba(168,85,247,0.18)'
-          : '#17131d',
-        border: retailPaymentMethod === method.id
-          ? '1px solid #a855f7'
-          : '1px solid rgba(255,255,255,0.15)',
-        cursor: 'pointer',
-      }}
+  width: '100%',
+  padding: '18px 16px',
+  borderRadius: 16,
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 12,
+  color: '#FFFFFF',
+  fontSize: 14,
+  fontWeight: 600,
+  fontFamily: 'inherit',
+  textAlign: 'left',
+  background: retailPaymentMethod === method.id
+    ? '#30213F'
+    : '#1C1724',
+  border: retailPaymentMethod === method.id
+    ? '1px solid #A855F7'
+    : '1px solid #40314D',
+  cursor: 'pointer',
+}}
     >
       <span>{method.label}</span>
       <span style={{ color: '#c084fc', fontSize: 20 }}>
