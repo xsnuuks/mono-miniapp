@@ -8045,6 +8045,7 @@ onChange={field.name === 'phone'
     }
 
     setRetailOrderId(Number(result.order_id))
+    setRetailCart([])
     setRetailCheckoutStep(4)
     showToast(`Заказ №${result.order_id} создан`)
   } catch (error) {
