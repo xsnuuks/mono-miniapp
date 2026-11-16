@@ -5680,17 +5680,33 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   </div>
 )}
 
-        <div style={{ fontSize: 20, fontWeight: 800 }}>
-          {product.name}
-        </div>
-
         <div style={{
-          color: '#34d399',
-          fontSize: 13,
-          marginTop: 10,
-        }}>
-          В наличии: {product.stock || 0} шт.
-        </div>
+  color: '#FFFFFF',
+  fontSize: 22,
+  fontWeight: 700,
+  letterSpacing: '-0.03em',
+  lineHeight: 1.3,
+  marginBottom: 10,
+}}>
+  {product.name}
+</div>
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  color: '#A6BAAC',
+  fontSize: 12,
+}}>
+  <span style={{
+    width: 7,
+    height: 7,
+    borderRadius: '50%',
+    background: '#79C99B',
+    flexShrink: 0,
+  }} />
+  В наличии: {product.stock || 0} шт.
+</div>
       </div>
 
       <div style={adminCard}>
