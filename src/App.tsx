@@ -298,7 +298,15 @@ const [wholesaleCart, setWholesaleCart] = useState<{
   flavorId: number
   flavorName: string
   quantity: number
-}[]>([])
+}[]>(() => {
+  try {
+    const saved = localStorage.getItem('puffy_wholesale_cart_v1')
+    const parsed = saved ? JSON.parse(saved) : []
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+})
   const [wholesaleSubmitting, setWholesaleSubmitting] = useState(false)
   const wholesaleRequestIdRef = useRef<string | null>(null)
   const wholesaleSubmittingRef = useRef(false)
