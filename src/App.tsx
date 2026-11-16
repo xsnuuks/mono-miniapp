@@ -6903,7 +6903,19 @@ if (selectedOrder) {
     </div>
   ) : (
     myWholesaleOrders.map((order: any) => (
-      <div key={order.id} style={{ ...adminCard, marginBottom: 12 }}>
+      <div
+  key={order.id}
+  style={{
+    width: '100%',
+    boxSizing: 'border-box',
+    marginBottom: 12,
+    padding: 18,
+    background: '#1C1724',
+    border: '1px solid #3B2D49',
+    borderRadius: 18,
+    color: '#FFFFFF',
+  }}
+>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
