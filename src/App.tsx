@@ -9111,37 +9111,6 @@ showToast('Адрес сохранён')
   </button>
 </div>
       )}
-
-      {retailCart.length > 0 && (
-  <div>
-
-    <div style={{
-      ...adminCard,
-      marginBottom: 16,
-      fontSize: 13,
-      lineHeight: 1.7,
-      color: '#d8c9e7',
-    }}>
-      {deliveryType === 'pickup' ? (
-        <>
-          <strong>Самовывоз по договорённости</strong>
-          <div style={{ marginTop: 6 }}>
-            Уточните доступный город и место получения у менеджера.
-          </div>
-        </>
-      ) : (
-        <>
-          <strong>Доставка GLS · Германия</strong>
-          <div style={{ marginTop: 6 }}>
-            {retailCart.reduce((sum, item) => sum + item.quantity, 0) <= 10
-              ? 'Стоимость доставки — от 5,89 €'
-              : 'Стоимость рассчитывается индивидуально в зависимости от посылки'}
-          </div>
-        </>
-      )}
-    </div>
-  </div>
-)}
       
       {retailCart.length > 0 && (() => {
   const getProductQty = (productId: number) =>
