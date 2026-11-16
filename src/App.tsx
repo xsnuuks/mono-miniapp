@@ -5707,16 +5707,21 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   }} />
   В наличии: {product.stock || 0} шт.
 </div>
-      </div>
 
-      <div style={adminCard}>
-        <div style={{
-          fontSize: 17,
-          fontWeight: 700,
-          marginBottom: 18,
-        }}>
-          Выберите вкусы
-        </div>
+<div style={{
+  height: 1,
+  background: '#382C42',
+  margin: '22px 0',
+}} />
+
+<div style={{
+  fontSize: 17,
+  fontWeight: 700,
+  marginBottom: 18,
+  color: '#FFFFFF',
+}}>
+  Выберите вкусы
+</div>
 
         {retailLoading ? (
           <div style={{ color: '#aaa' }}>Загрузка...</div>
