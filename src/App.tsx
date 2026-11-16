@@ -7870,7 +7870,6 @@ onChange={field.name === 'phone'
             wholesaleSubmitting
           }
           onClick={async () => {
-            alert("Кнопка оформления заказа работает!")
   if (wholesaleSubmittingRef.current) return
 
   wholesaleSubmittingRef.current = true
