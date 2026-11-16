@@ -6216,11 +6216,18 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   setScreen('cart')
 }}
     style={{
-      ...btnMain,
-      width: '100%',
-      padding: 16,
-    }}
-  >
+  width: '100%',
+  padding: '15px 18px',
+  background: '#7737C2',
+  border: 'none',
+  borderRadius: 14,
+  color: '#FFFFFF',
+  fontSize: 14,
+  fontWeight: 700,
+  cursor: 'pointer',
+  transition: 'background 0.2s ease',
+}}
+>
     Перейти в корзину ({wholesaleCart.reduce((sum, item) => sum + item.quantity, 0) + totalQty} шт.)
   </button>
   <p style={{
