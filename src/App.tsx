@@ -6817,12 +6817,21 @@ if (selectedOrder) {
         }}>
           <strong>Заказ №{order.id}</strong>
           <span style={{
-            background: 'rgba(168,85,247,0.16)',
-            color: '#d8b4fe',
-            padding: '5px 10px',
-            borderRadius: 20,
-            fontSize: 12,
-          }}>
+  background:
+    order.status === 'done' ? 'rgba(52,211,153,0.12)' :
+    order.status === 'shipped' ? 'rgba(96,165,250,0.12)' :
+    order.status === 'cancelled' ? 'rgba(248,113,113,0.12)' :
+    'rgba(168,85,247,0.12)',
+  color:
+    order.status === 'done' ? '#6EE7B7' :
+    order.status === 'shipped' ? '#93C5FD' :
+    order.status === 'cancelled' ? '#FCA5A5' :
+    '#D8B4FE',
+  padding: '6px 11px',
+  borderRadius: 20,
+  fontSize: 12,
+  fontWeight: 600,
+}}>
             {order.status === 'new' ? 'Новый'
               : order.status === 'shipped' ? 'Отправлен'
               : order.status === 'done' ? 'Завершён'
