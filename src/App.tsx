@@ -8274,15 +8274,6 @@ onChange={field.name === 'phone'
         >
           {wholesaleSubmitting ? 'Оформляем заказ...' : 'Оформить заказ'}
         </button>
-
-        <div style={{
-          textAlign: 'center',
-          fontSize: 12,
-          color: '#888',
-          marginTop: 14,
-        }}>
-          Прототип — заказ пока не создаётся и не оплачивается
-        </div>
       </div>
     </div>
   )
