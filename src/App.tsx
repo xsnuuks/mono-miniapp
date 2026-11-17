@@ -6179,10 +6179,19 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
           ) : (
             activeFlavors.map(f => {
               const id = Number(f.id)
-              const stock = Math.max(0, Number(f.stock) || 0)
-              const qty = wholesaleQty[id] || 0
+const stock = Math.max(0, Number(f.stock) || 0)
+const qty = wholesaleQty[id] || 0
 
-              return (
+const alreadyInCart = wholesaleCart
+  .filter(item =>
+    item.productId === Number(product.id) &&
+    item.flavorId === id
+  )
+  .reduce((sum, item) => sum + item.quantity, 0)
+
+const remainingStock = Math.max(0, stock - alreadyInCart)
+
+return (
                 <div
                   key={id}
                   style={{
