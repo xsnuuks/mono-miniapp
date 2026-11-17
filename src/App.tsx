@@ -8634,7 +8634,28 @@ onChange={field.name === 'phone'
       </div>
     </div>
   </div>
+        )
+      })}
 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 20,
+      }}>
+        <div>
+          <div style={{ fontWeight: 700 }}>Товары</div>
+          <div style={{ color: '#aaa', fontSize: 12 }}>
+            {retailCount} шт.
+          </div>
+        </div>
+        <strong style={{ color: '#c084fc', fontSize: 23 }}>
+          {hasMissingPrices
+            ? '—'
+            : `${retailTotal.toFixed(2)} €`}
+        </strong>
+      </div>
+    </div>
       {deliveryType === 'pickup' ? (
         <div style={{ ...adminCard, marginBottom: 16 }}>
           <div style={{
