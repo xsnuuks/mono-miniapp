@@ -7774,14 +7774,6 @@ onChange={field.name === 'phone'
           </button>
         </form>
 
-        <div style={{
-          color: '#777',
-          fontSize: 12,
-          textAlign: 'center',
-          marginTop: 18,
-        }}>
-          Прототип · Заказ пока не отправляется
-        </div>
       </div>
     </div>
   )
