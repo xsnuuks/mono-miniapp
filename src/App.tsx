@@ -3388,13 +3388,31 @@ setEditingRetailTiers(
   {p.name}
 </div>
 
-                    <span style={adminBadge(
-                      Number(p.is_visible) === 1
-                    )}>
-                      {Number(p.is_visible) === 1
-                        ? '● Опубликован'
-                        : '○ Скрыт'}
-                    </span>
+                   <span style={{
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 7,
+  alignSelf: 'flex-start',
+  padding: '6px 11px',
+  borderRadius: 100,
+  background: Number(p.is_visible) === 1
+    ? 'rgba(52,211,153,0.10)'
+    : 'rgba(148,163,184,0.10)',
+  border: Number(p.is_visible) === 1
+    ? '1px solid rgba(52,211,153,0.24)'
+    : '1px solid rgba(148,163,184,0.22)',
+  color: Number(p.is_visible) === 1 ? '#6EE7B7' : '#B8AFC4',
+  fontSize: 12,
+  fontWeight: 700,
+}}>
+  <span style={{
+    width: 7,
+    height: 7,
+    borderRadius: '50%',
+    background: Number(p.is_visible) === 1 ? '#34D399' : '#94A3B8',
+  }} />
+  {Number(p.is_visible) === 1 ? 'Опубликован' : 'Скрыт'}
+</span>
                   </div>
                 </div>
 
