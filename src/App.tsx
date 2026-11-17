@@ -6355,11 +6355,30 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     }))
 
   if (selectedFlavors.length > 0) {
-    setWholesaleCart(prev => [
-      ...prev.filter(item => item.productId !== Number(product.id)),
-      ...selectedFlavors,
-    ])
-  }
+  setWholesaleCart(prev => {
+    const updated = [...prev]
+
+    for (const selected of selectedFlavors) {
+      const index = updated.findIndex(item =>
+        item.productId === selected.productId &&
+        item.flavorId === selected.flavorId
+      )
+
+      if (index >= 0) {
+        updated[index] = {
+          ...updated[index],
+          quantity: updated[index].quantity + selected.quantity,
+        }
+      } else {
+        updated.push(selected)
+      }
+    }
+
+    return updated
+  })
+
+  setWholesaleQty({})
+}
 
   setScreen('cart')
 }}
