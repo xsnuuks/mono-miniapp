@@ -3378,13 +3378,15 @@ setEditingRetailTiers(
 
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{
-                      fontSize: 15,
-                      fontWeight: 700,
-                      overflowWrap: 'anywhere',
-                      marginBottom: 8,
-                    }}>
-                      {p.name}
-                    </div>
+  fontSize: 16,
+  fontWeight: 800,
+  color: '#FFFFFF',
+  lineHeight: 1.35,
+  overflowWrap: 'anywhere',
+  marginBottom: 8,
+}}>
+  {p.name}
+</div>
 
                     <span style={adminBadge(
                       Number(p.is_visible) === 1
