@@ -1871,14 +1871,14 @@ async function deleteOrder(orderId: number) {
           onClick={() => setScreen('admin_orders')}
           style={{ ...adminActionBtn, width: '100%' }}
         >
-          🛍 Розничные
+          Розничные
         </button>
 
         <button
           type="button"
           style={{ ...adminPrimaryBtn, width: '100%' }}
         >
-          📦 Оптовые
+          Оптовые
         </button>
       </div>
 
