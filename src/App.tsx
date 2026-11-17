@@ -3322,9 +3322,15 @@ setEditingRetailTiers(
   }
 }}
   style={{
-    ...adminCard,
-    cursor: 'pointer',
-  }}
+  ...adminCard,
+  cursor: 'pointer',
+  background: '#1D1725',
+  border: '1px solid #453252',
+  borderRadius: 20,
+  padding: 16,
+  marginBottom: 14,
+  boxShadow: '0 4px 18px rgba(0,0,0,0.15)',
+}}
 >
                 <div style={{
                   display: 'flex',
