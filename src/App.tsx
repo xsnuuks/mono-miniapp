@@ -300,6 +300,7 @@ const [wholesaleCart, setWholesaleCart] = useState<{
   flavorId: number
   flavorName: string
   quantity: number
+  stock?: number
 }[]>(() => {
   try {
     const saved = localStorage.getItem('puffy_wholesale_cart_v1')
@@ -6364,6 +6365,7 @@ onClick={() => setWholesaleQty(prev => ({
       flavorId: Number(f.id),
       flavorName: String(f.name),
       quantity: Number(wholesaleQty[Number(f.id)]),
+      stock: Math.max(0, Number(f.stock) || 0),
     }))
 
   if (selectedFlavors.length > 0) {
@@ -9532,14 +9534,27 @@ showToast('Адрес сохранён')
   }
 
   const changeWholesaleQty = (flavorId: number, delta: number) => {
-    setWholesaleCart(prev => prev
-      .map(item => item.flavorId === flavorId
-        ? { ...item, quantity: item.quantity + delta }
-        : item
-      )
+  setWholesaleCart(prev =>
+    prev
+      .map(item => {
+        if (item.flavorId !== flavorId) return item
+
+        const nextQty = Math.max(0, item.quantity + delta)
+
+        if (delta > 0) {
+          if (item.stock === undefined) return item
+
+          return {
+            ...item,
+            quantity: Math.min(nextQty, item.stock),
+          }
+        }
+
+        return { ...item, quantity: nextQty }
+      })
       .filter(item => item.quantity > 0)
-    )
-  }
+  )
+}
 
   return (
     <div key={screen} style={page}>
@@ -10272,10 +10287,14 @@ showToast('Адрес сохранён')
               <button
                 type="button"
                 aria-label="Увеличить количество"
-                onClick={() =>
-                  changeWholesaleQty(item.flavorId, 1)
-                }
-                style={{
+                onClick={() => {
+  changeWholesaleQty(item.flavorId, 1)
+}}
+disabled={
+  item.stock === undefined ||
+  item.quantity >= item.stock
+}
+style={{
                   width: 34,
                   height: 34,
                   borderRadius: 10,
