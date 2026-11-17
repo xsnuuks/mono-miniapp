@@ -3353,7 +3353,19 @@ setEditingRetailTiers(
                         }}
                       />
                     ) : (
-                      <span style={{ fontSize: 28 }}>📦</span>
+                      <svg
+  width="28"
+  height="28"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#A78BFA"
+  strokeWidth="1.6"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+>
+  <rect x="3" y="3" width="18" height="18" rx="4" />
+  <path d="M8 3v18M3 8h18" />
+</svg>
                     )}
                   </div>
 
@@ -3704,7 +3716,19 @@ if (/^admin_wholesale_(all|\d+)$/.test(screen)) {
                   }}
                 />
               ) : (
-                <span style={{ fontSize: 26 }}>📦</span>
+                <svg
+  width="28"
+  height="28"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#A78BFA"
+  strokeWidth="1.6"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+>
+  <rect x="3" y="3" width="18" height="18" rx="4" />
+  <path d="M8 3v18M3 8h18" />
+</svg>
               )}
             </div>
 
