@@ -3426,7 +3426,19 @@ setEditingRetailTiers(
                     { label: 'Остаток', value: p.stock || 0 },
                     { label: 'Порогов', value: p.prices || 0 },
                   ].map(stat => (
-                    <div key={stat.label} style={adminMiniStat}>
+                    <div
+  key={stat.label}
+  style={{
+    ...adminMiniStat,
+    flex: 1,
+    minWidth: 0,
+    padding: '13px 8px',
+    background: '#2A2034',
+    border: '1px solid #44314F',
+    borderRadius: 14,
+    textAlign: 'center',
+  }}
+>
                       <div style={{
                         fontSize: 18,
                         fontWeight: 700,
