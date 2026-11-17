@@ -3338,16 +3338,17 @@ setEditingRetailTiers(
                   gap: 12,
                 }}>
                   <div style={{
-                    width: 76,
-                    height: 76,
-                    flexShrink: 0,
-                    borderRadius: 14,
-                    background: 'rgba(255,255,255,0.05)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    overflow: 'hidden',
-                  }}>
+  width: 84,
+  height: 84,
+  flexShrink: 0,
+  borderRadius: 16,
+  background: '#2B2035',
+  border: '1px solid #4A355B',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+}}>
                     {p.photo_url ? (
                       <img
                         src={photoUrl(p.photo_url) || ''}
