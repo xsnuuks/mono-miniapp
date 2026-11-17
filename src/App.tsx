@@ -6253,11 +6253,14 @@ return (
 
                     <button
   type="button"
-  disabled={qty >= stock}
-  onClick={() => setWholesaleQty(prev => ({
-    ...prev,
-    [id]: Math.min(stock, qty + 1),
-  }))}
+  disabled={qty >= remainingStock}
+onClick={() => setWholesaleQty(prev => ({
+  ...prev,
+  [id]: Math.min(
+    remainingStock,
+    (prev[id] || 0) + 1
+  ),
+}))}
   style={{
     width: 44,
     height: 44,
