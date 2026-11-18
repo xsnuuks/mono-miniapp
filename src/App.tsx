@@ -6062,16 +6062,23 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     key={f.id}
     onClick={() => setSelectedRetailFlavorId(Number(f.id))}
     style={{
-  display: 'flex',
-  flexWrap: 'wrap',
-  alignContent: 'flex-start',
-  alignItems: 'flex-start',
-  gap: 8,
-  maxHeight: '38vh',
-  overflowY: 'auto',
-  overflowX: 'hidden',
-  WebkitOverflowScrolling: 'touch',
-  paddingRight: 4,
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flex: '0 0 auto',
+  width: 'fit-content',
+  maxWidth: '100%',
+  padding: '8px 10px',
+  margin: 0,
+  border: selectedRetailFlavorId === Number(f.id)
+    ? '1px solid #A855F7'
+    : '1px solid #46404D',
+  borderRadius: 999,
+  background: selectedRetailFlavorId === Number(f.id)
+    ? '#914CF0'
+    : '#29262E',
+  cursor: 'pointer',
+  transition: 'background 0.2s ease, border-color 0.2s ease',
 }}
   >
                 <div style={{
