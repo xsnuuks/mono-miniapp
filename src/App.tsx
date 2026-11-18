@@ -6218,7 +6218,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
       color: '#B5A7C2',
       fontSize: 12,
     }}>
-      Итого
+      {totalQty > 0 ? 'Итого' : 'Цена за 1 шт.'}
     </span>
     <span style={{
       color: '#FFFFFF',
