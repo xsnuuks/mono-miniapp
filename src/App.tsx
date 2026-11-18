@@ -6088,8 +6088,8 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
                   <div
   onClick={() => setSelectedRetailFlavorId(Number(f.id))}
   style={{
-    fontSize: 14,
-    fontWeight: 700,
+    fontSize: 12,
+    fontWeight: 600,
     color: selectedRetailFlavorId === Number(f.id)
       ? '#C084FC'
       : '#FFFFFF',
