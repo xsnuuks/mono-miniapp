@@ -2725,11 +2725,14 @@ const statusColor =
 
   return (
     <div style={{
-      ...adminCard,
-      border: '1px solid #a855f7',
-      marginBottom: 16,
-      padding: 18,
-    }}>
+  ...adminCard,
+  background: '#1D1725',
+  border: '1px solid #453252',
+  borderRadius: 22,
+  padding: 20,
+  marginBottom: 18,
+  boxShadow: '0 6px 24px rgba(0,0,0,0.18)',
+}}>
       <div style={{
         fontSize: 18,
         fontWeight: 800,
