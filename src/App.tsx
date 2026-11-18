@@ -6102,11 +6102,9 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
                   <div style={{
                     color: stock > 0 ? '#34d399' : '#999',
                     fontSize: 12,
-                    marginTop: 6,
+                    marginTop: 0,
                   }}>
-                    {stock > 0
-  ? `${stock > 80 ? '80+' : stock} шт. в наличии`
-  : 'Нет в наличии'}
+                    {stock > 80 ? '80+' : stock}
                   </div>
                 </div>
                 </div>
