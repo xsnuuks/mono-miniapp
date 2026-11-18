@@ -6063,7 +6063,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     onClick={() => setSelectedRetailFlavorId(Number(f.id))}
     style={{
       display: 'inline-flex',
-      justifyContent: 'center'
+      justifyContent: 'center',
       alignItems: 'center',
       gap: 6,
       padding: '8px 10px',
