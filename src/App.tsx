@@ -6041,7 +6041,15 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   : 'Выберите вкус'}
 </div>
 
-        {retailLoading ? (
+        <div
+  style={{
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    gap: 8,
+  }}
+>
+  {retailLoading ? (
           <div style={{ color: '#aaa' }}>Загрузка...</div>
         ) : (
           retailFlavors
@@ -6159,6 +6167,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
             )
           })
         )}
+          </div>
 
         <div style={{
   marginTop: 14,
