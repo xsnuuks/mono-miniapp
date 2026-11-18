@@ -6094,8 +6094,8 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     fontSize: 12,
     fontWeight: 600,
     color: selectedRetailFlavorId === Number(f.id)
-      ? '#C084FC'
-      : '#FFFFFF',
+  ? '#FFFFFF'
+  : '#D1CDD6',
     cursor: 'pointer',
   }}
 >
