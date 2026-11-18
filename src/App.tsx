@@ -5895,7 +5895,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     )
   }
 
-  if (screen === 'retail_product') {
+  function renderRetailProduct() {
   const product = retailProducts.find(
     p => Number(p.id) === selectedRetailId
   )
@@ -6419,6 +6419,10 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
 
     </div>
   )
+}
+
+  if (screen === 'retail_product') {
+  return renderRetailProduct()
 }
   
   if (screen === 'wholesale_product') {
