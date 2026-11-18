@@ -6064,8 +6064,8 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
                     marginTop: 6,
                   }}>
                     {stock > 0
-                      `${stock > 80 ? '80+' : stock} шт. в наличии`
-                      : 'Нет в наличии'}
+  ? `${stock > 80 ? '80+' : stock} шт. в наличии`
+  : 'Нет в наличии'}
                   </div>
                 </div>
 
