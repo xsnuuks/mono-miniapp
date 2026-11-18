@@ -6055,7 +6055,6 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
           retailFlavors
   .filter(f => Number(f.stock) > 0 && Number(f.is_active ?? 1) !== 0)
   .map(f => {
-            const quantity = retailQty[f.id] || 0
             const stock = Number(f.stock) || 0
 
             return (
@@ -6104,64 +6103,6 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   : 'Нет в наличии'}
                   </div>
                 </div>
-
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: '1px solid #7541ad',
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  background: '#29183c',
-                }}>
-                  <button
-                    type="button"
-                    disabled={quantity === 0}
-                    onClick={() =>
-                      setRetailQty(prev => ({
-                        ...prev,
-                        [f.id]: Math.max(0, quantity - 1),
-                      }))
-                    }
-                    style={{
-                      width: 44,
-                      height: 44,
-                      border: 'none',
-                      background: 'rgba(255,255,255,0.05)',
-                      color: '#fff',
-                      fontSize: 22,
-                    }}
-                  >
-                    −
-                  </button>
-
-                  <span style={{
-                    minWidth: 35,
-                    textAlign: 'center',
-                    fontWeight: 800,
-                  }}>
-                    {quantity}
-                  </span>
-
-                  <button
-                    type="button"
-                    disabled={quantity >= stock}
-                    onClick={() =>
-                      setRetailQty(prev => ({
-                        ...prev,
-                        [f.id]: Math.min(stock, quantity + 1),
-                      }))
-                    }
-                    style={{
-                      width: 44,
-                      height: 44,
-                      border: 'none',
-                      background: 'rgba(168,85,247,0.2)',
-                      color: '#fff',
-                      fontSize: 22,
-                    }}
-                  >
-                    +
-                  </button>
                 </div>
               </div>
             )
