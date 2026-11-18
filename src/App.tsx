@@ -6182,7 +6182,8 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
           })
         )}
           </div>
-
+        
+<div style={{
         style={{
   display: 'flex',
   justifyContent: 'space-between',
