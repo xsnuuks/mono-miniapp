@@ -6104,7 +6104,27 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
                     fontSize: 12,
                     marginTop: 0,
                   }}>
-                    {stock > 80 ? '80+' : stock}
+                    <span style={{
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 4,
+}}>
+  <svg
+    width="13"
+    height="13"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+    <path d="m3.3 7 8.7 5 8.7-5M12 22V12" />
+  </svg>
+  {stock > 80 ? '80+' : stock}
+</span>
                   </div>
                 </div>
                 </div>
