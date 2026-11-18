@@ -6037,7 +6037,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   color: '#FFFFFF',
 }}>
   {selectedRetailFlavor
-  ? `Выбран: ${selectedRetailFlavor.name}`
+  ? `Выбран: ${selectedRetailFlavor.name} · В корзине: ${selectedRetailCartQty} шт.`
   : 'Выберите вкус'}
 </div>
 
