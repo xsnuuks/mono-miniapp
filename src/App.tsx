@@ -11226,7 +11226,7 @@ style={{
 </div>
 <BottomNav />
       
-      {screen === 'retail_product' && createPortal(
+      {selectedRetailId !== null && screen === 'catalog' && false && createPortal(
   <div className="puffy-sheet-backdrop">
     <div className="puffy-product-sheet">
       <div className="puffy-sheet-handle" />
