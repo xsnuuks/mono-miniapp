@@ -6104,7 +6104,6 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
                   </div>
                 </div>
                 </div>
-              </div>
             )
           })
         )}
