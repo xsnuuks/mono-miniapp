@@ -6098,6 +6098,17 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
 >
   {f.name}
 </div>
+                  <span
+  style={{
+    display: 'block',
+    width: 1,
+    height: 16,
+    background: selectedRetailFlavorId === Number(f.id)
+      ? 'rgba(255,255,255,0.65)'
+      : '#62596D',
+    flexShrink: 0,
+  }}
+/>
 
                   <div style={{
                     color: stock > 0 ? '#34d399' : '#999',
@@ -6122,16 +6133,6 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   >
     <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
     <path d="m3.3 7 8.7 5 8.7-5M12 22V12" />
-    <span
-  style={{
-    width: 1,
-    height: 14,
-    background: selectedRetailFlavorId === Number(f.id)
-      ? 'rgba(255,255,255,0.65)'
-      : '#62596D',
-    flexShrink: 0,
-  }}
-/>
   </svg>
   {stock > 80 ? '80+' : stock}
 </span>
