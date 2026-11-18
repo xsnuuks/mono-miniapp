@@ -6055,9 +6055,19 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
 }}
               >
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 14, fontWeight: 700 }}>
-                    {f.name}
-                  </div>
+                  <div
+  onClick={() => setSelectedRetailFlavorId(Number(f.id))}
+  style={{
+    fontSize: 14,
+    fontWeight: 700,
+    color: selectedRetailFlavorId === Number(f.id)
+      ? '#C084FC'
+      : '#FFFFFF',
+    cursor: 'pointer',
+  }}
+>
+  {f.name}
+</div>
 
                   <div style={{
                     color: stock > 0 ? '#34d399' : '#999',
