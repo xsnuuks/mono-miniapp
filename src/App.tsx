@@ -3107,7 +3107,22 @@ if (!tiersResponse.ok) {
             )
           }}
           placeholder="Остаток"
-          style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+          style={{
+  ...inputStyle,
+  width: '100%',
+  minWidth: 0,
+  boxSizing: 'border-box',
+  minHeight: 46,
+  padding: '11px 8px',
+  background: '#18131F',
+  border: '1px solid #4A355B',
+  borderRadius: 12,
+  color: '#FFFFFF',
+  fontSize: 14,
+  fontWeight: 700,
+  textAlign: 'center',
+  outline: 'none',
+}}
         />
         <button
   type="button"
