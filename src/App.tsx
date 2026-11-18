@@ -5947,7 +5947,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   width: '100%',
   height: 'auto',
   minHeight: 0,
-  padding: 0,
+  padding: '8px 16px 24px',
   margin: 0,
   overflow: 'visible',
   background: 'transparent',
