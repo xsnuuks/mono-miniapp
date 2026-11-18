@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import './App.css'
 
 const API_URL = 'https://web-production-8afa.up.railway.app'
 const ADMIN_ID = 7875371978
