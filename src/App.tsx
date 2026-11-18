@@ -3211,8 +3211,11 @@ if (!tiersResponse.ok) {
 
       <div style={{
   ...adminCard,
-  marginBottom: 14,
-  padding: 14,
+  background: '#211829',
+  border: '1px solid #493653',
+  borderRadius: 18,
+  marginBottom: 16,
+  padding: 18,
 }}>
   <div style={{ fontWeight: 700, marginBottom: 12 }}>
     + Добавить новый вкус
