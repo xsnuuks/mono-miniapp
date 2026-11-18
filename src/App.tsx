@@ -6402,7 +6402,6 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
       </div>
         </div>
 
-      <BottomNav />
     </div>
   )
 }
