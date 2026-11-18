@@ -6420,10 +6420,6 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     </div>
   )
 }
-
-  if (screen === 'retail_product') {
-  return renderRetailProduct()
-}
   
   if (screen === 'wholesale_product') {
     const product = wholesaleProducts.find(
@@ -11226,7 +11222,7 @@ style={{
 </div>
 <BottomNav />
       
-      {selectedRetailId !== null && screen === 'catalog' && false && createPortal(
+      {screen === 'retail_product' && selectedRetailId !== null && createPortal(
   <div className="puffy-sheet-backdrop">
     <div className="puffy-product-sheet">
       <div className="puffy-sheet-handle" />
