@@ -6080,6 +6080,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     maxHeight: '280px',
     overflowY: 'auto',
     overflowX: 'hidden',
+    paddingBottom: 180,
     alignContent: 'flex-start',
   }}
 >
