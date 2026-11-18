@@ -3303,7 +3303,20 @@ if (!tiersResponse.ok) {
       defaultValue="0"
       required
       placeholder="Остаток"
-      style={inputStyle}
+      style={{
+  ...inputStyle,
+  width: '100%',
+  boxSizing: 'border-box',
+  minHeight: 48,
+  padding: '12px 14px',
+  background: '#18131F',
+  border: '1px solid #4A355B',
+  borderRadius: 12,
+  color: '#FFFFFF',
+  fontSize: 14,
+  fontWeight: 700,
+  outline: 'none',
+}}
     />
 
     <button
