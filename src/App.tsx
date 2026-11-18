@@ -6358,7 +6358,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   }}
   style={{
   width: '100%',
-  padding: '15px 18px',
+  padding: '11px 16px',
   background: '#7737C2',
   border: 'none',
   borderRadius: 14,
@@ -6378,7 +6378,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   onClick={() => setScreen('cart')}
   style={{
     width: '100%',
-    padding: '15px 18px',
+    padding: '11px 16px',
     marginTop: 10,
     background: '#211A2B',
     border: '1px solid #7541AD',
