@@ -3082,6 +3082,7 @@ if (!tiersResponse.ok) {
   ...inputStyle,
   width: '100%',
   minWidth: 0,
+  gridColumn: '1 / -1',          
   boxSizing: 'border-box',
   minHeight: 46,
   padding: '11px 12px',
