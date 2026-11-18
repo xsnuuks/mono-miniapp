@@ -3137,15 +3137,25 @@ if (!tiersResponse.ok) {
     )
   }}
   style={{
-    padding: '10px 8px',
-    borderRadius: 10,
-    border: '1px solid rgba(168,85,247,0.35)',
-    background: 'rgba(168,85,247,0.1)',
-    color: '#d8b4fe',
-    cursor: 'pointer',
-    fontSize: 12,
-    fontWeight: 700,
-  }}
+  minHeight: 46,
+  padding: '10px 8px',
+  borderRadius: 12,
+  border: Number(flavor.is_active ?? 1) !== 0
+    ? '1px solid #594268'
+    : '1px solid #76518D',
+  background: Number(flavor.is_active ?? 1) !== 0
+    ? '#30243B'
+    : '#49305B',
+  color: Number(flavor.is_active ?? 1) !== 0
+    ? '#D5C1E5'
+    : '#E9CFFF',
+  cursor: 'pointer',
+  fontSize: 12,
+  fontWeight: 700,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}}
 >
   {Number(flavor.is_active ?? 1) !== 0 ? 'Скрыть' : 'Показать'}
 </button>
