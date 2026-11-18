@@ -6192,7 +6192,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     background: '#1C1624',
     border: '1px solid #403249',
     borderRadius: 16,
-    padding: 12,
+    padding: 8,
     marginTop: 12,
     boxShadow: '0 -8px 24px rgba(0,0,0,0.25)',
   }}
@@ -6230,7 +6230,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   </div>
 
   <strong style={{
-    fontSize: 26,
+    fontSize: 21,
     fontWeight: 750,
     letterSpacing: '-0.03em',
     color: '#C084FC',
