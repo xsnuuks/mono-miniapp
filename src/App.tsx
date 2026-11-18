@@ -6044,13 +6044,13 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      gap: 12,
-      padding: '14px 12px',
-      marginBottom: 10,
+      gap: 8,
+      padding: '8px 12px',
+      marginBottom: 8,
       border: selectedRetailFlavorId === Number(f.id)
         ? '1px solid #A855F7'
         : '1px solid #352B40',
-      borderRadius: 16,
+      borderRadius: 999,
       background: selectedRetailFlavorId === Number(f.id)
         ? '#342044'
         : '#1C1624',
