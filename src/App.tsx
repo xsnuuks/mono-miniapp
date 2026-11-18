@@ -6182,7 +6182,21 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
           })
         )}
           </div>
-        
+
+        <div
+  style={{
+    position: 'sticky',
+    bottom: 82,
+    zIndex: 30,
+    background: '#1C1624',
+    border: '1px solid #403249',
+    borderRadius: 16,
+    padding: 12,
+    marginTop: 12,
+    boxShadow: '0 -8px 24px rgba(0,0,0,0.25)',
+  }}
+>
+          
       <div  
         style={{
   display: 'flex',
@@ -6375,6 +6389,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   Корзина · {retailCart.reduce((sum, item) => sum + item.quantity, 0)} шт.
 </button>
       </div>
+        </div>
 
       <BottomNav />
     </div>
