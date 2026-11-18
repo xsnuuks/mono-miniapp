@@ -11225,6 +11225,20 @@ style={{
 )}
 </div>
 <BottomNav />
+      
+      {screen === 'retail_product' && createPortal(
+  <div className="puffy-sheet-backdrop">
+    <div className="puffy-product-sheet">
+      <div className="puffy-sheet-handle" />
+
+      <div className="puffy-sheet-content">
+        {renderRetailProduct()}
+      </div>
+    </div>
+  </div>,
+  document.body
+)}
+      
 {toast ? (
   <div style={{
     position: 'fixed',
