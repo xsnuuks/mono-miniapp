@@ -6184,39 +6184,6 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
           </div>
 
         <div style={{
-  marginTop: 14,
-  paddingTop: 12,
-  borderTop: '1px solid #382C42',
-}}>
-  <div style={{
-    color: '#B5A7C2',
-    fontSize: 13,
-    fontWeight: 600,
-    marginBottom: 8,
-  }}>
-    Цены
-  </div>
-
-          {tiers.map((tier: any) => (
-            <div
-              key={tier.id}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '10px 0',
-                color: activeTier?.id === tier.id
-                  ? '#d8b4fe'
-                  : '#aaa',
-                fontSize: 13,
-              }}
-            >
-              <span>От {tier.min_qty} шт.</span>
-              <strong>{Number(tier.price).toFixed(2)} €</strong>
-            </div>
-          ))}
-        </div>
-
-        <div style={{
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
