@@ -6406,7 +6406,7 @@ return (
                       fontSize: 12,
                       marginTop: 4,
                     }}>
-                      В наличии: {stock} шт.
+                      В наличии: {stock > 80 ? '80+' : stock} шт.
                     </div>
                   </div>
 
