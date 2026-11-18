@@ -6114,7 +6114,9 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
 />
 
                   <div style={{
-                    color: stock > 0 ? '#34d399' : '#999',
+                    color: selectedRetailFlavorId === Number(f.id)
+  ? '#FFFFFF'
+  : '#34D399',
                     fontSize: 12,
                     marginTop: 0,
                   }}>
