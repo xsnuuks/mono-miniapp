@@ -2832,7 +2832,6 @@ const statusColor =
   <div style={{ fontSize: 12, color: '#888', marginTop: 6 }}>
     JPG, PNG или WEBP · максимум 5 МБ
   </div>
-</div>
 
       <div style={{ marginBottom: 16, color: '#aaa' }}>
         ID товара: {product.id}
