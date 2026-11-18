@@ -3281,7 +3281,19 @@ if (!tiersResponse.ok) {
       name="name"
       placeholder="Название нового вкуса"
       required
-      style={inputStyle}
+      style={{
+  ...inputStyle,
+  width: '100%',
+  boxSizing: 'border-box',
+  minHeight: 48,
+  padding: '12px 14px',
+  background: '#18131F',
+  border: '1px solid #4A355B',
+  borderRadius: 12,
+  color: '#FFFFFF',
+  fontSize: 14,
+  outline: 'none',
+}}
     />
 
     <input
