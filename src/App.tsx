@@ -5913,6 +5913,14 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   const selectedRetailFlavor = retailFlavors.find(
   f => Number(f.id) === selectedRetailFlavorId
   )
+
+  const selectedRetailCartItem = retailCart.find(
+  item =>
+    item.productId === Number(product.id) &&
+    item.flavorId === selectedRetailFlavorId
+)
+
+const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     
   const totalQty = retailFlavors.reduce(
     (sum, f) => sum + (retailQty[f.id] || 0), 0
