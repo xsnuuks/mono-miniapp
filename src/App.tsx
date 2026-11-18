@@ -6028,7 +6028,9 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   marginBottom: 18,
   color: '#FFFFFF',
 }}>
-  Выберите вкусы
+  {selectedRetailFlavor
+  ? `Выбран: ${selectedRetailFlavor.name}`
+  : 'Выберите вкус'}
 </div>
 
         {retailLoading ? (
