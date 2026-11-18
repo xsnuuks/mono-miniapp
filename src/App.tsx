@@ -2789,7 +2789,19 @@ const statusColor =
   <input
     type="file"
     accept="image/jpeg,image/png,image/webp"
-    style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+    style={{
+  ...inputStyle,
+  width: '100%',
+  boxSizing: 'border-box',
+  padding: '14px',
+  minHeight: 54,
+  background: '#241B2D',
+  border: '1px dashed #76518D',
+  borderRadius: 14,
+  color: '#C5B3D4',
+  fontSize: 13,
+  cursor: 'pointer',
+}}
     onChange={async (e) => {
       const file = e.target.files?.[0]
       if (!file) return
