@@ -6236,7 +6236,9 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     color: '#C084FC',
     whiteSpace: 'nowrap',
   }}>
-    {totalPrice.toFixed(2)} €
+    {totalQty > 0
+  ? `${totalPrice.toFixed(2)} €`
+  : `${Number(tiers[0]?.price || 0).toFixed(2)} €`}
   </strong>
 </div>
 
