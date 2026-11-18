@@ -6234,6 +6234,87 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   </strong>
 </div>
 
+        {selectedRetailCartQty > 0 ? (
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+    padding: '10px 12px',
+    background: '#24192F',
+    border: '1px solid #7541AD',
+    borderRadius: 14,
+  }}>
+    <button
+      type="button"
+      onClick={() => {
+        setRetailCart(prev =>
+          prev
+            .map(item =>
+              item.productId === Number(product.id) &&
+              item.flavorId === selectedRetailFlavorId
+                ? { ...item, quantity: item.quantity - 1 }
+                : item
+            )
+            .filter(item => item.quantity > 0)
+        )
+      }}
+      style={{
+        width: 44,
+        height: 44,
+        borderRadius: 10,
+        border: '1px solid #59416D',
+        background: '#21182B',
+        color: '#FFFFFF',
+        fontSize: 22,
+        cursor: 'pointer',
+      }}
+    >
+      −
+    </button>
+
+    <strong style={{ fontSize: 18, color: '#FFFFFF' }}>
+      {selectedRetailCartQty}
+    </strong>
+
+    <button
+      type="button"
+      disabled={
+        !selectedRetailFlavor ||
+        selectedRetailCartQty >= Number(selectedRetailFlavor.stock)
+      }
+      onClick={() => {
+        setRetailCart(prev =>
+          prev.map(item =>
+            item.productId === Number(product.id) &&
+            item.flavorId === selectedRetailFlavorId
+              ? {
+                  ...item,
+                  quantity: Math.min(
+                    Number(selectedRetailFlavor?.stock) || 0,
+                    item.quantity + 1
+                  ),
+                }
+              : item
+          )
+        )
+      }}
+      style={{
+        width: 44,
+        height: 44,
+        borderRadius: 10,
+        border: 'none',
+        background: '#914CF0',
+        color: '#FFFFFF',
+        fontSize: 22,
+        cursor: 'pointer',
+      }}
+    >
+      +
+    </button>
+  </div>
+) : (
+  
         <button
   type="button"
   disabled={!selectedRetailFlavor || selectedRetailCartQty > 0}
@@ -6283,6 +6364,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
 >
   Добавить в корзину
 </button>
+  )}
         <button
   type="button"
   onClick={() => setScreen('cart')}
