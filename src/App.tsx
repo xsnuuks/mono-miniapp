@@ -3077,7 +3077,20 @@ if (!tiersResponse.ok) {
             )
           }}
           placeholder="Название вкуса"
-          style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }}
+          style={{
+  ...inputStyle,
+  width: '100%',
+  minWidth: 0,
+  boxSizing: 'border-box',
+  minHeight: 46,
+  padding: '11px 12px',
+  background: '#18131F',
+  border: '1px solid #4A355B',
+  borderRadius: 12,
+  color: '#FFFFFF',
+  fontSize: 13,
+  outline: 'none',
+}}
         />
 
         <input
