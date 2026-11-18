@@ -6078,7 +6078,13 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
       transition: 'background 0.2s ease, border-color 0.2s ease',
     }}
   >
-                <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{
+  display: 'flex',
+  alignItems: 'center',
+  gap: 6,
+  minWidth: 0,
+  whiteSpace: 'nowrap',
+}}>
                   <div
   onClick={() => setSelectedRetailFlavorId(Number(f.id))}
   style={{
