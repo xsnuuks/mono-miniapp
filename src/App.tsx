@@ -6037,9 +6037,23 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
             const stock = Number(f.stock) || 0
 
             return (
-              <div
-                key={f.id}
-                style={{
+              onClick={() => setSelectedRetailFlavorId(Number(f.id))}
+              style={{
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 12,
+  padding: '14px 12px',
+  marginBottom: 10,
+  border: selectedRetailFlavorId === Number(f.id)
+    ? '1px solid #A855F7'
+    : '1px solid #352B40',
+  borderRadius: 16,
+  background: selectedRetailFlavorId === Number(f.id)
+    ? '#342044'
+    : '#1C1624',
+  transition: 'background 0.2s ease, border-color 0.2s ease',
+}}
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
