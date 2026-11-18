@@ -2741,8 +2741,17 @@ const statusColor =
         Редактирование товара
       </div>
 
-      <label style={{ display: 'grid', gap: 8, marginBottom: 16 }}>
-  <span style={{ fontSize: 13, color: '#aaa' }}>
+      <label style={{
+  display: 'grid',
+  gap: 10,
+  marginBottom: 20,
+}}>
+  <span style={{
+    fontSize: 13,
+    fontWeight: 700,
+    color: '#C5B3D4',
+    letterSpacing: '0.2px',
+  }}>
     Название товара
   </span>
   <input
