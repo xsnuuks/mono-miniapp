@@ -31,3 +31,55 @@ html, body, #root {
   min-height: 100%;
   background: transparent;
 }
+
+/* Puffy product bottom sheet */
+
+.puffy-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.puffy-product-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 85dvh;
+  max-height: 900px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #19151f;
+  border-radius: 28px 28px 0 0;
+  border-top: 1px solid #493653;
+
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.puffy-sheet-handle {
+  width: 42px;
+  height: 5px;
+  flex-shrink: 0;
+  margin: 12px auto;
+  border-radius: 999px;
+  background: #706379;
+}
+
+.puffy-sheet-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.puffy-sheet-footer {
+  flex-shrink: 0;
+  padding: 12px 16px max(20px, env(safe-area-inset-bottom));
+  background: #19151f;
+  border-top: 1px solid #493653;
+}
