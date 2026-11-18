@@ -6070,6 +6070,10 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   maxWidth: '100%',
   padding: '8px 10px',
   margin: 0,
+  maxHeight: '280px',
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  alignContent: 'flex-start',
   border: selectedRetailFlavorId === Number(f.id)
     ? '1px solid #A855F7'
     : '1px solid #46404D',
