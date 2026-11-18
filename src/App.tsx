@@ -2776,10 +2776,15 @@ const statusColor =
   />
 </label>
 
-      <div style={{ marginBottom: 16 }}>
-  <div style={{ fontSize: 13, color: '#aaa', marginBottom: 8 }}>
-    Фотография товара
-  </div>
+      <div style={{
+  fontSize: 13,
+  fontWeight: 700,
+  color: '#C5B3D4',
+  marginBottom: 10,
+  letterSpacing: '0.2px',
+}}>
+  Фотография товара
+</div>
 
   <input
     type="file"
