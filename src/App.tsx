@@ -6265,7 +6265,6 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
 
   setRetailQty({})
   showToast('Товары добавлены в корзину')
-  setScreen('cart')
 }}
           style={{
   width: '100%',
