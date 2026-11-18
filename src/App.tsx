@@ -2759,10 +2759,20 @@ const statusColor =
     id="retail-edit-name"
     defaultValue={product.name}
     style={{
-      ...inputStyle,
-      width: '100%',
-      boxSizing: 'border-box',
-    }}
+  ...inputStyle,
+  width: '100%',
+  boxSizing: 'border-box',
+  minHeight: 50,
+  padding: '13px 16px',
+  background: '#241B2D',
+  border: '1px solid #4A355B',
+  borderRadius: 14,
+  color: '#FFFFFF',
+  fontSize: 15,
+  fontWeight: 500,
+  outline: 'none',
+  transition: 'border-color 0.2s ease',
+}}
   />
 </label>
 
