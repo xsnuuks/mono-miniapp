@@ -5938,7 +5938,15 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   const totalPrice = unitPrice * totalQty
 
   return (
-    <div key={screen} style={page}>
+    <div
+  key={screen}
+  style={{
+    ...page,
+    minHeight: '100dvh',
+    background: '#100D14',
+    paddingBottom: 100,
+  }}
+>
       <RetailTopBar />
       <button
   type="button"
