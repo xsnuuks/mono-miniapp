@@ -5922,9 +5922,9 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
 
 const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     
-  const totalQty = retailFlavors.reduce(
-    (sum, f) => sum + (retailQty[f.id] || 0), 0
-  )
+  const totalQty = retailCart
+  .filter(item => item.productId === Number(product.id))
+  .reduce((sum, item) => sum + item.quantity, 0)
 
   const tiers = [...(product.retail_tiers || [])].sort(
     (a: any, b: any) => Number(a.min_qty) - Number(b.min_qty)
