@@ -5947,10 +5947,13 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   width: '100%',
   height: 'auto',
   minHeight: 0,
-  boxSizing: 'border-box',
+  padding: 0,
+  margin: 0,
   overflow: 'visible',
   background: 'transparent',
-  padding: '0 16px 24px',
+  border: 'none',
+  borderRadius: 0,
+  boxSizing: 'border-box',
 }}
 >
       <RetailTopBar />
