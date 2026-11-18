@@ -6037,6 +6037,8 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
             const stock = Number(f.stock) || 0
 
             return (
+                <div
+    key={f.id}
               onClick={() => setSelectedRetailFlavorId(Number(f.id))}
               style={{
   display: 'flex',
