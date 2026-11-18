@@ -6225,7 +6225,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
       fontSize: 14,
       fontWeight: 600,
     }}>
-      {totalQty} шт.
+      {totalQty > 0 ? `${totalQty} шт. в корзине` : 'Выберите вкус'}
     </span>
   </div>
 
