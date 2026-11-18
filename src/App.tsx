@@ -6202,9 +6202,11 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
 
         <div
   style={{
-    position: 'sticky',
-    bottom: 82,
-    zIndex: 30,
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 150,
     background: '#1C1624',
     border: '1px solid #403249',
     borderRadius: 16,
