@@ -6144,6 +6144,9 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   marginTop: 14,
   paddingTop: 16,
   borderTop: '1px solid #382C42',
+  position: 'sticky',
+  bottom: 70,
+  zIndex: 20,
 }}>
   <div style={{
     color: '#B5A7C2',
