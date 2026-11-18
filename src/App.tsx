@@ -6183,7 +6183,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
         )}
           </div>
         
-<div style={{
+      <div  
         style={{
   display: 'flex',
   justifyContent: 'space-between',
@@ -6193,7 +6193,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   marginBottom: 12,
   padding: '14px 0',
   borderTop: '1px solid #382C42',
-}}
+}}>
   <div style={{
     display: 'flex',
     flexDirection: 'column',
