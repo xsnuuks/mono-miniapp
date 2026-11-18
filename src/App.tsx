@@ -6235,52 +6235,39 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
 </div>
 
         <button
-          type="button"
-          disabled={totalQty === 0 || !activeTier}
-          onClick={() => {
-  const selected = retailFlavors.filter(
-    f => (retailQty[f.id] || 0) > 0
-  )
+  type="button"
+  disabled={!selectedRetailFlavor || selectedRetailCartQty > 0}
+  onClick={() => {
+    if (!selectedRetailFlavor) return
 
-  setRetailCart(prev => {
-    const updated = [...prev]
+    const flavor = selectedRetailFlavor
 
-    for (const flavor of selected) {
-      const quantity = retailQty[flavor.id] || 0
-
-      const existingIndex = updated.findIndex(
+    setRetailCart(prev => {
+      const exists = prev.some(
         item =>
           item.productId === Number(product.id) &&
           item.flavorId === Number(flavor.id)
       )
 
-      if (existingIndex >= 0) {
-        updated[existingIndex] = {
-          ...updated[existingIndex],
-          quantity: Math.min(
-  Number(flavor.stock) || 0,
-  updated[existingIndex].quantity + quantity
-),
-        }
-      } else {
-        updated.push({
+      if (exists) return prev
+
+      return [
+        ...prev,
+        {
           productId: Number(product.id),
           productName: product.name,
           flavorId: Number(flavor.id),
           flavorName: flavor.name,
-          quantity,
+          quantity: 1,
           stock: Number(flavor.stock) || 0,
-        })
-      }
-    }
+        },
+      ]
+    })
 
-    return updated
-  })
-
-  setRetailQty({})
-  showToast('Товары добавлены в корзину')
-}}
-          style={{
+    setRetailQty({})
+    showToast('Вкус добавлен в корзину')
+  }}
+  style={{
   width: '100%',
   padding: '15px 18px',
   background: '#7737C2',
@@ -6289,8 +6276,8 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   color: '#FFFFFF',
   fontSize: 14,
   fontWeight: 700,
-  cursor: totalQty > 0 && activeTier ? 'pointer' : 'not-allowed',
-  opacity: totalQty > 0 && activeTier ? 1 : 0.45,
+  cursor: selectedRetailFlavor && selectedRetailCartQty === 0 ? 'pointer' : 'not-allowed',
+  opacity: selectedRetailFlavor && selectedRetailCartQty === 0 ? 1 : 0.45,
   transition: 'opacity 0.2s ease',
 }}
 >
