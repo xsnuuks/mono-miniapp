@@ -5991,7 +5991,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
 
       <div style={{
   background: '#19151F',
-  border: '1px solid #342A40',
+  border: '1px solid #5B4669',
   borderRadius: 20,
   padding: 16,
   marginBottom: 16,
