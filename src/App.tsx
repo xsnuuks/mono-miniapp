@@ -6204,9 +6204,9 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   justifyContent: 'space-between',
   alignItems: 'center',
   gap: 12,
-  marginTop: 12,
-  marginBottom: 12,
-  padding: '14px 0',
+  marginTop: 4,
+  marginBottom: 8,
+  padding: '8px 0',
   borderTop: '1px solid #382C42',
 }}>
   <div style={{
