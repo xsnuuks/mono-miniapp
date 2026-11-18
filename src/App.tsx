@@ -5956,7 +5956,6 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   boxSizing: 'border-box',
 }}
 >
-      <RetailTopBar />
       <button
   type="button"
   onClick={() => setScreen('catalog')}
