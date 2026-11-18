@@ -3321,7 +3321,20 @@ if (!tiersResponse.ok) {
 
     <button
       type="submit"
-      style={{ ...adminPrimaryBtn, width: '100%' }}
+      style={{
+  ...adminPrimaryBtn,
+  width: '100%',
+  minHeight: 50,
+  padding: '14px 18px',
+  borderRadius: 14,
+  background: 'linear-gradient(135deg, #7835D0, #A855F7)',
+  border: '1px solid #A56AE8',
+  color: '#FFFFFF',
+  fontSize: 14,
+  fontWeight: 800,
+  cursor: 'pointer',
+  boxShadow: '0 4px 14px rgba(125,55,200,0.18)',
+}}
     >
       + Добавить вкус
     </button>
