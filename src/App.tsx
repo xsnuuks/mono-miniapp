@@ -3052,14 +3052,19 @@ if (!tiersResponse.ok) {
   ) : (
     editingRetailFlavors.map((flavor: any) => (
       <div
-        key={flavor.id}
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1fr) 75px 85px',
-          gap: 10,
-          marginBottom: 12,
-        }}
-      >
+  key={flavor.id}
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'minmax(0, 1fr) 75px 85px',
+    gap: 12,
+    marginBottom: 12,
+    padding: 14,
+    background: '#241B2D',
+    border: '1px solid #493653',
+    borderRadius: 16,
+    alignItems: 'center',
+  }}
+>
         <input
           defaultValue={flavor.name}
           onChange={e => {
