@@ -5942,25 +5942,16 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     <div
   key={screen}
   style={{
-    ...page,
-    position: 'fixed',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 'auto',
-    width: '100%',
-    height: '85dvh',
-    minHeight: 0,
-    boxSizing: 'border-box',
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    background: '#19151F',
-    borderRadius: '28px 28px 0 0',
-    borderTop: '1px solid #493653',
-    padding: '16px 16px 24px',
-    zIndex: 100,
-    WebkitOverflowScrolling: 'touch',
-  }}
+  ...page,
+  position: 'relative',
+  width: '100%',
+  height: 'auto',
+  minHeight: 0,
+  boxSizing: 'border-box',
+  overflow: 'visible',
+  background: 'transparent',
+  padding: '0 16px 24px',
+}}
 >
       <RetailTopBar />
       <button
