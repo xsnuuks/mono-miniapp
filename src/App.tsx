@@ -3055,7 +3055,8 @@ if (!tiersResponse.ok) {
   key={flavor.id}
   style={{
     display: 'grid',
-    gridTemplateColumns: 'minmax(0, 1fr) 75px 85px',
+    gridTemplateColumns: 'minmax(0, 1fr) 72px',
+    gridAutoFlow: 'row',
     gap: 12,
     marginBottom: 12,
     padding: 14,
