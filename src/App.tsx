@@ -243,7 +243,7 @@ const [wholesaleDragTargetId, setWholesaleDragTargetId] =
   useState<number | null>(null)
   const [selectedRetailId, setSelectedRetailId] = useState<number | null>(null)
   const [retailFlavors, setRetailFlavors] = useState<any[]>([])
-  const [retailQty, setRetailQty] = useState<Record<number, number>>({})
+  const [, setRetailQty] = useState<Record<number, number>>({})
   const [selectedRetailFlavorId, setSelectedRetailFlavorId] = useState<number | null>(null)
   const [retailLoading, setRetailLoading] = useState(false)
   const [selectedWholesaleId, setSelectedWholesaleId] = useState<number | null>(null)
