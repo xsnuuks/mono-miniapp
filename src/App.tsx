@@ -6511,7 +6511,6 @@ const alreadyInCart = wholesaleCart
   )
   .reduce((sum, item) => sum + item.quantity, 0)
 
-const remainingStock = Math.max(0, stock - alreadyInCart)
 
 return (
                 <div
