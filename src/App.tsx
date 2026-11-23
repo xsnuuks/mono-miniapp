@@ -6382,7 +6382,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   )
 }
   
-  if (screen === 'wholesale_product') {
+  function renderWholesaleProduct() {
     const product = wholesaleProducts.find(
       p => Number(p.id) === selectedWholesaleId
     )
@@ -6717,6 +6717,10 @@ onClick={() => setWholesaleQty(prev => ({
         </div>
       </div>
     )
+  }
+
+  if (screen === 'wholesale_product') {
+    return renderWholesaleProduct()
   }
   
   if (screen === 'product' && selected) {
