@@ -6493,12 +6493,14 @@ return (
                 <div
                   key={id}
                   style={{
-  display: 'flex',
-  justifyContent: 'space-between',
+  display: 'inline-flex',
+  justifyContent: 'center',
   alignItems: 'center',
-  gap: 12,
-  padding: '14px 12px',
-  marginBottom: 10,
+  gap: 8,
+  padding: '8px 12px',
+  marginRight: 8,
+  marginBottom: 8,
+  maxWidth: '100%',
   border: qty > 0
     ? '1px solid #8452B7'
     : '1px solid #352B40',
