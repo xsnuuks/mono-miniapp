@@ -248,6 +248,8 @@ const [wholesaleDragTargetId, setWholesaleDragTargetId] =
   const [selectedRetailFlavorId, setSelectedRetailFlavorId] = useState<number | null>(null)
   const [retailLoading, setRetailLoading] = useState(false)
   const [selectedWholesaleId, setSelectedWholesaleId] = useState<number | null>(null)
+  const [selectedWholesaleFlavorId, setSelectedWholesaleFlavorId] =
+  useState<number | null>(null)
   const [wholesaleFlavors, setWholesaleFlavors] = useState<any[]>([])
   const [wholesaleTiers, setWholesaleTiers] = useState<any[]>([])
   const [wholesaleQty, setWholesaleQty] = useState<Record<number, number>>({})
@@ -6491,8 +6493,9 @@ const remainingStock = Math.max(0, stock - alreadyInCart)
 
 return (
                 <div
-                  key={id}
-                  style={{
+  key={id}
+  onClick={() => setSelectedWholesaleFlavorId(id)}
+  style={{
   display: 'inline-flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -6501,7 +6504,7 @@ return (
   marginRight: 8,
   marginBottom: 8,
   maxWidth: '100%',
-  border: qty > 0
+  border: selectedWholesaleFlavorId === id || qty > 0
     ? '1px solid #8452B7'
     : '1px solid #352B40',
   borderRadius: 999,
