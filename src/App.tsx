@@ -6448,7 +6448,7 @@ const selectedWholesaleRemainingStock = selectedWholesaleFlavor
     ...page,
     width: '100%',
     minHeight: 0,
-    padding: 0,
+    padding: '0 0 240px',
     margin: 0,
     background: 'transparent',
     boxSizing: 'border-box',
@@ -6721,9 +6721,15 @@ return (
 ))}
 
           <div style={{
-  borderTop: '1px solid #382C42',
-  marginTop: 16,
-  paddingTop: 16,
+  position: 'fixed',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  zIndex: 150,
+  background: '#1C1624',
+  borderTop: '1px solid #493A55',
+  padding: '12px 16px max(20px, env(safe-area-inset-bottom))',
+  boxShadow: '0 -8px 24px rgba(0,0,0,0.25)',
 }}>
   <div style={{
     display: 'flex',
