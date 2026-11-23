@@ -6570,13 +6570,13 @@ return (
     [id]: Math.max(0, qty - 1),
   }))}
   style={{
-    width: 44,
-    height: 44,
-    borderRadius: 12,
+    width: 28,
+    height: 28,
+    borderRadius: 8,
     border: '1px solid rgba(168,85,247,0.45)',
     background: '#272032',
     color: '#ffffff',
-    fontSize: 26,
+    fontSize: 18,
     fontWeight: 600,
     cursor: 'pointer',
     flexShrink: 0,
