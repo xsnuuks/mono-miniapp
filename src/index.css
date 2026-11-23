@@ -146,3 +146,34 @@ html, body, #root {
     transition: none;
   }
 }
+
+@keyframes puffySheetOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes puffyBackdropOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.puffy-sheet-backdrop.puffy-closing {
+  animation: puffyBackdropOut 260ms ease-in forwards;
+}
+
+.puffy-sheet-backdrop.puffy-closing .puffy-product-sheet {
+  animation: puffySheetOut 260ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puffy-sheet-backdrop.puffy-closing,
+  .puffy-sheet-backdrop.puffy-closing .puffy-product-sheet {
+    animation-duration: 1ms;
+  }
+}
