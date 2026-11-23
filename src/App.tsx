@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import AdminBanners from './AdminBanners'
+import CatalogBanners from './CatalogBanners'
 import './App.css'
 
 const API_URL = 'https://web-production-8afa.up.railway.app'
@@ -10893,6 +10894,7 @@ style={{
     </div>
   </div>
 </div>
+      <CatalogBanners />
       <div style={{
   display: 'flex',
   background: '#1C1426',
