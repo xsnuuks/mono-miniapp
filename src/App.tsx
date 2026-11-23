@@ -6419,7 +6419,17 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     const image = photoUrl(product.photo_url)
 
     return (
-      <div style={page}>
+      <div
+  style={{
+    ...page,
+    width: '100%',
+    minHeight: 0,
+    padding: 0,
+    margin: 0,
+    background: 'transparent',
+    boxSizing: 'border-box',
+  }}
+>
 
         <div style={{
   background: '#19151F',
