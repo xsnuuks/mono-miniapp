@@ -6418,6 +6418,28 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
       0
     )
 
+    const selectedWholesaleFlavor = activeFlavors.find(
+  f => Number(f.id) === selectedWholesaleFlavorId
+)
+
+const selectedWholesaleQty = selectedWholesaleFlavor
+  ? wholesaleQty[Number(selectedWholesaleFlavor.id)] || 0
+  : 0
+
+const selectedWholesaleRemainingStock = selectedWholesaleFlavor
+  ? Math.max(
+      0,
+      (Number(selectedWholesaleFlavor.stock) || 0) -
+        wholesaleCart
+          .filter(
+            item =>
+              item.productId === Number(product.id) &&
+              item.flavorId === Number(selectedWholesaleFlavor.id)
+          )
+          .reduce((sum, item) => sum + item.quantity, 0)
+    )
+  : 0
+    
     const image = photoUrl(product.photo_url)
 
     return (
