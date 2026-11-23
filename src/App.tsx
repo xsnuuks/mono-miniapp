@@ -6420,12 +6420,6 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
 
     return (
       <div style={page}>
-        <button
-          style={backBtn}
-          onClick={() => setScreen('catalog')}
-        >
-          ← Назад
-        </button>
 
         <div style={{
   background: '#19151F',
