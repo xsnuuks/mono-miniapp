@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import AdminBanners from './AdminBanners'
 import './App.css'
 
 const API_URL = 'https://web-production-8afa.up.railway.app'
@@ -22,7 +23,7 @@ type Screen =
   | 'catalog' | 'product' | 'cart' | 'checkout' | 'wholesale_checkout' | 'wholesale_delivery' | 'wholesale_review' | 'success' | 'conditions'
   | 'profile' | 'rules' | 'info' | 'delivery'
   | 'admin' | 'admin_orders' | 'admin_wholesale_orders' | 'admin_products' | 'admin_product_edit'
-  | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_retail' | 'admin_wholesale' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale' | 'wholesale_product' | 'retail_product' | 'retail_checkout'
+  | 'admin_users' | 'admin_write' | 'admin_broadcast' | 'admin_banners' | 'admin_retail' | 'admin_wholesale' | 'admin_stats' | 'support' | 'admin_chats' | 'admin_chat' | 'favorites' | 'wholesale' | 'wholesale_product' | 'retail_product' | 'retail_checkout'
 
 const CITIES = ['Reutlingen', 'Pfullingen', 'Eningen', 'Betzingen']
 const WHOLESALE_DIAL_CODES: Record<string, string> = {
@@ -2491,8 +2492,37 @@ const statusColor =
     )
   }
 
+  if (screen === 'admin_banners') {
+  return (
+    <AdminBanners
+      onBack={() => setScreen('admin')}
+    />
+  )
+}
+
   if (screen === 'admin') {
   const items = [
+    {
+  id: 'admin_banners' as Screen,
+  title: 'Баннеры',
+  fn: () => {},
+  icon: (
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#a855f7"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <circle cx="8" cy="9" r="1.5" />
+      <path d="m4 18 5-5 4 4 3-3 4 4" />
+    </svg>
+  ),
+},
     {
       id: 'admin_orders' as Screen,
       title: 'Заказы',
