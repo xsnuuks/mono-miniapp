@@ -83,3 +83,41 @@ html, body, #root {
   background: #19151f;
   border-top: 1px solid #493653;
 }
+
+/* Puffy Store — плавное открытие карточек */
+
+@keyframes puffyBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes puffySheetIn {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.puffy-sheet-backdrop {
+  animation: puffyBackdropIn 220ms ease-out both;
+}
+
+.puffy-product-sheet {
+  animation: puffySheetIn 280ms
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puffy-sheet-backdrop,
+  .puffy-product-sheet {
+    animation: none;
+  }
+}
