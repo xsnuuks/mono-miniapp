@@ -186,6 +186,7 @@ function photoUrl(photo?: string | null) {
 
 function App() {
   const [screen, setScreen] = useState<Screen>('catalog')
+  const [isProductSheetClosing, setIsProductSheetClosing] = useState(false)
   const [selectedId] = useState<number | null>(null)
   const [cart, setCart] = useState<CartItem[]>([])
   const [toast, setToast] = useState('')
@@ -11347,12 +11348,17 @@ style={{
       
       {screen === 'retail_product' && selectedRetailId !== null && createPortal(
   <div
-  className="puffy-sheet-backdrop"
+  className={`puffy-sheet-backdrop${isProductSheetClosing ? ' puffy-closing' : ''}`}
   onClick={(e) => {
-    if (e.target === e.currentTarget) {
-      setScreen('catalog')
-    }
-  }}
+  if (e.target !== e.currentTarget || isProductSheetClosing) return
+
+  setIsProductSheetClosing(true)
+
+  setTimeout(() => {
+    setScreen('catalog')
+    setIsProductSheetClosing(false)
+  }, 260)
+}}
 >
     <div className="puffy-product-sheet">
       <div className="puffy-sheet-handle" />
@@ -11367,12 +11373,17 @@ style={{
 
       {screen === 'wholesale_product' && selectedWholesaleId !== null && createPortal(
   <div
-    className="puffy-sheet-backdrop"
+    className={`puffy-sheet-backdrop${isProductSheetClosing ? ' puffy-closing' : ''}`}
     onClick={(e) => {
-      if (e.target === e.currentTarget) {
-        setScreen('catalog')
-      }
-    }}
+  if (e.target !== e.currentTarget || isProductSheetClosing) return
+
+  setIsProductSheetClosing(true)
+
+  setTimeout(() => {
+    setScreen('catalog')
+    setIsProductSheetClosing(false)
+  }, 260)
+}}
   >
     <div className="puffy-product-sheet">
       <div className="puffy-sheet-handle" />
