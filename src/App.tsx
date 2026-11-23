@@ -6719,9 +6719,6 @@ onClick={() => setWholesaleQty(prev => ({
     )
   }
 
-  if (screen === 'wholesale_product') {
-    return renderWholesaleProduct()
-  }
   
   if (screen === 'product' && selected) {
     const img = photoUrl(selected.photo)
@@ -11201,6 +11198,25 @@ style={{
 
       <div className="puffy-sheet-content">
         {renderRetailProduct()}
+      </div>
+    </div>
+  </div>,
+  document.body
+)}
+
+      {screen === 'wholesale_product' && selectedWholesaleId !== null && createPortal(
+  <div
+    className="puffy-sheet-backdrop"
+    onClick={(e) => {
+      if (e.target === e.currentTarget) {
+        setScreen('catalog')
+      }
+    }}
+  >
+    <div className="puffy-product-sheet">
+      <div className="puffy-sheet-handle" />
+      <div className="puffy-sheet-content">
+        {renderWholesaleProduct()}
       </div>
     </div>
   </div>,
