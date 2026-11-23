@@ -6751,6 +6751,7 @@ return (
             <div style={{ marginTop: 12 }}>
   <button
     type="button"
+    disabled={totalQty === 0}
     onClick={() => {
   const selectedFlavors = wholesaleFlavors
     .filter(f => Number(wholesaleQty[Number(f.id)] || 0) > 0)
@@ -6789,7 +6790,7 @@ return (
   setWholesaleQty({})
 }
 
-  setScreen('cart')
+  showToast('Товары добавлены в корзину')
 }}
     style={{
   width: '100%',
@@ -6804,7 +6805,7 @@ return (
   transition: 'background 0.2s ease',
 }}
 >
-    Перейти в корзину ({wholesaleCart.reduce((sum, item) => sum + item.quantity, 0) + totalQty} шт.)
+    Добавить в корзину · {totalQty} шт.
   </button>
   <p style={{
     fontSize: 12,
