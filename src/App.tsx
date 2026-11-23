@@ -6509,18 +6509,53 @@ return (
   transition: 'background 0.2s ease, border-color 0.2s ease',
 }}
                 >
-                  <div>
-                    <div style={{ fontWeight: 600 }}>
-                      {f.name}
-                    </div>
-                    <div style={{
-                      color: '#aaa',
-                      fontSize: 12,
-                      marginTop: 4,
-                    }}>
-                      В наличии: {stock > 80 ? '80+' : stock} шт.
-                    </div>
-                  </div>
+                  <div style={{
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  whiteSpace: 'nowrap',
+  minWidth: 0,
+}}>
+  <span style={{
+    fontSize: 12,
+    fontWeight: 600,
+    color: '#FFFFFF',
+  }}>
+    {f.name}
+  </span>
+
+  <span style={{
+    width: 1,
+    height: 16,
+    background: '#62596D',
+    flexShrink: 0,
+  }} />
+
+  <span style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 4,
+    color: '#34D399',
+    fontSize: 12,
+    fontWeight: 600,
+  }}>
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+      <path d="M3 8v8l9 5 9-5V8" />
+      <path d="M12 13v8" />
+    </svg>
+    {stock > 80 ? '80+' : stock}
+  </span>
+</div>
 
                   <div style={{
                     display: 'flex',
