@@ -6173,11 +6173,12 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     right: 0,
     zIndex: 150,
     background: '#1C1624',
-    border: '1px solid #403249',
-    borderRadius: 16,
-    padding: 8,
-    marginTop: 12,
-    boxShadow: '0 -8px 24px rgba(0,0,0,0.25)',
+    border: 'none',
+    borderTop: '1px solid #493A55',
+    borderRadius: 0,
+    padding: '12px 16px',
+    marginTop: 0,
+    boxShadow: 'none',
   }}
 >
           
