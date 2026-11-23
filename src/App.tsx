@@ -6561,7 +6561,7 @@ return (
 </div>
 
                   <div style={{
-                    display: 'flex',
+                    display: selectedWholesaleFlavorId === id ? 'flex' : 'none',
                     alignItems: 'center',
                     gap: 10,
                   }}>
