@@ -6504,7 +6504,7 @@ return (
   border: qty > 0
     ? '1px solid #8452B7'
     : '1px solid #352B40',
-  borderRadius: 16,
+  borderRadius: 999,
   background: qty > 0 ? '#24192F' : '#1C1624',
   transition: 'background 0.2s ease, border-color 0.2s ease',
 }}
