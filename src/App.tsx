@@ -6581,66 +6581,110 @@ return (
     {stock > 80 ? '80+' : stock}
   </span>
 </div>
-
-                  <div style={{
-                    display: selectedWholesaleFlavorId === id ? 'flex' : 'none',
-                    alignItems: 'center',
-                    gap: 10,
-                  }}>
-                    <button
-  type="button"
-  disabled={qty === 0}
-  onClick={() => setWholesaleQty(prev => ({
-    ...prev,
-    [id]: Math.max(0, qty - 1),
-  }))}
-  style={{
-    width: 28,
-    height: 28,
-    borderRadius: 8,
-    border: '1px solid rgba(168,85,247,0.45)',
-    background: '#272032',
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 600,
-    cursor: 'pointer',
-    flexShrink: 0,
-  }}
->
-  −
- </button>
-                    <span>{qty}</span>
-
-                    <button
-  type="button"
-  disabled={qty >= remainingStock}
-onClick={() => setWholesaleQty(prev => ({
-  ...prev,
-  [id]: Math.min(
-    remainingStock,
-    (prev[id] || 0) + 1
-  ),
-}))}
-  style={{
-    width: 28,
-    height: 28,
-    borderRadius: 8,
-    border: '1px solid rgba(168,85,247,0.45)',
-    background: '#272032',
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 600,
-    cursor: 'pointer',
-    flexShrink: 0,
-  }}
->
-  +
-</button>
-                  </div>
                 </div>
               )
             })
           )}
+
+          {selectedWholesaleFlavor && (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      gap: 12,
+      padding: '12px 14px',
+      marginTop: 12,
+      background: '#24192F',
+      border: '1px solid #57416A',
+      borderRadius: 14,
+    }}
+  >
+    <div style={{ minWidth: 0, flex: 1 }}>
+      <div style={{
+        fontSize: 13,
+        fontWeight: 700,
+        color: '#FFFFFF',
+      }}>
+        {selectedWholesaleFlavor.name}
+      </div>
+      <div style={{
+        fontSize: 12,
+        color: '#B5A7C2',
+        marginTop: 4,
+      }}>
+        Выбрано: {selectedWholesaleQty} шт.
+      </div>
+    </div>
+
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: 12,
+      flexShrink: 0,
+    }}>
+      <button
+        type="button"
+        disabled={selectedWholesaleQty === 0}
+        onClick={() => {
+          const id = Number(selectedWholesaleFlavor.id)
+          setWholesaleQty(prev => ({
+            ...prev,
+            [id]: Math.max(0, (prev[id] || 0) - 1),
+          }))
+        }}
+        style={{
+          width: 34,
+          height: 34,
+          borderRadius: 10,
+          border: '1px solid #57416A',
+          background: '#30243D',
+          color: '#FFFFFF',
+          fontSize: 20,
+          cursor: 'pointer',
+        }}
+      >
+        −
+      </button>
+
+      <span style={{
+        minWidth: 20,
+        textAlign: 'center',
+        fontSize: 15,
+        fontWeight: 700,
+      }}>
+        {selectedWholesaleQty}
+      </span>
+
+      <button
+        type="button"
+        disabled={selectedWholesaleQty >= selectedWholesaleRemainingStock}
+        onClick={() => {
+          const id = Number(selectedWholesaleFlavor.id)
+          setWholesaleQty(prev => ({
+            ...prev,
+            [id]: Math.min(
+              selectedWholesaleRemainingStock,
+              (prev[id] || 0) + 1
+            ),
+          }))
+        }}
+        style={{
+          width: 34,
+          height: 34,
+          borderRadius: 10,
+          border: '1px solid #8452B7',
+          background: '#7737C2',
+          color: '#FFFFFF',
+          fontSize: 20,
+          cursor: 'pointer',
+        }}
+      >
+        +
+      </button>
+    </div>
+  </div>
+)}
 
           <div style={{
   color: '#B5A7C2',
