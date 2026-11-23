@@ -6504,13 +6504,6 @@ const selectedWholesaleRemainingStock = selectedWholesaleFlavor
 const stock = Math.max(0, Number(f.stock) || 0)
 const qty = wholesaleQty[id] || 0
 
-const alreadyInCart = wholesaleCart
-  .filter(item =>
-    item.productId === Number(product.id) &&
-    item.flavorId === id
-  )
-  .reduce((sum, item) => sum + item.quantity, 0)
-
 
 return (
                 <div
