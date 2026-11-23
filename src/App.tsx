@@ -6807,6 +6807,26 @@ return (
 >
     Добавить в корзину · {totalQty} шт.
   </button>
+              <button
+  type="button"
+  onClick={() => setScreen('cart')}
+  style={{
+    width: '100%',
+    padding: '12px 16px',
+    marginTop: 10,
+    background: '#211A2B',
+    border: '1px solid #7541AD',
+    borderRadius: 14,
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: 700,
+    cursor: 'pointer',
+  }}
+>
+  Корзина · {wholesaleCart.reduce(
+    (sum, item) => sum + item.quantity, 0
+  )} шт.
+</button>
   <p style={{
     fontSize: 12,
     color: '#aaa',
