@@ -6440,7 +6440,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     cursor: 'pointer',
   }}
 >
-  Корзина · {retailCart.reduce((sum, item) => sum + item.quantity, 0)} шт.
+  {ui('Корзина')} · {retailCart.reduce((sum, item) => sum + item.quantity, 0)} {ui('шт.')}
 </button>
       </div>
         </div>
@@ -6670,7 +6670,7 @@ return (
         color: '#B5A7C2',
         marginTop: 4,
       }}>
-        Выбрано: {selectedWholesaleQty} шт.
+        {ui('Выбрано')}: {selectedWholesaleQty} {ui('шт.')}
       </div>
     </div>
 
@@ -6780,7 +6780,7 @@ return (
       fontWeight: 700,
       whiteSpace: 'nowrap',
     }}>
-      {Number(t.price).toFixed(2)} €/шт.
+      {Number(t.price).toFixed(2)} €/{ui('шт.')}
     </strong>
   </div>
 ))}
@@ -6894,9 +6894,9 @@ return (
     cursor: 'pointer',
   }}
 >
-  Корзина · {wholesaleCart.reduce(
+  {ui('Корзина')} · {wholesaleCart.reduce(
     (sum, item) => sum + item.quantity, 0
-  )} шт.
+  )} {ui('шт.')}
 </button>
   <p style={{
     fontSize: 12,
@@ -7000,7 +7000,7 @@ return (
           style={{ ...inputStyle, resize: 'none' as const }}
         />
         <button onClick={sendSupport} disabled={submitting} style={btnMain}>
-          {submitting ? 'Отправка...' : 'Отправить'}
+          {submitting ? ui('Отправка...') : ui('Отправить')}
         </button>
         {toast ? <div style={{ marginTop: 10, textAlign: 'center', color: '#ccc' }}>{toast}</div> : null}
       </div>
@@ -7054,7 +7054,7 @@ return (
   }
 
         if (screen === 'profile') {
-  const name = tgUser?.first_name || 'Клиент'
+  const name = tgUser?.first_name || ui('Клиент')
   const letter = name.charAt(0).toUpperCase()
   const photo = (tgUser as any)?.photo_url || null
           const selectedOrder = myRetailOrders.find(
@@ -7083,7 +7083,7 @@ if (selectedOrder) {
           gap: 12,
           marginBottom: 14,
         }}>
-          <strong>Заказ №{selectedOrder.id}</strong>
+          <strong>{ui('Заказ')} №{selectedOrder.id}</strong>
           <strong style={{ color: '#c084fc' }}>
             {Number(selectedOrder.items_total).toFixed(2)} €
           </strong>
@@ -7091,27 +7091,27 @@ if (selectedOrder) {
 
         <div style={{ fontSize: 13, color: '#aaa', lineHeight: 2 }}>
           <div>
-            Дата: {selectedOrder.created_at?.replace('T', ' ').slice(0, 16)}
+            {language === 'en' ? 'Date:' : 'Дата:'} {selectedOrder.created_at?.replace('T', ' ').slice(0, 16)}
           </div>
           <div>
-            Получение: {selectedOrder.delivery_type === 'pickup'
+            {language === 'en' ? 'Fulfillment:' : 'Получение:'} {selectedOrder.delivery_type === 'pickup'
               ? ui('Самовывоз')
               : ui('Германия · GLS')}
           </div>
           <div>
-            Оплата: {selectedOrder.payment_method === 'cash'
-              ? 'Наличные'
+            {language === 'en' ? 'Payment:' : 'Оплата:'} {selectedOrder.payment_method === 'cash'
+              ? ui('Наличные')
               : selectedOrder.payment_method === 'usdt'
                 ? 'USDT'
                 : ui('Банковский перевод UAH')}
           </div>
           <div>
-            Статус: {selectedOrder.status === 'new'
-              ? 'Новый'
+            {language === 'en' ? 'Status:' : 'Статус:'} {selectedOrder.status === 'new'
+              ? ui('Новый')
               : selectedOrder.status === 'shipped'
-                ? 'Отправлен'
+                ? ui('Отправлен')
                 : selectedOrder.status === 'done'
-                  ? 'Завершён'
+                  ? ui('Завершён')
                   : ui('Отменён')}
           </div>
         </div>
@@ -7132,7 +7132,7 @@ if (selectedOrder) {
           >
             <div style={{ fontWeight: 700 }}>{item.product_name}</div>
             <div style={{ fontSize: 13, color: '#aaa', marginTop: 5 }}>
-              {item.flavor_name} · {item.quantity} шт.
+              {item.flavor_name} · {item.quantity} {ui('шт.')}
             </div>
             <div style={{
               display: 'flex',
@@ -7140,7 +7140,7 @@ if (selectedOrder) {
               marginTop: 8,
               fontSize: 13,
             }}>
-              <span>{Number(item.unit_price).toFixed(2)} €/шт.</span>
+              <span>{Number(item.unit_price).toFixed(2)} €/{ui('шт.')}</span>
               <strong>{Number(item.line_total).toFixed(2)} €</strong>
             </div>
           </div>
@@ -7298,7 +7298,7 @@ if (selectedOrder) {
           onClick={() => {
             const link = `https://t.me/itsmono_bot?start=ref_${tgUser?.id || ''}`
             navigator.clipboard.writeText(link)
-            alert('Ссылка скопирована')
+            alert(ui('Ссылка скопирована'))
           }}
           style={{
             background: '#111',
@@ -7441,7 +7441,7 @@ if (selectedOrder) {
           alignItems: 'center',
           marginBottom: 12,
         }}>
-          <strong>Заказ №{order.id}</strong>
+          <strong>{ui('Заказ')} №{order.id}</strong>
           <span style={{
   background:
     order.status === 'done' ? 'rgba(52,211,153,0.12)' :
@@ -7484,7 +7484,7 @@ if (selectedOrder) {
           {' · '}
           {(order.items || []).reduce(
             (sum: number, item: any) => sum + Number(item.quantity), 0
-          )} шт.
+          )} {ui('шт.')}
         </div>
 
         <div style={{
@@ -7557,7 +7557,7 @@ cursor: 'pointer',
           justifyContent: 'space-between',
           marginBottom: 10
         }}>
-          <strong>Оптовый заказ №{order.id}</strong>
+          <strong>{ui('Оптовый заказ')} №{order.id}</strong>
           <span style={{
   background:
     order.status === 'done' ? 'rgba(52,211,153,0.12)' :
@@ -7575,9 +7575,9 @@ cursor: 'pointer',
   fontWeight: 600,
 }}>
   {order.status === 'new' ? ui('Новый') :
-   order.status === 'shipped' ? 'Отправлен' :
-   order.status === 'done' ? 'Завершён' :
-   order.status === 'cancelled' ? 'Отменён' :
+   order.status === 'shipped' ? ui('Отправлен') :
+   order.status === 'done' ? ui('Завершён') :
+   order.status === 'cancelled' ? ui('Отменён') :
    order.status}
 </span>
         </div>
@@ -7585,12 +7585,12 @@ cursor: 'pointer',
         <div style={{ fontSize: 13, color: '#aaa' }}>
           {order.created_at
   ? `${order.created_at.slice(8, 10)}.${order.created_at.slice(5, 7)}.${order.created_at.slice(0, 4)} · ${order.created_at.slice(11, 16)}`
-  : 'Дата неизвестна'}
+  : ui('Дата неизвестна')}
 {' · '}
 {(order.items || []).reduce(
   (sum: number, item: any) => sum + Number(item.quantity || 0),
   0
-)} шт.
+)} {ui('шт.')}
         </div>
 
         <div style={{
@@ -7899,14 +7899,14 @@ cursor: 'pointer',
               {
                 name: 'first_name',
                 label: ui("Имя"),
-                placeholder: 'Ваше имя',
+                placeholder: ui('Ваше имя'),
                 type: 'text',
                 value: wholesaleContact.first_name,
               },
               {
                 name: 'last_name',
                 label: ui("Фамилия"),
-                placeholder: 'Ваша фамилия',
+                placeholder: ui('Ваша фамилия'),
                 type: 'text',
                 value: wholesaleContact.last_name,
               },
@@ -8144,7 +8144,7 @@ onChange={field.name === 'phone'
     }}>
       {countries.find(
         ([code]) => code === wholesaleCountry
-      )?.[1] || 'Страна не выбрана'}
+      )?.[1] || ui('Страна не выбрана')}
     </span>
   </div>
 
@@ -8197,9 +8197,9 @@ onChange={field.name === 'phone'
                 lineHeight: 1.6,
                 marginBottom: 18,
               }}>
-                Выбрана доставка {wholesaleCarrier}.
-                Стоимость рассчитывается индивидуально
-                в зависимости от страны и веса посылки.
+                {ui('Выбрана доставка')} {wholesaleCarrier}.
+                {ui('Стоимость рассчитывается индивидуально')}
+                {ui('в зависимости от страны и веса посылки.')}
               </div>
             )}
 
@@ -8259,7 +8259,7 @@ onChange={field.name === 'phone'
               <input
                 name="house"
                 defaultValue={wholesaleAddress.house}
-                placeholder="Например, 12A, кв. 3"
+                placeholder={language === "en" ? "E.g. 12A, apt. 3" : "Например, 12A, кв. 3"}
                 style={deliveryField}
                 required
               />
@@ -8611,7 +8611,7 @@ onChange={field.name === 'phone'
                   <strong>
                     {item.hasPrice
                       ? `${item.subtotal.toFixed(2)} €`
-                      : 'Цена не задана'}
+                      : ui('Цена не задана')}
                   </strong>
                 </div>
               </div>
@@ -8771,7 +8771,7 @@ onChange={field.name === 'phone'
     const result = await response.json()
 
     if (!response.ok) {
-      throw new Error(result.detail || 'Ошибка оформления заказа')
+      throw new Error(result.detail || ui('Ошибка оформления заказа'))
     }
 
     setWholesaleSuccessOrderId(Number(result.order_id))
@@ -8781,13 +8781,13 @@ onChange={field.name === 'phone'
     setScreen('wholesale_review')
     void loadWholesaleProducts()
 
-    showToast(`Оптовый заказ №${result.order_id} оформлен!`)
+    showToast(`${ui('Оптовый заказ')} №${result.order_id} ${language === 'en' ? 'placed!' : 'оформлен!'}`)
   } catch (error) {
   const message = error instanceof Error
     ? error.message
-    : 'Неизвестная ошибка оформления заказа'
+    : ui('Неизвестная ошибка оформления заказа')
 
-  alert('Ошибка заказа: ' + message)
+  alert(ui('Ошибка заказа: ') + message)
   showToast(message)
   } finally {
     wholesaleSubmittingRef.current = false
@@ -8847,12 +8847,12 @@ onChange={field.name === 'phone'
   if (retailOrderRequestRef.current || retailOrderId !== null) return
 
   if (retailCart.length === 0 || hasMissingPrices) {
-    showToast('Проверьте товары и цены')
+    showToast(ui('Проверьте товары и цены'))
     return
   }
 
   if (deliveryType === 'delivery' && !retailDeliverySaved) {
-  showToast('Сначала заполните данные доставки')
+  showToast(ui('Сначала заполните данные доставки'))
   return
 }
 
@@ -8895,16 +8895,16 @@ onChange={field.name === 'phone'
     const result = await response.json()
 
     if (!response.ok || !result.ok) {
-      throw new Error(result.detail || 'Не удалось создать заказ')
+      throw new Error(result.detail || ui('Не удалось создать заказ'))
     }
 
     setRetailOrderId(Number(result.order_id))
     setRetailCart([])
     setRetailCheckoutStep(4)
-    showToast(`Заказ №${result.order_id} создан`)
+    showToast(`${ui('Заказ')} №${result.order_id} ${ui('создан')}`)
   } catch (error) {
     showToast(
-      error instanceof Error ? error.message : 'Ошибка отправки заказа'
+      error instanceof Error ? error.message : ui('Ошибка отправки заказа')
     )
   } finally {
     retailOrderRequestRef.current = false
@@ -8932,10 +8932,10 @@ onChange={field.name === 'phone'
       }}>
         <h2 style={{ margin: 0, fontSize: 22 }}>
           {retailCheckoutStep === 1
-  ? 'Контактные данные'
+  ? ui('Контактные данные')
   : retailCheckoutStep === 2
-    ? 'Адрес доставки'
-    : 'Проверка заказа'}
+    ? ui('Адрес доставки')
+    : ui('Проверка заказа')}
         </h2>
 
       </div>
@@ -9003,7 +9003,7 @@ onChange={field.name === 'phone'
               )
             )
           )
-          showToast('Товар удалён')
+          showToast(ui('Товар удалён'))
         }}
         style={{
           background: 'transparent',
@@ -9055,8 +9055,8 @@ onChange={field.name === 'phone'
           fontSize: 11,
         }}>
           {unitPrice !== null
-            ? `${unitPrice.toFixed(2)} €/шт.`
-            : 'Цена не задана'}
+            ? `${unitPrice.toFixed(2)} €/{ui('шт.')}`
+            : ui('Цена не задана')}
         </span>
 
         <strong style={{
@@ -9167,7 +9167,7 @@ onChange={field.name === 'phone'
         <div>
           <div style={{ fontWeight: 700 }}>{ui("Товары")}</div>
           <div style={{ color: '#aaa', fontSize: 12 }}>
-            {retailCount} шт.
+            {retailCount} {ui('шт.')}
           </div>
         </div>
         <strong style={{ color: '#c084fc', fontSize: 23 }}>
@@ -9273,7 +9273,7 @@ onChange={field.name === 'phone'
     fontSize: 14,
   }}>
     <span>
-  {deliveryType === 'pickup' ? 'Самовывоз' : 'Доставка GLS'}
+  {deliveryType === 'pickup' ? ui('Самовывоз') : ui('Доставка GLS')}
 </span>
 <span>
   {deliveryType === 'pickup' ? '0,00 €' : ui('Рассчитывается отдельно')}
@@ -9314,7 +9314,7 @@ onChange={field.name === 'phone'
     whiteSpace: 'nowrap',
   }}>
     {hasMissingPrices
-      ? 'Цена уточняется'
+      ? ui('Цена уточняется')
       : `${retailTotal.toFixed(2)} €`}
   </strong>
 </div>
@@ -9330,7 +9330,7 @@ onChange={field.name === 'phone'
     border: '1px solid #a855f7',
   }}>
     <div style={{ color: '#d8b4fe', fontSize: 20, fontWeight: 800 }}>
-      ✓ Заказ №{retailOrderId} создан
+      ✓ {ui('Заказ')} №{retailOrderId} {ui('создан')}
     </div>
     <p style={{ color: '#ccc', fontSize: 13, lineHeight: 1.6 }}>
       {ui("Заказ получен. Свяжитесь с менеджером, чтобы согласовать место самовывоза и оплату.")}
@@ -9425,8 +9425,8 @@ style={{
             <span>{ui("Стоимость доставки")}</span>
             <strong style={{ color: '#c084fc' }}>
               {retailCount <= 10
-                ? 'От 5,89 €'
-                : 'Индивидуальный расчёт'}
+                ? ui('От 5,89 €')
+                : ui('Индивидуальный расчёт')}
             </strong>
           </div>
 
@@ -9510,7 +9510,7 @@ style={{
               {item.productName}
             </div>
             <div style={{ color: '#aaa', fontSize: 13, marginTop: 4 }}>
-              {item.flavorName} · {item.quantity} шт.
+              {item.flavorName} · {item.quantity} {ui('шт.')}
             </div>
           </div>
 
@@ -9630,7 +9630,7 @@ style={{
       lineHeight: 1.6,
       marginBottom: 22,
     }}>
-      Заказ №{retailOrderId} успешно создан.
+      {ui('Заказ')} №{retailOrderId} {ui('успешно создан.')}
       {ui('Менеджер свяжется с вами для уточнения деталей.')}
     </div>
 
@@ -9958,7 +9958,7 @@ showToast(ui('Адрес сохранён'))
           marginTop: 8,
         }}
       >
-        {retailCheckoutStep === 1 ? 'Далее →' : 'Сохранить адрес →'}
+        {retailCheckoutStep === 1 ? ui('Далее →') : ui('Сохранить адрес →')}
       </button>
     </form>
   )}
@@ -10249,7 +10249,7 @@ showToast(ui('Адрес сохранён'))
               )
             )
           )
-          showToast('Товар удалён')
+          showToast(ui('Товар удалён'))
         }}
         style={{
           background: 'transparent',
@@ -10301,8 +10301,8 @@ showToast(ui('Адрес сохранён'))
           fontSize: 11,
         }}>
           {unitPrice !== null
-            ? `${unitPrice.toFixed(2)} €/шт.`
-            : 'Цена не задана'}
+            ? `${unitPrice.toFixed(2)} €/{ui('шт.')}`
+            : ui('Цена не задана')}
         </span>
 
         <strong style={{
@@ -10419,7 +10419,7 @@ showToast(ui('Адрес сохранён'))
         }}>
           <span>{ui("Количество товаров")}</span>
           <strong style={{ color: '#fff' }}>
-            {retailCount} шт.
+            {retailCount} {ui('шт.')}
           </strong>
         </div>
 
@@ -10507,8 +10507,8 @@ showToast(ui('Адрес сохранён'))
       marginBottom: 6,
     }}>
       {deliveryType === 'pickup'
-        ? 'Самовывоз'
-        : 'Доставка по Германии'}
+        ? ui('Самовывоз')
+        : ui('Доставка по Германии')}
     </div>
 
     <div style={{
@@ -10517,8 +10517,8 @@ showToast(ui('Адрес сохранён'))
       lineHeight: 1.6,
     }}>
       {deliveryType === 'pickup'
-        ? 'Место и время получения согласовываются индивидуально с менеджером.'
-        : 'Стоимость доставки рассчитывается индивидуально и не входит в сумму товаров.'}
+        ? ui('Место и время получения согласовываются индивидуально с менеджером.')
+        : ui('Стоимость доставки рассчитывается индивидуально и не входит в сумму товаров.')}
     </div>
   </div>
 </div>
@@ -10564,7 +10564,7 @@ showToast(ui('Адрес сохранён'))
             </div>
           ))}
 
-          <h3>Итого: {retailTotal.toFixed(2)} €</h3>
+          <h3>{ui('Итого')}: {retailTotal.toFixed(2)} €</h3>
 
           <button
             style={btnMain}
@@ -10724,8 +10724,8 @@ showToast(ui('Адрес сохранён'))
                 fontSize: 11,
               }}>
                 {item.hasPrice
-                  ? `${item.unitPrice.toFixed(2)} €/шт.`
-                  : 'Цена не задана'}
+                  ? `${item.unitPrice.toFixed(2)} €/{ui('шт.')}`
+                  : ui('Цена не задана')}
               </span>
 
               <strong style={{
@@ -10818,7 +10818,7 @@ style={{
       }}>
         <span>{ui("Количество товаров")}</span>
         <strong style={{ color: '#FFFFFF' }}>
-          {wholesaleCount} шт.
+          {wholesaleCount} {ui('шт.')}
         </strong>
       </div>
 
@@ -10831,7 +10831,7 @@ style={{
           fontSize: 12,
           marginBottom: 14,
         }}>
-          Для оформления добавьте ещё {20 - wholesaleCount} шт.
+          {ui('Для оформления добавьте ещё')} {20 - wholesaleCount} {ui('шт.')}
         </div>
       )}
 
@@ -11302,8 +11302,8 @@ style={{
             : '#87798F',
         }}/>
         {Number(p.stock || 0) > 0
-          ? `В наличии: ${p.stock} шт.`
-          : 'Нет в наличии'}
+          ? `${ui('В наличии:')} ${p.stock} ${ui('шт.')}`
+          : ui('Нет в наличии')}
       </div>
 
       <div style={{
