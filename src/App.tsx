@@ -6876,7 +6876,7 @@ return (
   transition: 'background 0.2s ease',
 }}
 >
-    Добавить в корзину · {totalQty} {ui('шт.')}
+    {ui('Добавить в корзину')} · {totalQty} {ui('шт.')}
   </button>
               <button
   type="button"
@@ -9055,7 +9055,7 @@ onChange={field.name === 'phone'
           fontSize: 11,
         }}>
           {unitPrice !== null
-            ? `${unitPrice.toFixed(2)} €/{ui('шт.')}`
+            ? `${unitPrice.toFixed(2)} €/${ui('шт.')}`
             : ui('Цена не задана')}
         </span>
 
@@ -10301,7 +10301,7 @@ showToast(ui('Адрес сохранён'))
           fontSize: 11,
         }}>
           {unitPrice !== null
-            ? `${unitPrice.toFixed(2)} €/{ui('шт.')}`
+            ? `${unitPrice.toFixed(2)} €/${ui('шт.')}`
             : ui('Цена не задана')}
         </span>
 
@@ -10724,7 +10724,7 @@ showToast(ui('Адрес сохранён'))
                 fontSize: 11,
               }}>
                 {item.hasPrice
-                  ? `${item.unitPrice.toFixed(2)} €/{ui('шт.')}`
+                  ? `${item.unitPrice.toFixed(2)} €/${ui('шт.')}`
                   : ui('Цена не задана')}
               </span>
 
