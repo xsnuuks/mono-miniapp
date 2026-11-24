@@ -1257,7 +1257,7 @@ async function deleteOrder(orderId: number) {
           <circle cx="12" cy="10" r="2.5"/>
         </svg>
 
-        {deliveryType === 'pickup' ? 'Самовывоз' : 'Доставка'}
+        {deliveryType === 'pickup' ? ui('Самовывоз') : ui('Доставка')}
 
         <svg width="14" height="14" viewBox="0 0 24 24"
           fill="none" stroke="#b9a5ca" strokeWidth="2"
@@ -1477,8 +1477,8 @@ async function deleteOrder(orderId: number) {
               lineHeight: 1.6,
             }}>
               {deliveryType === 'pickup'
-                ? 'Место и возможность самовывоза согласовываются индивидуально с менеджером.'
-                : 'Доставка осуществляется по Германии. Стоимость рассчитывается индивидуально и не входит в сумму товаров.'}
+                ? ui('Место и возможность самовывоза согласовываются индивидуально с менеджером.')
+                : ui('Доставка осуществляется по Германии. Стоимость рассчитывается индивидуально и не входит в сумму товаров.')}
             </div>
 
             <button
@@ -8197,8 +8197,8 @@ onChange={field.name === 'phone'
                 lineHeight: 1.6,
                 marginBottom: 18,
               }}>
-                {ui('Выбрана доставка')} {wholesaleCarrier}.
-                {ui('Стоимость рассчитывается индивидуально')}
+                {ui('Выбрана доставка')} {wholesaleCarrier}.{' '}
+                {ui('Стоимость рассчитывается индивидуально')} {' '}
                 {ui('в зависимости от страны и веса посылки.')}
               </div>
             )}
@@ -9213,10 +9213,10 @@ onChange={field.name === 'phone'
   </div>
 
   <div style={{ fontSize: 13, color: '#aaa' }}>
-    Выберите удобный способ оплаты
+    {ui('Выберите удобный способ оплаты')}
     {([
     { id: 'usdt', label: ui("USDT · Криптовалюта") },
-    { id: 'uah', label: 'Банковский перевод UAH' },
+    { id: 'uah', label: ui('Банковский перевод UAH') },
     { id: 'cash', label: ui("Наличные при получении") },
   ] as const).map(method => (
     <button
@@ -9544,8 +9544,8 @@ style={{
     </div>
 
     {[
-      { id: 'usdt', label: 'USDT (криптовалюта)' },
-      { id: 'uah', label: 'Банковский перевод UAH' },
+      { id: 'usdt', label: ui('USDT (криптовалюта)') },
+      { id: 'uah', label: ui('Банковский перевод UAH') },
     ].map(method => (
       <button
         key={method.id}
@@ -10438,7 +10438,7 @@ showToast(ui('Адрес сохранён'))
             color: '#c084fc',
           }}>
             {hasMissingPrices
-              ? 'Цена не задана'
+              ? ui('Цена не задана')
               : `${retailTotal.toFixed(2)} €`}
           </strong>
         </div>
