@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import AdminBanners from './AdminBanners'
 import CatalogBanners from './CatalogBanners'
+import { translateUI, UI_LANGUAGE_KEY, type UILanguage } from './i18n'
 import './App.css'
 
 const API_URL = 'https://web-production-8afa.up.railway.app'
@@ -185,6 +186,22 @@ function photoUrl(photo?: string | null) {
 
 
 function App() {
+  // Selected once and stored between app launches; unlike the 18+ gate.
+  const [language, setLanguage] = useState<UILanguage | null>(() => {
+    try {
+      const saved = localStorage.getItem(UI_LANGUAGE_KEY)
+      return saved === 'ru' || saved === 'en' ? saved : null
+    } catch {
+      return null
+    }
+  })
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false)
+  const ui = (value: string) => translateUI(value, language ?? 'ru')
+  function chooseLanguage(next: UILanguage) {
+    setLanguage(next)
+    try { localStorage.setItem(UI_LANGUAGE_KEY, next) } catch { /* Storage can be disabled */ }
+    setShowLanguageSelector(false)
+  }
   const [screen, setScreen] = useState<Screen>('catalog')
   const [isProductSheetClosing, setIsProductSheetClosing] = useState(false)
   const [selectedId] = useState<number | null>(null)
@@ -687,7 +704,7 @@ async function loadWholesaleProducts() {
       if (ex) return prev.map((i) => (i.product.id === product.id ? { ...i, quantity: i.quantity + 1 } : i))
       return [...prev, { product, quantity: 1 }]
     })
-    showToast('Товар добавлен в корзину')
+    showToast(ui('Товар добавлен в корзину'))
   }
 
   async function submitOrder() {
@@ -1069,11 +1086,11 @@ async function deleteOrder(orderId: number) {
         await fetch(`${API_URL}/favorites/${tgUser.id}/${productId}`, { method: 'DELETE' })
         setFavIds((prev) => prev.filter((id) => id !== productId))
         setFavProducts((prev) => prev.filter((p) => p.id !== productId))
-        showToast('Убрано из избранного')
+        showToast(ui('Убрано из избранного'))
       } else {
         await fetch(`${API_URL}/favorites/${tgUser.id}/${productId}`, { method: 'POST' })
         setFavIds((prev) => [...prev, productId])
-        showToast('В избранном')
+        showToast(ui('В избранном'))
       }
     } catch {
       showToast('Не удалось')
@@ -1240,7 +1257,7 @@ async function deleteOrder(orderId: number) {
           <circle cx="12" cy="10" r="2.5"/>
         </svg>
 
-        {deliveryType === 'pickup' ? 'Самовывоз' : 'Доставка'}
+        {deliveryType === 'pickup' ? ui('Самовывоз') : ui('Доставка')}
 
         <svg width="14" height="14" viewBox="0 0 24 24"
           fill="none" stroke="#b9a5ca" strokeWidth="2"
@@ -1310,7 +1327,7 @@ async function deleteOrder(orderId: number) {
                   fontWeight: 750,
                   letterSpacing: '-0.03em',
                 }}>
-                  Как получить заказ?
+                  {ui("Как получить заказ?")}
                 </div>
 
                 <div style={{
@@ -1318,7 +1335,7 @@ async function deleteOrder(orderId: number) {
                   fontSize: 13,
                   marginTop: 8,
                 }}>
-                  Выберите удобный способ получения
+                  {ui("Выберите удобный способ получения")}
                 </div>
               </div>
 
@@ -1344,13 +1361,13 @@ async function deleteOrder(orderId: number) {
             {([
               {
                 id: 'pickup',
-                title: 'Самовывоз',
-                description: 'По договорённости с менеджером',
+                title: ui("Самовывоз"),
+                description: ui("По договорённости с менеджером"),
               },
               {
                 id: 'delivery',
-                title: 'Доставка',
-                description: 'Отправка по Германии',
+                title: ui("Доставка"),
+                description: ui("Отправка по Германии"),
               },
             ] as const).map(option => {
               const active = deliveryType === option.id
@@ -1460,8 +1477,8 @@ async function deleteOrder(orderId: number) {
               lineHeight: 1.6,
             }}>
               {deliveryType === 'pickup'
-                ? 'Место и возможность самовывоза согласовываются индивидуально с менеджером.'
-                : 'Доставка осуществляется по Германии. Стоимость рассчитывается индивидуально и не входит в сумму товаров.'}
+                ? ui('Место и возможность самовывоза согласовываются индивидуально с менеджером.')
+                : ui('Доставка осуществляется по Германии. Стоимость рассчитывается индивидуально и не входит в сумму товаров.')}
             </div>
 
             <button
@@ -1480,7 +1497,7 @@ async function deleteOrder(orderId: number) {
                 boxShadow: '0 8px 24px rgba(140,55,225,0.22)',
               }}
             >
-              Продолжить
+              {ui("Продолжить")}
             </button>
           </div>
         </div>,
@@ -1521,7 +1538,7 @@ async function deleteOrder(orderId: number) {
           fontSize: 13,
           fontWeight: 700,
         }}>
-          Опт
+          {ui("Опт")}
         </div>
       ) : (
         <RetailDeliverySelector />
@@ -1542,7 +1559,7 @@ async function deleteOrder(orderId: number) {
   }
 
   const items = [
-    { id: 'catalog' as Screen, label: 'Каталог', icon: (active: boolean) => (
+    { id: 'catalog' as Screen, label: ui("Каталог"), icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="7" height="7" rx="1"/>
         <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -1550,21 +1567,21 @@ async function deleteOrder(orderId: number) {
         <rect x="3" y="14" width="7" height="7" rx="1"/>
       </svg>
     )},
-    { id: 'cart' as Screen, label: cartCount > 0 ? `Корзина ${cartCount}` : 'Корзина', icon: (active: boolean) => (
+    { id: 'cart' as Screen, label: cartCount > 0 ? `${ui('Корзина')} ${cartCount}` : ui('Корзина'), icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="9" cy="21" r="1"/>
         <circle cx="20" cy="21" r="1"/>
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
       </svg>
     )},
-    { id: 'info' as Screen, label: 'Инфо', icon: (active: boolean) => (
+    { id: 'info' as Screen, label: ui("Инфо"), icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"/>
         <path d="M12 16v-4"/>
         <path d="M12 8h.01"/>
       </svg>
     )},
-    { id: 'profile' as Screen, label: 'Профиль', icon: (active: boolean) => (
+    { id: 'profile' as Screen, label: ui("Профиль"), icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
@@ -1658,10 +1675,10 @@ async function deleteOrder(orderId: number) {
         </div>
 
         <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>
-          Вам есть 18 лет?
+          {ui("Вам есть 18 лет?")}
         </div>
         <div style={{ color: '#a3a3a3', fontSize: 14, marginBottom: 24, lineHeight: 1.4 }}>
-          Подтвердите возраст, чтобы продолжить.
+          {ui("Подтвердите возраст, чтобы продолжить.")}
         </div>
 
         <button
@@ -1679,7 +1696,7 @@ async function deleteOrder(orderId: number) {
             cursor: 'pointer',
           }}
         >
-          Да, мне есть 18
+          {ui("Да, мне есть 18")}
         </button>
 
         <button
@@ -1696,18 +1713,34 @@ async function deleteOrder(orderId: number) {
             cursor: 'pointer',
           }}
         >
-          Нет, выйти
+          {ui("Нет, выйти")}
         </button>
       </div>
     </div>
   )
 }
   
+
+  // Show the language selection after age verification, once per installation.
+  if (!language) {
+    return (
+      <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.93)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: 20 }}>
+        <div style={{ background: 'linear-gradient(145deg, #1a0b2e, #2e1065)', borderRadius: 24, padding: 24, maxWidth: 350, width: '100%', border: '1px solid rgba(168,85,247,0.35)', color: '#fff', textAlign: 'center' }}>
+          <div style={{ fontSize: 27, fontWeight: 750, marginBottom: 8 }}>{ui("Выберите язык")}</div>
+          <div style={{ fontSize: 14, color: '#c4b5fd', marginBottom: 22 }}>Choose your language</div>
+          <button type="button" onClick={() => chooseLanguage('ru')} style={{ width: '100%', padding: 16, background: '#7437bb', border: '1px solid #aa7bf5', borderRadius: 14, color: '#fff', fontSize: 16, fontWeight: 650, marginBottom: 12, cursor: 'pointer' }}>Русский</button>
+          <button type="button" onClick={() => chooseLanguage('en')} style={{ width: '100%', padding: 16, background: '#251536', border: '1px solid #6f4893', borderRadius: 14, color: '#fff', fontSize: 16, fontWeight: 650, cursor: 'pointer' }}>English</button>
+          <div style={{ color: '#b4a3c7', marginTop: 18, fontSize: 12 }}>You can change this later in your profile</div>
+        </div>
+      </div>
+    )
+  }
+
   if (screen === 'info') {
   return (
     <div key={screen} style={page}>
       <RetailTopBar wholesale={priceMode === 'wholesale'} />
-      <div style={{ ...title, marginBottom: 20 }}>Инфо</div>
+      <div style={{ ...title, marginBottom: 20 }}>{ui("Инфо")}</div>
 
       <button
         onClick={() => setScreen('catalog')}
@@ -1729,7 +1762,7 @@ async function deleteOrder(orderId: number) {
         }}
       >
         <span style={{ fontSize: 20 }}>ⓘ</span>
-        Дополнительно
+        {ui("Дополнительно")}
       </button>
 
       <div style={{
@@ -1739,10 +1772,10 @@ async function deleteOrder(orderId: number) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, fontWeight: 600, fontSize: 16 }}>
           <span style={{ fontSize: 20 }}>?</span>
-          Часто задаваемые вопросы (FAQ)
+          {ui("Часто задаваемые вопросы (FAQ)")}
         </div>
         <div style={{ color: '#a3a3a3', fontSize: 14, lineHeight: 1.5, marginBottom: 16, textAlign: 'center' }}>
-          Остались вопросы? Обратитесь в команду поддержки, чтобы получить ответ
+          {ui("Остались вопросы? Обратитесь в команду поддержки, чтобы получить ответ")}
         </div>
         <button
           onClick={() => window.open('https://t.me/optpuffy', '_blank')}
@@ -1762,7 +1795,7 @@ async function deleteOrder(orderId: number) {
             cursor: 'pointer',
           }}
         >
-          Связаться с поддержкой
+          {ui("Связаться с поддержкой")}
         </button>
       </div>
 
@@ -5891,11 +5924,11 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     return (
       <div key={screen} style={page}>
         <div style={card}>
-          <div style={{ ...title, marginBottom: 12 }}>Ожидает подтверждения</div>
+          <div style={{ ...title, marginBottom: 12 }}>{ui("Ожидает подтверждения")}</div>
           <div style={{ fontSize: 15, color: '#b0b0b0', lineHeight: 1.6, marginBottom: 20 }}>
-            Заказ принят. Администратор скоро свяжется с вами и сообщит время и место встречи.
+            {ui("Заказ принят. Администратор скоро свяжется с вами и сообщит время и место встречи.")}
           </div>
-          <button onClick={() => setScreen('catalog')} style={btnMain}>В каталог</button>
+          <button onClick={() => setScreen('catalog')} style={btnMain}>{ui("В каталог")}</button>
         </div>
       </div>
     )
@@ -5904,26 +5937,26 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   if (screen === 'checkout') {
     return (
       <div key={screen} style={page}>
-        <button onClick={() => setScreen('cart')} style={backBtn}>Назад</button>
-        <div style={title}>Оформление</div>
+        <button onClick={() => setScreen('cart')} style={backBtn}>{ui("Назад")}</button>
+        <div style={title}>{ui("Оформление")}</div>
         <div style={{ ...card, marginBottom: 12 }}>
-          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>ГОРОД</div>
+          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>{ui("ГОРОД")}</div>
           {CITIES.map((c) => (
             <button key={c} onClick={() => setCity(c)} style={{ display: 'block', width: '100%', padding: 12, marginBottom: 8, background: city === c ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.04)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, fontSize: 15, textAlign: 'left' as const, cursor: 'pointer' }}>{c}</button>
           ))}
         </div>
         <div style={{ ...card, marginBottom: 12 }}>
-          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>МЕСТО ВСТРЕЧИ</div>
-          <input style={inputStyle} value={place} onChange={(e) => setPlace(e.target.value)} placeholder="Например: Hauptbahnhof, у входа" />
+          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>{ui("МЕСТО ВСТРЕЧИ")}</div>
+          <input style={inputStyle} value={place} onChange={(e) => setPlace(e.target.value)} placeholder={ui("Например: Hauptbahnhof, у входа")} />
         </div>
         <div style={{ ...card, marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>ОПЛАТА</div>
+          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>{ui("ОПЛАТА")}</div>
           {PAYMENTS.map((p) => (
-            <button key={p} onClick={() => setPayment(p)} style={{ display: 'block', width: '100%', padding: 12, marginBottom: 8, background: payment === p ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.04)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, fontSize: 15, textAlign: 'left' as const, cursor: 'pointer' }}>{p}</button>
+            <button key={p} onClick={() => setPayment(p)} style={{ display: 'block', width: '100%', padding: 12, marginBottom: 8, background: payment === p ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.04)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, fontSize: 15, textAlign: 'left' as const, cursor: 'pointer' }}>{ui(p)}</button>
           ))}
         </div>
         <button disabled={!city || !payment || submitting} onClick={submitOrder} style={{ ...btnMain, opacity: city && payment && !submitting ? 1 : 0.45 }}>
-          {submitting ? 'Отправка...' : 'Подтвердить заказ'}
+          {submitting ? ui('Отправка...') : ui('Подтвердить заказ')}
         </button>
       </div>
     )
@@ -5938,9 +5971,9 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     return (
       <div style={page}>
         <button style={backBtn} onClick={() => setScreen('catalog')}>
-          ← Назад
+          {ui("← Назад")}
         </button>
-        <div style={card}>Товар не найден</div>
+        <div style={card}>{ui("Товар не найден")}</div>
       </div>
     )
   }
@@ -6039,7 +6072,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     background: '#79C99B',
     flexShrink: 0,
   }} />
-  В наличии: {product.stock || 0} шт.
+  {ui('В наличии:')} {product.stock || 0} {ui('шт.')}
 </div>
 
 <div style={{
@@ -6055,8 +6088,8 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   color: '#FFFFFF',
 }}>
   {selectedRetailFlavor
-  ? `Выбран: ${selectedRetailFlavor.name} · В корзине: ${selectedRetailCartQty} шт.`
-  : 'Выберите вкус'}
+  ? `${ui('Выбран:')} ${selectedRetailFlavor.name} · ${ui('В корзине:')} ${selectedRetailCartQty} ${ui('шт.')}`
+  : ui('Выберите вкус')}
 </div>
 
         <div
@@ -6084,7 +6117,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
         fontWeight: 600,
       }}
     >
-      От {tier.min_qty} шт. — {Number(tier.price).toFixed(2)} €
+      {language === 'en' ? 'From' : 'От'} {tier.min_qty} {ui('шт.')} — {Number(tier.price).toFixed(2)} €
     </div>
   ))}
 </div>
@@ -6100,7 +6133,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   }}
 >
   {retailLoading ? (
-          <div style={{ color: '#aaa' }}>Загрузка...</div>
+          <div style={{ color: '#aaa' }}>{ui("Загрузка...")}</div>
         ) : (
           retailFlavors
   .filter(f => Number(f.stock) > 0 && Number(f.is_active ?? 1) !== 0)
@@ -6236,14 +6269,14 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
       color: '#B5A7C2',
       fontSize: 12,
     }}>
-      {totalQty > 0 ? 'Итого' : 'Цена за 1 шт.'}
+      {totalQty > 0 ? ui('Итого') : ui('Цена за 1 шт.')}
     </span>
     <span style={{
       color: '#FFFFFF',
       fontSize: 14,
       fontWeight: 600,
     }}>
-      {totalQty > 0 ? `${totalQty} шт. в корзине` : 'Выберите вкус'}
+      {totalQty > 0 ? `${totalQty} ${ui('шт.')} ${ui('в корзине')}` : ui('Выберите вкус')}
     </span>
   </div>
 
@@ -6372,7 +6405,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     })
 
     setRetailQty({})
-    showToast('Вкус добавлен в корзину')
+    showToast(ui('Вкус добавлен в корзину'))
   }}
   style={{
   width: '100%',
@@ -6388,7 +6421,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   transition: 'opacity 0.2s ease',
 }}
 >
-  Добавить в корзину
+  {ui("Добавить в корзину")}
 </button>
   )}
         <button
@@ -6407,7 +6440,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     cursor: 'pointer',
   }}
 >
-  Корзина · {retailCart.reduce((sum, item) => sum + item.quantity, 0)} шт.
+  {ui('Корзина')} · {retailCart.reduce((sum, item) => sum + item.quantity, 0)} {ui('шт.')}
 </button>
       </div>
         </div>
@@ -6428,9 +6461,9 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
             style={backBtn}
             onClick={() => setScreen('catalog')}
           >
-            ← Назад
+            {ui("← Назад")}
           </button>
-          <div style={card}>Товар не найден</div>
+          <div style={card}>{ui("Товар не найден")}</div>
         </div>
       )
     }
@@ -6522,13 +6555,13 @@ const selectedWholesaleRemainingStock = selectedWholesaleFlavor
   {product.name}
 </div>
 
-          <h3>Выберите вкусы</h3>
+          <h3>{ui("Выберите вкусы")}</h3>
 
           {wholesaleLoading ? (
-            <p>Загрузка вкусов...</p>
+            <p>{ui("Загрузка вкусов...")}</p>
           ) : activeFlavors.length === 0 ? (
             <p style={{ color: '#aaa' }}>
-              Вкусов пока нет
+              {ui("Вкусов пока нет")}
             </p>
           ) : (
             activeFlavors.map(f => {
@@ -6637,7 +6670,7 @@ return (
         color: '#B5A7C2',
         marginTop: 4,
       }}>
-        Выбрано: {selectedWholesaleQty} шт.
+        {ui('Выбрано')}: {selectedWholesaleQty} {ui('шт.')}
       </div>
     </div>
 
@@ -6719,7 +6752,7 @@ return (
   paddingTop: 16,
   borderTop: '1px solid #382C42',
 }}>
-  Оптовые цены
+  {ui("Оптовые цены")}
 </div>
 
           {sortedTiers.map(t => (
@@ -6738,7 +6771,7 @@ return (
       color: '#B5A7C2',
       fontSize: 13,
     }}>
-      От {t.min_qty} шт.
+      {language === 'en' ? 'From' : 'От'} {t.min_qty} {ui('шт.')}
     </span>
 
     <strong style={{
@@ -6747,7 +6780,7 @@ return (
       fontWeight: 700,
       whiteSpace: 'nowrap',
     }}>
-      {Number(t.price).toFixed(2)} €/шт.
+      {Number(t.price).toFixed(2)} €/{ui('шт.')}
     </strong>
   </div>
 ))}
@@ -6774,7 +6807,7 @@ return (
       fontSize: 13,
       fontWeight: 500,
     }}>
-      Выбрано
+      {ui("Выбрано")}
     </span>
 
     <span style={{
@@ -6782,7 +6815,7 @@ return (
       fontSize: 18,
       fontWeight: 700,
     }}>
-      {totalQty} шт.
+      {totalQty} {ui('шт.')}
     </span>
   </div>
 
@@ -6828,7 +6861,7 @@ return (
   setWholesaleQty({})
 }
 
-  showToast('Товары добавлены в корзину')
+  showToast(ui('Товары добавлены в корзину'))
 }}
     style={{
   width: '100%',
@@ -6843,7 +6876,7 @@ return (
   transition: 'background 0.2s ease',
 }}
 >
-    Добавить в корзину · {totalQty} шт.
+    {ui('Добавить в корзину')} · {totalQty} {ui('шт.')}
   </button>
               <button
   type="button"
@@ -6861,9 +6894,9 @@ return (
     cursor: 'pointer',
   }}
 >
-  Корзина · {wholesaleCart.reduce(
+  {ui('Корзина')} · {wholesaleCart.reduce(
     (sum, item) => sum + item.quantity, 0
-  )} шт.
+  )} {ui('шт.')}
 </button>
   <p style={{
     fontSize: 12,
@@ -6871,7 +6904,7 @@ return (
     textAlign: 'center',
     marginTop: 10,
   }}>
-    Итоговая стоимость рассчитывается в корзине
+    {ui("Итоговая стоимость рассчитывается в корзине")}
   </p>
 </div>
           </div>
@@ -6885,7 +6918,7 @@ return (
     const img = photoUrl(selected.photo)
     return (
       <div key={screen} style={page}>
-        <button onClick={() => setScreen('catalog')} style={backBtn}>Назад</button>
+        <button onClick={() => setScreen('catalog')} style={backBtn}>{ui("Назад")}</button>
         <div style={{ ...card, padding: 0, overflow: 'hidden' }}>
           <div style={{ width: '100%', aspectRatio: '1/1', background: '#111' }}>
             {img ? <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
@@ -6895,10 +6928,10 @@ return (
             <div style={{ fontSize: 14, color: '#a0a0a0', marginBottom: 8 }}>{selected.volume} · {selected.strength}</div>
             {selected.description ? <div style={{ fontSize: 14, color: '#b0b0b0', marginBottom: 12, lineHeight: 1.5 }}>{selected.description}</div> : null}
             <div style={{ display: 'inline-block', fontSize: 12, color: selected.available ? '#ddd' : '#777', border: '1px solid rgba(255,255,255,0.12)', padding: '5px 10px', borderRadius: 8, marginBottom: 14 }}>
-              {selected.available ? 'В НАЛИЧИИ' : 'НЕТ В НАЛИЧИИ'}
+              {selected.available ? ui('В НАЛИЧИИ') : ui('НЕТ В НАЛИЧИИ')}
             </div>
             <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 16 }}>{profile?.has_discount ? 10 : selected.price} €</div>
-            <button disabled={!selected.available} onClick={() => { addToCart(selected); setScreen('catalog') }} style={{ ...btnMain, opacity: selected.available ? 1 : 0.4 }}>В корзину</button>
+            <button disabled={!selected.available} onClick={() => { addToCart(selected); setScreen('catalog') }} style={{ ...btnMain, opacity: selected.available ? 1 : 0.4 }}>{ui("В корзину")}</button>
           </div>
         </div>
       </div>
@@ -6908,15 +6941,15 @@ return (
   if (screen === 'rules') {
     return (
       <div key={screen} style={page}>
-        <button onClick={() => setScreen('profile')} style={backBtn}>Назад</button>
-        <div style={title}>Правила</div>
+        <button onClick={() => setScreen('profile')} style={backBtn}>{ui("Назад")}</button>
+        <div style={title}>{ui("Правила")}</div>
         <div style={{ ...card, fontSize: 14, color: '#c0c0c0', lineHeight: 1.7 }}>
-          <p style={{ marginBottom: 12 }}>1. Возврат жидкостей после покупки не осуществляется.</p>
-          <p style={{ marginBottom: 12 }}>2. Обмен вкуса возможен в течение 12 часов при неповреждённой упаковке и невскрытом флаконе.</p>
-          <p style={{ marginBottom: 12 }}>3. Проверяйте товар при получении.</p>
-          <p style={{ marginBottom: 12 }}>4. Администрация вправе отказать в обслуживании без объяснения причины.</p>
-          <p style={{ marginBottom: 12 }}>5. Просим соблюдать уважительный тон при общении.</p>
-          <p>6. Оформляя заказ, вы подтверждаете согласие с правилами MONO.</p>
+          <p style={{ marginBottom: 12 }}>{ui("1. Возврат жидкостей после покупки не осуществляется.")}</p>
+          <p style={{ marginBottom: 12 }}>{ui("2. Обмен вкуса возможен в течение 12 часов при неповреждённой упаковке и невскрытом флаконе.")}</p>
+          <p style={{ marginBottom: 12 }}>{ui("3. Проверяйте товар при получении.")}</p>
+          <p style={{ marginBottom: 12 }}>{ui("4. Администрация вправе отказать в обслуживании без объяснения причины.")}</p>
+          <p style={{ marginBottom: 12 }}>{ui("5. Просим соблюдать уважительный тон при общении.")}</p>
+          <p>{ui("6. Оформляя заказ, вы подтверждаете согласие с правилами MONO.")}</p>
         </div>
         <BottomNav />
       </div>
@@ -6926,12 +6959,12 @@ return (
     if (screen === 'support') {
     return (
       <div key={screen} style={page}>
-        <button onClick={() => setScreen('profile')} style={backBtn}>Назад</button>
-        <div style={title}>Поддержка</div>
+        <button onClick={() => setScreen('profile')} style={backBtn}>{ui("Назад")}</button>
+        <div style={title}>{ui("Поддержка")}</div>
         <div style={{ ...card, marginBottom: 12, maxHeight: '50vh', overflowY: 'auto' }}>
           {supportMessages.length === 0 ? (
             <div style={{ color: '#a0a0a0', fontSize: 14, lineHeight: 1.6 }}>
-              Напишите нам — обычно отвечаем в течение 5–15 минут.
+              {ui("Напишите нам — обычно отвечаем в течение 5–15 минут.")}
             </div>
           ) : (
             supportMessages.map((m) => (
@@ -6962,12 +6995,12 @@ return (
         <textarea
           value={supportText}
           onChange={(e) => setSupportText(e.target.value)}
-          placeholder="Сообщение..."
+          placeholder={ui("Сообщение...")}
           rows={3}
           style={{ ...inputStyle, resize: 'none' as const }}
         />
         <button onClick={sendSupport} disabled={submitting} style={btnMain}>
-          {submitting ? 'Отправка...' : 'Отправить'}
+          {submitting ? ui('Отправка...') : ui('Отправить')}
         </button>
         {toast ? <div style={{ marginTop: 10, textAlign: 'center', color: '#ccc' }}>{toast}</div> : null}
       </div>
@@ -6977,22 +7010,22 @@ return (
     if (screen === 'favorites') {
     return (
       <div key={screen} style={page}>
-        <button onClick={() => setScreen('profile')} style={backBtn}>Назад</button>
-        <div style={title}>Избранное</div>
+        <button onClick={() => setScreen('profile')} style={backBtn}>{ui("Назад")}</button>
+        <div style={title}>{ui("Избранное")}</div>
         {favProducts.length === 0 ? (
-          <div style={card}>Пока пусто — нажмите ♡ на товаре в каталоге</div>
+          <div style={card}>{ui("Пока пусто — нажмите ♡ на товаре в каталоге")}</div>
         ) : (
           favProducts.map((p) => (
             <div key={p.id} style={{ ...card, marginBottom: 10 }}>
               <div style={{ fontWeight: 700, marginBottom: 6 }}>{p.name}</div>
               <div style={{ marginBottom: 10 }}>{p.price} €</div>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button onClick={() => addToCart(p)} style={{ ...btnMain, flex: 1 }}>В корзину</button>
+                <button onClick={() => addToCart(p)} style={{ ...btnMain, flex: 1 }}>{ui("В корзину")}</button>
                 <button
                   onClick={() => toggleFav(p.id)}
                   style={{ ...btnMain, flex: 1, background: 'rgba(0,0,0,0.5)' }}
                 >
-                  Убрать
+                  {ui("Убрать")}
                 </button>
               </div>
             </div>
@@ -7021,7 +7054,7 @@ return (
   }
 
         if (screen === 'profile') {
-  const name = tgUser?.first_name || 'Клиент'
+  const name = tgUser?.first_name || ui('Клиент')
   const letter = name.charAt(0).toUpperCase()
   const photo = (tgUser as any)?.photo_url || null
           const selectedOrder = myRetailOrders.find(
@@ -7036,11 +7069,11 @@ if (selectedOrder) {
         onClick={() => setSelectedRetailOrderId(null)}
         style={backBtn}
       >
-        ← Назад к заказам
+        {ui("← Назад к заказам")}
       </button>
 
       <div style={{ ...title, marginBottom: 20 }}>
-        Информация о заказе
+        {ui("Информация о заказе")}
       </div>
 
       <div style={{ ...adminCard, marginBottom: 16 }}>
@@ -7050,7 +7083,7 @@ if (selectedOrder) {
           gap: 12,
           marginBottom: 14,
         }}>
-          <strong>Заказ №{selectedOrder.id}</strong>
+          <strong>{ui('Заказ')} №{selectedOrder.id}</strong>
           <strong style={{ color: '#c084fc' }}>
             {Number(selectedOrder.items_total).toFixed(2)} €
           </strong>
@@ -7058,35 +7091,35 @@ if (selectedOrder) {
 
         <div style={{ fontSize: 13, color: '#aaa', lineHeight: 2 }}>
           <div>
-            Дата: {selectedOrder.created_at?.replace('T', ' ').slice(0, 16)}
+            {language === 'en' ? 'Date:' : 'Дата:'} {selectedOrder.created_at?.replace('T', ' ').slice(0, 16)}
           </div>
           <div>
-            Получение: {selectedOrder.delivery_type === 'pickup'
-              ? 'Самовывоз'
-              : 'GLS · Германия'}
+            {language === 'en' ? 'Fulfillment:' : 'Получение:'} {selectedOrder.delivery_type === 'pickup'
+              ? ui('Самовывоз')
+              : ui('Германия · GLS')}
           </div>
           <div>
-            Оплата: {selectedOrder.payment_method === 'cash'
-              ? 'Наличные'
+            {language === 'en' ? 'Payment:' : 'Оплата:'} {selectedOrder.payment_method === 'cash'
+              ? ui('Наличные')
               : selectedOrder.payment_method === 'usdt'
                 ? 'USDT'
-                : 'Банковский перевод UAH'}
+                : ui('Банковский перевод UAH')}
           </div>
           <div>
-            Статус: {selectedOrder.status === 'new'
-              ? 'Новый'
+            {language === 'en' ? 'Status:' : 'Статус:'} {selectedOrder.status === 'new'
+              ? ui('Новый')
               : selectedOrder.status === 'shipped'
-                ? 'Отправлен'
+                ? ui('Отправлен')
                 : selectedOrder.status === 'done'
-                  ? 'Завершён'
-                  : 'Отменён'}
+                  ? ui('Завершён')
+                  : ui('Отменён')}
           </div>
         </div>
       </div>
 
       <div style={{ ...adminCard, marginBottom: 16 }}>
         <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>
-          Товары
+          {ui("Товары")}
         </div>
 
         {(selectedOrder.items || []).map((item: any, index: number) => (
@@ -7099,7 +7132,7 @@ if (selectedOrder) {
           >
             <div style={{ fontWeight: 700 }}>{item.product_name}</div>
             <div style={{ fontSize: 13, color: '#aaa', marginTop: 5 }}>
-              {item.flavor_name} · {item.quantity} шт.
+              {item.flavor_name} · {item.quantity} {ui('шт.')}
             </div>
             <div style={{
               display: 'flex',
@@ -7107,7 +7140,7 @@ if (selectedOrder) {
               marginTop: 8,
               fontSize: 13,
             }}>
-              <span>{Number(item.unit_price).toFixed(2)} €/шт.</span>
+              <span>{Number(item.unit_price).toFixed(2)} €/{ui('шт.')}</span>
               <strong>{Number(item.line_total).toFixed(2)} €</strong>
             </div>
           </div>
@@ -7121,7 +7154,7 @@ if (selectedOrder) {
         alignItems: 'center',
         marginBottom: 24,
       }}>
-        <strong>Итого за товары</strong>
+        <strong>{ui("Итого за товары")}</strong>
         <strong style={{ fontSize: 22, color: '#c084fc' }}>
           {Number(selectedOrder.items_total).toFixed(2)} €
         </strong>
@@ -7144,7 +7177,7 @@ if (selectedOrder) {
       cursor: 'pointer',
     }}
   >
-    ✕ Отменить заказ
+    {ui("✕ Отменить заказ")}
   </button>
 )}
 
@@ -7203,11 +7236,11 @@ if (selectedOrder) {
       {/* Статистика */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
         <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16 }}>
-          <div style={{ color: '#a3a3a3', fontSize: 13 }}>Покупок</div>
+          <div style={{ color: '#a3a3a3', fontSize: 13 }}>{ui("Покупок")}</div>
           <div style={{ fontSize: 28, fontWeight: 700 }}>{profile?.purchases || 0}</div>
         </div>
         <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16 }}>
-          <div style={{ color: '#a3a3a3', fontSize: 13 }}>Друзей</div>
+          <div style={{ color: '#a3a3a3', fontSize: 13 }}>{ui("Друзей")}</div>
           <div style={{ fontSize: 28, fontWeight: 700 }}>{profile?.referrals || 0}</div>
         </div>
       </div>
@@ -7215,9 +7248,9 @@ if (selectedOrder) {
       {/* Скидка */}
 <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
   <div>
-    <div style={{ color: '#a3a3a3', fontSize: 13 }}>Скидка</div>
+    <div style={{ color: '#a3a3a3', fontSize: 13 }}>{ui("Скидка")}</div>
     <div style={{ fontSize: 20, fontWeight: 700 }}>
-      {profile?.has_discount ? 'Да' : 'Нет'}
+      {profile?.has_discount ? ui('Да') : ui('Нет')}
     </div>
   </div>
   <button
@@ -7240,14 +7273,32 @@ if (selectedOrder) {
   </button>
 </div>
 
+
+      {/* Customer language preference; leaves the admin panel unchanged. */}
+      <div style={{ background: '#21142e', border: '1px solid #493166', borderRadius: 16, padding: 16, marginBottom: 14 }}>
+        <button type="button" onClick={() => setShowLanguageSelector(!showLanguageSelector)}
+          style={{ width: '100%', border: 0, background: 'transparent', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 15, fontWeight: 650, padding: 0 }}>
+          <span>{ui('Язык')} / Language</span>
+          <span style={{ color: '#caacff' }}>{language.toUpperCase()} ›</span>
+        </button>
+        {showLanguageSelector && (
+          <div style={{ display: 'flex', gap: 9, marginTop: 14 }}>
+            <button type="button" onClick={() => chooseLanguage('ru')}
+              style={{ flex: 1, border: language === 'ru' ? '1px solid #c49dff' : '1px solid #59416e', borderRadius: 12, background: language === 'ru' ? '#7135a8' : '#271c35', color: '#fff', padding: 12, cursor: 'pointer' }}>Русский</button>
+            <button type="button" onClick={() => chooseLanguage('en')}
+              style={{ flex: 1, border: language === 'en' ? '1px solid #c49dff' : '1px solid #59416e', borderRadius: 12, background: language === 'en' ? '#7135a8' : '#271c35', color: '#fff', padding: 12, cursor: 'pointer' }}>English</button>
+          </div>
+        )}
+      </div>
+
       {/* Реферальная ссылка */}
       <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 16 }}>
-        <div style={{ color: '#a3a3a3', fontSize: 13, marginBottom: 8 }}>Реферальная ссылка</div>
+        <div style={{ color: '#a3a3a3', fontSize: 13, marginBottom: 8 }}>{ui("Реферальная ссылка")}</div>
         <div
           onClick={() => {
             const link = `https://t.me/itsmono_bot?start=ref_${tgUser?.id || ''}`
             navigator.clipboard.writeText(link)
-            alert('Ссылка скопирована')
+            alert(ui('Ссылка скопирована'))
           }}
           style={{
             background: '#111',
@@ -7260,7 +7311,7 @@ if (selectedOrder) {
         >
           https://t.me/itsmono_bot?start=ref_{tgUser?.id || ''}
         </div>
-        <div style={{ color: '#6b6b6b', fontSize: 12, marginTop: 6 }}>Нажми, чтобы скопировать</div>
+        <div style={{ color: '#6b6b6b', fontSize: 12, marginTop: 6 }}>{ui("Нажми, чтобы скопировать")}</div>
       </div>
 
       {showDiscountInfo && (
@@ -7287,10 +7338,10 @@ if (selectedOrder) {
         width: '100%',
       }}
     >
-      <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Как работает скидка</div>
+      <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>{ui("Как работает скидка")}</div>
       <div style={{ color: '#a3a3a3', fontSize: 14, lineHeight: 1.4 }}>
-        Пригласите 2 друзей по своей реферальной ссылке.<br />
-        После того как они оформят заказ, вам активируется скидка 5 € на следующий заказ.
+        {ui("Пригласите 2 друзей по своей реферальной ссылке.")}<br />
+        {ui("После того как они оформят заказ, вам активируется скидка 5 € на следующий заказ.")}
       </div>
       <button
         onClick={() => setShowDiscountInfo(false)}
@@ -7306,7 +7357,7 @@ if (selectedOrder) {
           cursor: 'pointer',
         }}
       >
-        Понятно
+        {ui("Понятно")}
       </button>
     </div>
   </div>
@@ -7320,7 +7371,7 @@ if (selectedOrder) {
     marginBottom: 14,
   }}>
     <div style={{ fontSize: 20, fontWeight: 800 }}>
-      Мои заказы
+      {ui("Мои заказы")}
     </div>
     <div style={{
   display: 'flex',
@@ -7349,7 +7400,7 @@ if (selectedOrder) {
         cursor: 'pointer',
       }}
     >
-      {label} ({count})
+      {ui(label)} ({count})
     </button>
   ))}
 </div>
@@ -7357,11 +7408,11 @@ if (selectedOrder) {
    
   {ordersTab !== 'retail' ? null : myRetailOrdersLoading ? (
     <div style={{ ...adminCard, color: '#aaa' }}>
-      Загружаем заказы...
+      {ui("Загружаем заказы...")}
     </div>
   ) : myRetailOrders.length === 0 ? (
     <div style={{ ...adminCard, color: '#aaa' }}>
-      У вас пока нет заказов
+      {ui("У вас пока нет заказов")}
     </div>
   ) : (
     myRetailOrders.map((order: any) => (
@@ -7390,7 +7441,7 @@ if (selectedOrder) {
           alignItems: 'center',
           marginBottom: 12,
         }}>
-          <strong>Заказ №{order.id}</strong>
+          <strong>{ui('Заказ')} №{order.id}</strong>
           <span style={{
   background:
     order.status === 'done' ? 'rgba(52,211,153,0.12)' :
@@ -7407,10 +7458,10 @@ if (selectedOrder) {
   fontSize: 12,
   fontWeight: 600,
 }}>
-            {order.status === 'new' ? 'Новый'
-              : order.status === 'shipped' ? 'Отправлен'
-              : order.status === 'done' ? 'Завершён'
-              : 'Отменён'}
+            {order.status === 'new' ? ui('Новый')
+              : order.status === 'shipped' ? ui('Отправлен')
+              : order.status === 'done' ? ui('Завершён')
+              : ui('Отменён')}
           </span>
         </div>
 
@@ -7421,7 +7472,7 @@ if (selectedOrder) {
           marginBottom: 8,
         }}>
           <span style={{ fontSize: 13, color: '#aaa' }}>
-            {order.delivery_type === 'pickup' ? 'Самовывоз' : 'GLS · Германия'}
+            {order.delivery_type === 'pickup' ? ui('Самовывоз') : ui('Германия · GLS')}
           </span>
           <strong style={{ color: '#c084fc', fontSize: 18 }}>
             {Number(order.items_total).toFixed(2)} €
@@ -7433,7 +7484,7 @@ if (selectedOrder) {
           {' · '}
           {(order.items || []).reduce(
             (sum: number, item: any) => sum + Number(item.quantity), 0
-          )} шт.
+          )} {ui('шт.')}
         </div>
 
         <div style={{
@@ -7446,7 +7497,7 @@ if (selectedOrder) {
   alignItems: 'center',
   gap: 5,
 }}>
-  Подробнее
+  {ui("Подробнее")}
   <svg
     width="16"
     height="16"
@@ -7470,11 +7521,11 @@ if (selectedOrder) {
 
   {ordersTab !== 'wholesale' ? null : myWholesaleOrdersLoading ? (
     <div style={adminCard}>
-      Загружаем оптовые заказы...
+      {ui("Загружаем оптовые заказы...")}
     </div>
   ) : myWholesaleOrders.length === 0 ? (
     <div style={adminCard}>
-      У вас пока нет оптовых заказов
+      {ui("У вас пока нет оптовых заказов")}
     </div>
   ) : (
     myWholesaleOrders.map((order: any) => (
@@ -7506,7 +7557,7 @@ cursor: 'pointer',
           justifyContent: 'space-between',
           marginBottom: 10
         }}>
-          <strong>Оптовый заказ №{order.id}</strong>
+          <strong>{ui('Оптовый заказ')} №{order.id}</strong>
           <span style={{
   background:
     order.status === 'done' ? 'rgba(52,211,153,0.12)' :
@@ -7523,10 +7574,10 @@ cursor: 'pointer',
   fontSize: 12,
   fontWeight: 600,
 }}>
-  {order.status === 'new' ? 'Новый' :
-   order.status === 'shipped' ? 'Отправлен' :
-   order.status === 'done' ? 'Завершён' :
-   order.status === 'cancelled' ? 'Отменён' :
+  {order.status === 'new' ? ui('Новый') :
+   order.status === 'shipped' ? ui('Отправлен') :
+   order.status === 'done' ? ui('Завершён') :
+   order.status === 'cancelled' ? ui('Отменён') :
    order.status}
 </span>
         </div>
@@ -7534,12 +7585,12 @@ cursor: 'pointer',
         <div style={{ fontSize: 13, color: '#aaa' }}>
           {order.created_at
   ? `${order.created_at.slice(8, 10)}.${order.created_at.slice(5, 7)}.${order.created_at.slice(0, 4)} · ${order.created_at.slice(11, 16)}`
-  : 'Дата неизвестна'}
+  : ui('Дата неизвестна')}
 {' · '}
 {(order.items || []).reduce(
   (sum: number, item: any) => sum + Number(item.quantity || 0),
   0
-)} шт.
+)} {ui('шт.')}
         </div>
 
         <div style={{
@@ -7571,14 +7622,14 @@ cursor: 'pointer',
       fontWeight: 600,
       color: '#FFFFFF',
     }}>
-      Итого
+      {ui("Итого")}
     </div>
     <div style={{
       fontSize: 11,
       color: '#A99AB8',
       marginTop: 4,
     }}>
-      Без учёта доставки
+      {ui("Без учёта доставки")}
     </div>
   </div>
 
@@ -7604,8 +7655,8 @@ cursor: 'pointer',
  if (screen === 'delivery') {
   return (
     <div key={screen} style={page}>
-      <button onClick={() => setScreen('catalog')} style={backBtn}>Назад</button>
-      <div style={{ ...title, marginBottom: 20 }}>Способы получения</div>
+      <button onClick={() => setScreen('catalog')} style={backBtn}>{ui("Назад")}</button>
+      <div style={{ ...title, marginBottom: 20 }}>{ui("Способы получения")}</div>
 
       <button
         onClick={() => { setDeliveryType('pickup'); setScreen('catalog') }}
@@ -7623,10 +7674,10 @@ cursor: 'pointer',
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
             <circle cx="12" cy="9" r="2.5"/>
           </svg>
-          <div style={{ fontSize: 18, fontWeight: 600 }}>Самовывоз</div>
+          <div style={{ fontSize: 18, fontWeight: 600 }}>{ui("Самовывоз")}</div>
         </div>
         <div style={{ fontSize: 14, color: '#a0a0a0', lineHeight: 1.5 }}>
-          Для оформления самовывоза предварительно свяжитесь с менеджером через поддержку.
+          {ui("Для оформления самовывоза предварительно свяжитесь с менеджером через поддержку.")}
         </div>
       </button>
 
@@ -7646,10 +7697,10 @@ cursor: 'pointer',
             <path d="M3.27 6.96L12 12.01l8.73-5.05"/>
             <path d="M12 22.08V12"/>
           </svg>
-          <div style={{ fontSize: 18, fontWeight: 600 }}>Доставка</div>
+          <div style={{ fontSize: 18, fontWeight: 600 }}>{ui("Доставка")}</div>
         </div>
         <div style={{ fontSize: 14, color: '#a0a0a0', lineHeight: 1.5 }}>
-          Самовывоз недоступен в вашем городе? Закажите по почте!
+          {ui("Самовывоз недоступен в вашем городе? Закажите по почте!")}
         </div>
       </button>
     </div>
@@ -7661,44 +7712,44 @@ cursor: 'pointer',
     <div key="conditions" style={page}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
         <button type="button" onClick={() => setScreen('catalog')} style={{ border: 'none', background: 'none', color: '#fff', fontSize: 20, cursor: 'pointer' }}>←</button>
-        <div style={title}>Условия работы</div>
+        <div style={title}>{ui("Условия работы")}</div>
       </div>
 
       <div style={{ ...card, padding: 16, marginBottom: 12 }}>
-        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>📦 Минимальный заказ и ассортимент</div>
+        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{ui("📦 Минимальный заказ и ассортимент")}</div>
         <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
-          Мы работаем с любыми объёмами — как с небольшими заказами, так и с супер крупными партиями.
+          {ui("Мы работаем с любыми объёмами — как с небольшими заказами, так и с супер крупными партиями.")}
           <br /><br />
-          Вы можете свободно миксовать товары между собой — любые бренды, типы и вкусы (жидкости, одноразки и др.).
+          {ui("Вы можете свободно миксовать товары между собой — любые бренды, типы и вкусы (жидкости, одноразки и др.).")}
           <br /><br />
-          Главное условие — соблюдение минимального общего количества для отгрузки:
-          <br />• от 20 шт — первая ценовая категория;
-          <br />• цены для крупных объёмов доступны по запросу.
+          {ui("Главное условие — соблюдение минимального общего количества для отгрузки:")}
+          <br />{ui("• от 20 шт — первая ценовая категория;")}
+          <br />{ui("• цены для крупных объёмов доступны по запросу.")}
           <br /><br />
-          📌 Картриджи для подсистем не участвуют в подсчёте минимального количества.
+          {ui("📌 Картриджи для подсистем не участвуют в подсчёте минимального количества.")}
           <br /><br />
-          Минимальное количество считается только по жидкостям, подсистемам и одноразкам.
+          {ui("Минимальное количество считается только по жидкостям, подсистемам и одноразкам.")}
         </div>
       </div>
 
       <div style={{ ...card, padding: 16, marginBottom: 12 }}>
-        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>📦 Доставка по Европе</div>
+        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{ui("📦 Доставка по Европе")}</div>
         <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
-          Служба: DPD / GLS
-          <br />Сроки: в среднем от 3 до 5 рабочих дней
+          {ui("Служба: DPD / GLS")}
+          <br />{ui("Сроки: в среднем от 3 до 5 рабочих дней")}
           <br />20–40 €
           <br /><br />
-          Точная стоимость зависит от веса и количества.
+          {ui("Точная стоимость зависит от веса и количества.")}
         </div>
       </div>
 
       <div style={{ ...card, padding: 16 }}>
-        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>💳 Оплата</div>
+        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{ui("💳 Оплата")}</div>
         <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
-          Мы предлагаем несколько способов оплаты:
+          {ui("Мы предлагаем несколько способов оплаты:")}
           <br /><br />
-          🅣 USDT (криптовалюта) — предпочтительный способ расчёта.
-          <br />💶 Банковский перевод в UAH — на Украинский счёт.
+          {ui("🅣 USDT (криптовалюта) — предпочтительный способ расчёта.")}
+          <br />{ui("💶 Банковский перевод в UAH — на Украинский счёт.")}
         </div>
       </div>
     </div>
@@ -7714,7 +7765,7 @@ cursor: 'pointer',
           style={backBtn}
           onClick={() => setScreen('cart')}
         >
-          ← Назад в корзину
+          {ui("← Назад в корзину")}
         </button>
 
         <div style={{
@@ -7724,7 +7775,7 @@ cursor: 'pointer',
           marginBottom: 20,
         }}>
           <h2 style={{ margin: 0, fontSize: 23 }}>
-            Контактные данные
+            {ui("Контактные данные")}
           </h2>
           <span style={adminBadge(true)}>1 / 4</span>
         </div>
@@ -7773,7 +7824,7 @@ cursor: 'pointer',
               fontWeight: 700,
               marginBottom: 20,
             }}>
-              ♙ Введите данные
+              {ui("♙ Введите данные")}
             </div>
 
             <div style={{ marginBottom: 16 }}>
@@ -7783,7 +7834,7 @@ cursor: 'pointer',
     fontSize: 13,
     marginBottom: 8,
   }}>
-    Страна *
+    {ui("Страна *")}
   </label>
 
   <select
@@ -7838,7 +7889,7 @@ cursor: 'pointer',
       ['EE', 'Эстония'],
     ].map(([code, name]) => (
       <option key={code} value={code}>
-        {name}
+        {ui(name)}
       </option>
     ))}
   </select>
@@ -7847,21 +7898,21 @@ cursor: 'pointer',
             {[
               {
                 name: 'first_name',
-                label: 'Имя',
-                placeholder: 'Ваше имя',
+                label: ui("Имя"),
+                placeholder: ui('Ваше имя'),
                 type: 'text',
                 value: wholesaleContact.first_name,
               },
               {
                 name: 'last_name',
-                label: 'Фамилия',
-                placeholder: 'Ваша фамилия',
+                label: ui("Фамилия"),
+                placeholder: ui('Ваша фамилия'),
                 type: 'text',
                 value: wholesaleContact.last_name,
               },
               {
                 name: 'phone',
-                label: 'Телефон',
+                label: ui("Телефон"),
                 placeholder: '+49...',
                 type: 'tel',
                 value: wholesaleContact.phone,
@@ -7916,7 +7967,7 @@ onChange={field.name === 'phone'
               fontSize: 15,
             }}
           >
-            Далее
+            {ui("Далее")}
           </button>
         </form>
       </div>
@@ -7979,7 +8030,7 @@ onChange={field.name === 'phone'
           style={backBtn}
           onClick={() => setScreen('wholesale_checkout')}
         >
-          ← Назад
+          {ui("← Назад")}
         </button>
 
         <div style={{
@@ -7989,7 +8040,7 @@ onChange={field.name === 'phone'
           marginBottom: 20,
         }}>
           <h2 style={{ margin: 0, fontSize: 23 }}>
-            Доставка
+            {ui("Доставка")}
           </h2>
 
           <span style={adminBadge(true)}>
@@ -8022,7 +8073,7 @@ onChange={field.name === 'phone'
             e.preventDefault()
 
             if (!wholesaleCarrier) {
-              showToast('Выберите службу доставки')
+              showToast(ui('Выберите службу доставки'))
               return
             }
 
@@ -8030,7 +8081,7 @@ onChange={field.name === 'phone'
               wholesaleCarrier === 'GLS' &&
               wholesaleCountry !== 'DE'
             ) {
-              showToast('GLS доступен только по Германии')
+              showToast(ui('GLS доступен только по Германии'))
               return
             }
 
@@ -8044,7 +8095,7 @@ onChange={field.name === 'phone'
             }
 
             if (Object.values(address).some(value => !value)) {
-              showToast('Заполните адрес доставки')
+              showToast(ui('Заполните адрес доставки'))
               return
             }
 
@@ -8063,7 +8114,7 @@ onChange={field.name === 'phone'
               fontWeight: 700,
               marginBottom: 20,
             }}>
-              🚚 Доставка
+              {ui("🚚 Доставка")}
             </div>
 
             <div style={{ marginBottom: 18 }}>
@@ -8072,7 +8123,7 @@ onChange={field.name === 'phone'
     fontSize: 13,
     marginBottom: 8,
   }}>
-    Страна доставки
+    {ui("Страна доставки")}
   </div>
 
   <div style={{
@@ -8091,9 +8142,7 @@ onChange={field.name === 'phone'
       fontSize: 14,
       fontWeight: 600,
     }}>
-      {countries.find(
-        ([code]) => code === wholesaleCountry
-      )?.[1] || 'Страна не выбрана'}
+      {ui(countries.find(([code]) => code === wholesaleCountry)?.[1] || 'Страна не выбрана')}
     </span>
   </div>
 
@@ -8102,13 +8151,13 @@ onChange={field.name === 'phone'
     fontSize: 11,
     marginTop: 7,
   }}>
-    Изменить страну можно на предыдущем шаге
+    {ui("Изменить страну можно на предыдущем шаге")}
   </div>
 </div>
 
             <div style={{ marginBottom: 18 }}>
               <label style={deliveryLabel}>
-                Способ доставки *
+                {ui("Способ доставки *")}
               </label>
 
               <select
@@ -8120,16 +8169,16 @@ onChange={field.name === 'phone'
                 required
               >
                 <option value="">
-                  Выберите способ доставки
+                  {ui("Выберите способ доставки")}
                 </option>
 
                 <option value="DPD">
-                  DPD — доставка по Европе
+                  {ui("DPD — доставка по Европе")}
                 </option>
 
                 {wholesaleCountry === 'DE' && (
                   <option value="GLS">
-                    GLS — доставка по Германии
+                    {ui("GLS — доставка по Германии")}
                   </option>
                 )}
               </select>
@@ -8146,9 +8195,9 @@ onChange={field.name === 'phone'
                 lineHeight: 1.6,
                 marginBottom: 18,
               }}>
-                Выбрана доставка {wholesaleCarrier}.
-                Стоимость рассчитывается индивидуально
-                в зависимости от страны и веса посылки.
+                {ui('Выбрана доставка')} {wholesaleCarrier}.{' '}
+                {ui('Стоимость рассчитывается индивидуально')} {' '}
+                {ui('в зависимости от страны и веса посылки.')}
               </div>
             )}
 
@@ -8159,13 +8208,13 @@ onChange={field.name === 'phone'
             }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <label style={deliveryLabel}>
-                  Город *
+                  {ui("Город *")}
                 </label>
 
                 <input
                   name="city"
                   defaultValue={wholesaleAddress.city}
-                  placeholder="Город"
+                  placeholder={ui("Город")}
                   style={deliveryField}
                   required
                 />
@@ -8173,13 +8222,13 @@ onChange={field.name === 'phone'
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 <label style={deliveryLabel}>
-                  Почтовый индекс *
+                  {ui("Почтовый индекс *")}
                 </label>
 
                 <input
                   name="postal_code"
                   defaultValue={wholesaleAddress.postal_code}
-                  placeholder="Индекс"
+                  placeholder={ui("Индекс")}
                   style={deliveryField}
                   required
                 />
@@ -8188,13 +8237,13 @@ onChange={field.name === 'phone'
 
             <div style={{ marginBottom: 18 }}>
               <label style={deliveryLabel}>
-                Улица *
+                {ui("Улица *")}
               </label>
 
               <input
                 name="street"
                 defaultValue={wholesaleAddress.street}
-                placeholder="Название улицы"
+                placeholder={ui("Название улицы")}
                 style={deliveryField}
                 required
               />
@@ -8202,13 +8251,13 @@ onChange={field.name === 'phone'
 
             <div>
               <label style={deliveryLabel}>
-                Номер дома / квартиры *
+                {ui("Номер дома / квартиры *")}
               </label>
 
               <input
                 name="house"
                 defaultValue={wholesaleAddress.house}
-                placeholder="Например, 12A, кв. 3"
+                placeholder={language === "en" ? "E.g. 12A, apt. 3" : "Например, 12A, кв. 3"}
                 style={deliveryField}
                 required
               />
@@ -8225,7 +8274,7 @@ onChange={field.name === 'phone'
               fontSize: 15,
             }}
           >
-            Далее
+            {ui("Далее")}
           </button>
         </form>
 
@@ -8270,7 +8319,7 @@ onChange={field.name === 'phone'
             fontSize: 23,
             margin: '0 0 12px',
           }}>
-            Заказ оформлен
+            {ui("Заказ оформлен")}
           </h2>
 
           <p style={{
@@ -8279,8 +8328,8 @@ onChange={field.name === 'phone'
             lineHeight: 1.7,
             marginBottom: 22,
           }}>
-            Оптовый заказ №{wholesaleSuccessOrderId} создан.
-            Менеджер свяжется с вами для уточнения деталей.
+            {ui('Оптовый заказ')} №{wholesaleSuccessOrderId} {language === 'en' ? 'created.' : 'создан.'}
+            {ui('Менеджер свяжется с вами для уточнения деталей.')}
           </p>
 
           <div style={{
@@ -8293,10 +8342,10 @@ onChange={field.name === 'phone'
             justifyContent: 'space-between',
           }}>
             <span style={{ color: '#B5A7C2' }}>
-              Статус
+              {ui("Статус")}
             </span>
             <strong style={{ color: '#C084FC' }}>
-              Новый
+              {ui("Новый")}
             </strong>
           </div>
 
@@ -8318,7 +8367,7 @@ onChange={field.name === 'phone'
               cursor: 'pointer',
             }}
           >
-            Мои заказы
+            {ui("Мои заказы")}
           </button>
 
           <button
@@ -8339,7 +8388,7 @@ onChange={field.name === 'phone'
               cursor: 'pointer',
             }}
           >
-            Вернуться в каталог
+            {ui("Вернуться в каталог")}
           </button>
         </div>
       </div>
@@ -8417,7 +8466,7 @@ onChange={field.name === 'phone'
           style={backBtn}
           onClick={() => setScreen('wholesale_delivery')}
         >
-          ← Назад
+          {ui("← Назад")}
         </button>
 
         <div style={{
@@ -8427,7 +8476,7 @@ onChange={field.name === 'phone'
           marginBottom: 20,
         }}>
           <h2 style={{ margin: 0, fontSize: 23 }}>
-            Проверка заказа
+            {ui("Проверка заказа")}
           </h2>
           <span style={adminBadge(true)}>3 / 4</span>
         </div>
@@ -8455,7 +8504,7 @@ onChange={field.name === 'phone'
             fontWeight: 700,
             marginBottom: 20,
           }}>
-            📦 Ваш заказ
+            {ui("📦 Ваш заказ")}
           </div>
 
           <div style={{
@@ -8468,11 +8517,11 @@ onChange={field.name === 'phone'
               fontSize: 12,
               marginBottom: 14,
             }}>
-              Контактные данные
+              {ui("Контактные данные")}
             </div>
 
             <div style={detailStyle}>
-              <span style={{ color: '#aaa' }}>Имя</span>
+              <span style={{ color: '#aaa' }}>{ui("Имя")}</span>
               <strong>
                 {wholesaleContact.first_name}{' '}
                 {wholesaleContact.last_name}
@@ -8480,7 +8529,7 @@ onChange={field.name === 'phone'
             </div>
 
             <div style={detailStyle}>
-              <span style={{ color: '#aaa' }}>Телефон</span>
+              <span style={{ color: '#aaa' }}>{ui("Телефон")}</span>
               <strong>{wholesaleContact.phone}</strong>
             </div>
 
@@ -8494,7 +8543,7 @@ onChange={field.name === 'phone'
             <hr style={{ borderColor: '#333', margin: '18px 0' }}/>
 
             <div style={detailStyle}>
-              <span style={{ color: '#aaa' }}>Доставка</span>
+              <span style={{ color: '#aaa' }}>{ui("Доставка")}</span>
               <strong>{wholesaleCarrier}</strong>
             </div>
 
@@ -8503,7 +8552,7 @@ onChange={field.name === 'phone'
               fontSize: 12,
               marginBottom: 8,
             }}>
-              Адрес получения
+              {ui("Адрес получения")}
             </div>
 
             <div style={{ fontSize: 13, lineHeight: 1.7 }}>
@@ -8514,7 +8563,7 @@ onChange={field.name === 'phone'
                 {wholesaleAddress.city}
               </div>
               <div style={{ color: '#aaa' }}>
-                {countryNames[wholesaleCountry] || wholesaleCountry}
+                {ui(countryNames[wholesaleCountry] || wholesaleCountry)}
               </div>
             </div>
 
@@ -8525,7 +8574,7 @@ onChange={field.name === 'phone'
               fontSize: 12,
               marginBottom: 12,
             }}>
-              Товары ({count} шт.)
+              {ui('Товары')} ({count} {ui('шт.')})
             </div>
 
             {rows.map(item => (
@@ -8560,7 +8609,7 @@ onChange={field.name === 'phone'
                   <strong>
                     {item.hasPrice
                       ? `${item.subtotal.toFixed(2)} €`
-                      : 'Цена не задана'}
+                      : ui('Цена не задана')}
                   </strong>
                 </div>
               </div>
@@ -8573,12 +8622,12 @@ onChange={field.name === 'phone'
               fontWeight: 700,
               marginBottom: 14,
             }}>
-              Способ оплаты
+              {ui("Способ оплаты")}
             </div>
 
             {[
-              { id: 'USDT', label: 'Крипта · USDT', icon: '◇' },
-              { id: 'UAH', label: 'Карта UAH', icon: '▣' },
+              { id: 'USDT', label: ui("Крипта · USDT"), icon: '◇' },
+              { id: 'UAH', label: ui("Карта UAH"), icon: '▣' },
             ].map(method => (
               <button
                 key={method.id}
@@ -8631,25 +8680,24 @@ onChange={field.name === 'phone'
               lineHeight: 1.7,
               marginTop: 12,
             }}>
-              Оплата на этом этапе не производится.
-              Выбор способа оплаты не списывает деньги.
+              {ui("Оплата на этом этапе не производится. Выбор способа оплаты не списывает деньги.")}
             </div>
 
             <hr style={{ borderColor: '#333', margin: '18px 0' }}/>
 
             <div style={detailStyle}>
               <span style={{ color: '#aaa' }}>
-                Стоимость товаров
+                {ui("Стоимость товаров")}
               </span>
               <strong>{total.toFixed(2)} €</strong>
             </div>
 
             <div style={detailStyle}>
               <span style={{ color: '#aaa' }}>
-                Доставка
+                {ui("Доставка")}
               </span>
               <span style={{ color: '#c084fc' }}>
-                Рассчитывается индивидуально
+                {ui("Рассчитывается индивидуально")}
               </span>
             </div>
 
@@ -8661,7 +8709,7 @@ onChange={field.name === 'phone'
               borderTop: '1px solid #333',
               paddingTop: 16,
             }}>
-              <strong>Итого без доставки</strong>
+              <strong>{ui("Итого без доставки")}</strong>
               <strong style={{
                 color: '#a855f7',
                 fontSize: 21,
@@ -8721,7 +8769,7 @@ onChange={field.name === 'phone'
     const result = await response.json()
 
     if (!response.ok) {
-      throw new Error(result.detail || 'Ошибка оформления заказа')
+      throw new Error(result.detail || ui('Ошибка оформления заказа'))
     }
 
     setWholesaleSuccessOrderId(Number(result.order_id))
@@ -8731,13 +8779,13 @@ onChange={field.name === 'phone'
     setScreen('wholesale_review')
     void loadWholesaleProducts()
 
-    showToast(`Оптовый заказ №${result.order_id} оформлен!`)
+    showToast(`${ui('Оптовый заказ')} №${result.order_id} ${language === 'en' ? 'placed!' : 'оформлен!'}`)
   } catch (error) {
   const message = error instanceof Error
     ? error.message
-    : 'Неизвестная ошибка оформления заказа'
+    : ui('Неизвестная ошибка оформления заказа')
 
-  alert('Ошибка заказа: ' + message)
+  alert(ui('Ошибка заказа: ') + message)
   showToast(message)
   } finally {
     wholesaleSubmittingRef.current = false
@@ -8752,7 +8800,7 @@ onChange={field.name === 'phone'
             opacity: wholesalePayment && count >= 20 ? 1 : 0.5,
           }}
         >
-          {wholesaleSubmitting ? 'Оформляем заказ...' : 'Оформить заказ'}
+          {wholesaleSubmitting ? ui('Оформляем заказ...') : ui('Оформить заказ')}
         </button>
       </div>
     </div>
@@ -8797,12 +8845,12 @@ onChange={field.name === 'phone'
   if (retailOrderRequestRef.current || retailOrderId !== null) return
 
   if (retailCart.length === 0 || hasMissingPrices) {
-    showToast('Проверьте товары и цены')
+    showToast(ui('Проверьте товары и цены'))
     return
   }
 
   if (deliveryType === 'delivery' && !retailDeliverySaved) {
-  showToast('Сначала заполните данные доставки')
+  showToast(ui('Сначала заполните данные доставки'))
   return
 }
 
@@ -8845,16 +8893,16 @@ onChange={field.name === 'phone'
     const result = await response.json()
 
     if (!response.ok || !result.ok) {
-      throw new Error(result.detail || 'Не удалось создать заказ')
+      throw new Error(result.detail || ui('Не удалось создать заказ'))
     }
 
     setRetailOrderId(Number(result.order_id))
     setRetailCart([])
     setRetailCheckoutStep(4)
-    showToast(`Заказ №${result.order_id} создан`)
+    showToast(`${ui('Заказ')} №${result.order_id} ${ui('создан')}`)
   } catch (error) {
     showToast(
-      error instanceof Error ? error.message : 'Ошибка отправки заказа'
+      error instanceof Error ? error.message : ui('Ошибка отправки заказа')
     )
   } finally {
     retailOrderRequestRef.current = false
@@ -8870,7 +8918,7 @@ onChange={field.name === 'phone'
         style={backBtn}
         onClick={() => setScreen('cart')}
       >
-        ← Назад в корзину
+        {ui("← Назад в корзину")}
       </button>
 
       <div style={{
@@ -8882,10 +8930,10 @@ onChange={field.name === 'phone'
       }}>
         <h2 style={{ margin: 0, fontSize: 22 }}>
           {retailCheckoutStep === 1
-  ? 'Контактные данные'
+  ? ui('Контактные данные')
   : retailCheckoutStep === 2
-    ? 'Адрес доставки'
-    : 'Проверка заказа'}
+    ? ui('Адрес доставки')
+    : ui('Проверка заказа')}
         </h2>
 
       </div>
@@ -8896,7 +8944,7 @@ onChange={field.name === 'phone'
           fontWeight: 700,
           marginBottom: 16,
         }}>
-          Ваш заказ
+          {ui("Ваш заказ")}
         </div>
 
         {retailCart.map(item => {
@@ -8943,7 +8991,7 @@ onChange={field.name === 'phone'
 
       <button
         type="button"
-        aria-label="Удалить товар"
+        aria-label={ui('Удалить товар')}
         onClick={() => {
           setRetailCart(prev =>
             prev.filter(row =>
@@ -8953,7 +9001,7 @@ onChange={field.name === 'phone'
               )
             )
           )
-          showToast('Товар удалён')
+          showToast(ui('Товар удалён'))
         }}
         style={{
           background: 'transparent',
@@ -9005,8 +9053,8 @@ onChange={field.name === 'phone'
           fontSize: 11,
         }}>
           {unitPrice !== null
-            ? `${unitPrice.toFixed(2)} €/шт.`
-            : 'Цена не задана'}
+            ? `${unitPrice.toFixed(2)} €/${ui('шт.')}`
+            : ui('Цена не задана')}
         </span>
 
         <strong style={{
@@ -9029,7 +9077,7 @@ onChange={field.name === 'phone'
       }}>
         <button
           type="button"
-          aria-label="Уменьшить количество"
+          aria-label={ui('Уменьшить количество')}
           onClick={() => {
             setRetailCart(prev =>
               prev
@@ -9068,7 +9116,7 @@ onChange={field.name === 'phone'
 
         <button
           type="button"
-          aria-label="Увеличить количество"
+          aria-label={ui('Увеличить количество')}
           disabled={item.quantity >= stock}
           onClick={() => {
             setRetailCart(prev =>
@@ -9115,9 +9163,9 @@ onChange={field.name === 'phone'
         marginTop: 20,
       }}>
         <div>
-          <div style={{ fontWeight: 700 }}>Товары</div>
+          <div style={{ fontWeight: 700 }}>{ui("Товары")}</div>
           <div style={{ color: '#aaa', fontSize: 12 }}>
-            {retailCount} шт.
+            {retailCount} {ui('шт.')}
           </div>
         </div>
         <strong style={{ color: '#c084fc', fontSize: 23 }}>
@@ -9134,7 +9182,7 @@ onChange={field.name === 'phone'
             fontWeight: 700,
             marginBottom: 12,
           }}>
-            Самовывоз
+            {ui("Самовывоз")}
           </div>
 
           <p style={{
@@ -9142,15 +9190,14 @@ onChange={field.name === 'phone'
             fontSize: 14,
             lineHeight: 1.7,
           }}>
-  Самовывоз по согласованию с менеджером. Если он недоступен
-  в вашем городе, предложим доставку.
+  {ui("Самовывоз по согласованию с менеджером. Если он недоступен в вашем городе, предложим доставку.")}
 </p>
           <div style={{
             margin: '16px 0',
             color: '#34d399',
             fontSize: 13,
           }}>
-            Доплата за доставку отсутствует
+            {ui("Доплата за доставку отсутствует")}
           </div>
 
           <div style={{
@@ -9160,15 +9207,15 @@ onChange={field.name === 'phone'
   gap: 12,
 }}>
   <div style={{ fontSize: 18, fontWeight: 800 }}>
-    Способ оплаты
+    {ui("Способ оплаты")}
   </div>
 
   <div style={{ fontSize: 13, color: '#aaa' }}>
-    Выберите удобный способ оплаты
+    {ui('Выберите удобный способ оплаты')}
     {([
-    { id: 'usdt', label: 'USDT · Криптовалюта' },
-    { id: 'uah', label: 'Банковский перевод UAH' },
-    { id: 'cash', label: 'Наличные при получении' },
+    { id: 'usdt', label: ui("USDT · Криптовалюта") },
+    { id: 'uah', label: ui('Банковский перевод UAH') },
+    { id: 'cash', label: ui("Наличные при получении") },
   ] as const).map(method => (
     <button
       key={method.id}
@@ -9214,7 +9261,7 @@ onChange={field.name === 'phone'
     justifyContent: 'space-between',
     fontSize: 14,
   }}>
-    <span>Товары</span>
+    <span>{ui("Товары")}</span>
     <span>{retailTotal.toFixed(2)} €</span>
   </div>
 
@@ -9224,10 +9271,10 @@ onChange={field.name === 'phone'
     fontSize: 14,
   }}>
     <span>
-  {deliveryType === 'pickup' ? 'Самовывоз' : 'Доставка GLS'}
+  {deliveryType === 'pickup' ? ui('Самовывоз') : ui('Доставка GLS')}
 </span>
 <span>
-  {deliveryType === 'pickup' ? '0,00 €' : 'Рассчитывается отдельно'}
+  {deliveryType === 'pickup' ? '0,00 €' : ui('Рассчитывается отдельно')}
 </span>
   </div>
 
@@ -9248,13 +9295,13 @@ onChange={field.name === 'phone'
       color: '#BBAACB',
       marginBottom: 5,
     }}>
-      Итого к оплате
+      {ui("Итого к оплате")}
     </div>
     <div style={{
       fontSize: 11,
       color: '#93839F',
     }}>
-      Стоимость товаров
+      {ui("Стоимость товаров")}
     </div>
   </div>
 
@@ -9265,7 +9312,7 @@ onChange={field.name === 'phone'
     whiteSpace: 'nowrap',
   }}>
     {hasMissingPrices
-      ? 'Цена уточняется'
+      ? ui('Цена уточняется')
       : `${retailTotal.toFixed(2)} €`}
   </strong>
 </div>
@@ -9281,11 +9328,10 @@ onChange={field.name === 'phone'
     border: '1px solid #a855f7',
   }}>
     <div style={{ color: '#d8b4fe', fontSize: 20, fontWeight: 800 }}>
-      ✓ Заказ №{retailOrderId} создан
+      ✓ {ui('Заказ')} №{retailOrderId} {ui('создан')}
     </div>
     <p style={{ color: '#ccc', fontSize: 13, lineHeight: 1.6 }}>
-      Заказ получен. Свяжитесь с менеджером,
-      чтобы согласовать место самовывоза и оплату.
+      {ui("Заказ получен. Свяжитесь с менеджером, чтобы согласовать место самовывоза и оплату.")}
     </p>
   </div>
 ) : (
@@ -9302,7 +9348,7 @@ style={{
       cursor: retailOrderSubmitting ? 'wait' : 'pointer',
     }}
   >
-    {retailOrderSubmitting ? 'Отправка заказа...' : 'Оформить заказ →'}
+    {retailOrderSubmitting ? ui('Отправка заказа...') : ui('Оформить заказ →')}
   </button>
 )}
 
@@ -9317,7 +9363,7 @@ style={{
               padding: 16,
             }}
           >
-            Написать менеджеру
+            {ui("Написать менеджеру")}
           </button>
 
           <p style={{
@@ -9326,8 +9372,7 @@ style={{
             lineHeight: 1.6,
             marginTop: 14,
           }}>
-            Место получения и способ оплаты согласовываются
-            с менеджером. Само открытие чата не создаёт заказ.
+            {ui("Место получения и способ оплаты согласовываются с менеджером. Само открытие чата не создаёт заказ.")}
           </p>
         </div>
       ) : (
@@ -9357,7 +9402,7 @@ style={{
     <circle cx="6.5" cy="18" r="2" />
     <circle cx="18.5" cy="18" r="2" />
   </svg>
-  Доставка GLS
+  {ui("Доставка GLS")}
 </span>
           </div>
 
@@ -9366,7 +9411,7 @@ style={{
             fontSize: 13,
             marginBottom: 14,
           }}>
-            Страна доставки: Германия
+            {ui("Страна доставки: Германия")}
           </div>
 
           <div style={{
@@ -9375,11 +9420,11 @@ style={{
             gap: 12,
             fontSize: 14,
           }}>
-            <span>Стоимость доставки</span>
+            <span>{ui("Стоимость доставки")}</span>
             <strong style={{ color: '#c084fc' }}>
               {retailCount <= 10
-                ? 'От 5,89 €'
-                : 'Индивидуальный расчёт'}
+                ? ui('От 5,89 €')
+                : ui('Индивидуальный расчёт')}
             </strong>
           </div>
 
@@ -9389,8 +9434,7 @@ style={{
             lineHeight: 1.7,
             marginTop: 16,
           }}>
-            Точная стоимость зависит от посылки.
-            В указанную сумму товаров доставка не включена.
+            {ui("Точная стоимость зависит от посылки. В указанную сумму товаров доставка не включена.")}
           </p>
 
           <div style={{
@@ -9405,7 +9449,7 @@ style={{
         fontWeight: 700,
         fontSize: 17,
       }}>
-        ✓ Данные получателя заполнены
+        {ui("✓ Данные получателя заполнены")}
       </div>
 
       <div style={{
@@ -9429,7 +9473,7 @@ style={{
         <div>
           {retailDeliveryData.postalCode} {retailDeliveryData.city}
         </div>
-        <div>Германия · GLS</div>
+        <div>{ui("Германия · GLS")}</div>
       </div>
 
       {retailCheckoutStep === 3 && (
@@ -9441,7 +9485,7 @@ style={{
     gap: 14,
   }}>
     <div style={{ fontSize: 17, fontWeight: 800 }}>
-      Ваш заказ
+      {ui("Ваш заказ")}
     </div>
 
     {retailCart.map(item => {
@@ -9464,7 +9508,7 @@ style={{
               {item.productName}
             </div>
             <div style={{ color: '#aaa', fontSize: 13, marginTop: 4 }}>
-              {item.flavorName} · {item.quantity} шт.
+              {item.flavorName} · {item.quantity} {ui('шт.')}
             </div>
           </div>
 
@@ -9481,12 +9525,12 @@ style={{
       fontWeight: 800,
       fontSize: 17,
     }}>
-      <span>Товары</span>
+      <span>{ui("Товары")}</span>
       <span>{retailTotal.toFixed(2)} €</span>
     </div>
 
     <div style={{ color: '#aaa', fontSize: 12 }}>
-      Доставка GLS рассчитывается отдельно и пока не включена в сумму.
+      {ui("Доставка GLS рассчитывается отдельно и пока не включена в сумму.")}
     </div>
   </div>
 )}
@@ -9494,12 +9538,12 @@ style={{
       {retailCheckoutStep === 3 && (
   <div style={{ display: 'grid', gap: 12 }}>
     <div style={{ fontSize: 17, fontWeight: 800 }}>
-      Способ оплаты
+      {ui("Способ оплаты")}
     </div>
 
     {[
-      { id: 'usdt', label: 'USDT (криптовалюта)' },
-      { id: 'uah', label: 'Банковский перевод UAH' },
+      { id: 'usdt', label: ui('USDT (криптовалюта)') },
+      { id: 'uah', label: ui('Банковский перевод UAH') },
     ].map(method => (
       <button
         key={method.id}
@@ -9537,7 +9581,7 @@ style={{
       opacity: hasMissingPrices || retailCart.length === 0 ? 0.5 : 1,
     }}
   >
-    Далее — подтверждение →
+    {ui("Далее — подтверждение →")}
   </button>
 )}
 
@@ -9575,7 +9619,7 @@ style={{
       color: '#FFFFFF',
       marginBottom: 10,
     }}>
-      Заказ оформлен
+      {ui("Заказ оформлен")}
     </div>
 
     <div style={{
@@ -9584,8 +9628,8 @@ style={{
       lineHeight: 1.6,
       marginBottom: 22,
     }}>
-      Заказ №{retailOrderId} успешно создан.
-      Менеджер свяжется с вами для уточнения деталей.
+      {ui('Заказ')} №{retailOrderId} {ui('успешно создан.')}
+      {ui('Менеджер свяжется с вами для уточнения деталей.')}
     </div>
 
     <button
@@ -9605,7 +9649,7 @@ style={{
         cursor: 'pointer',
       }}
     >
-      Мои заказы
+      {ui("Мои заказы")}
     </button>
 
     <button
@@ -9622,7 +9666,7 @@ style={{
         cursor: 'pointer',
       }}
     >
-      Вернуться в каталог
+      {ui("Вернуться в каталог")}
     </button>
   </div>
 )}
@@ -9641,23 +9685,22 @@ style={{
       fontWeight: 800,
       color: '#d8b4fe',
     }}>
-      Подтверждение заказа
+      {ui("Подтверждение заказа")}
     </div>
 
     <div style={{ fontSize: 14, lineHeight: 1.8 }}>
-      <div>Получатель: {retailDeliveryData.firstName} {retailDeliveryData.lastName}</div>
-      <div>Доставка: GLS, Германия</div>
-      <div>Товаров на сумму: {retailTotal.toFixed(2)} €</div>
+      <div>{language === 'en' ? 'Recipient:' : 'Получатель:'} {retailDeliveryData.firstName} {retailDeliveryData.lastName}</div>
+      <div>{ui("Доставка: GLS, Германия")}</div>
+      <div>{language === 'en' ? 'Items total:' : 'Товаров на сумму:'} {retailTotal.toFixed(2)} €</div>
       <div>
-        Оплата: {retailPaymentMethod === 'usdt'
+        {language === 'en' ? 'Payment:' : 'Оплата:'} {retailPaymentMethod === 'usdt'
           ? 'USDT'
-          : 'Банковский перевод UAH'}
+          : ui('Банковский перевод UAH')}
       </div>
     </div>
 
     <div style={{ fontSize: 12, color: '#aaa' }}>
-      Стоимость доставки рассчитывается отдельно и не включена
-      в указанную сумму.
+      {ui("Стоимость доставки рассчитывается отдельно и не включена в указанную сумму.")}
     </div>
 
     <button
@@ -9685,8 +9728,8 @@ style={{
   }}
 >
   {retailOrderSubmitting
-    ? 'Оформляем заказ...'
-    : 'Подтвердить заказ'}
+    ? ui('Оформляем заказ...')
+    : ui('Подтвердить заказ')}
 </button>
 
     <button
@@ -9694,7 +9737,7 @@ style={{
       onClick={() => setRetailCheckoutStep(3)}
       style={{ ...backBtn, width: '100%' }}
     >
-      ← Назад к оплате
+      {ui("← Назад к оплате")}
     </button>
 
     <div style={{
@@ -9714,7 +9757,7 @@ style={{
         onClick={() => setRetailDeliverySaved(false)}
         style={{ ...adminActionBtn, width: '100%' }}
       >
-        Изменить данные
+        {ui("Изменить данные")}
       </button>
     </div>
   ) : (
@@ -9733,12 +9776,12 @@ style={{
   const email = get('email')
 
   if (!firstName || !lastName || !phone || !email) {
-    showToast('Заполните контактные данные')
+    showToast(ui('Заполните контактные данные'))
     return
   }
 
   if (!/^\+49[0-9\s()-]{6,18}$/.test(phone)) {
-    showToast('Проверьте номер телефона')
+    showToast(ui('Проверьте номер телефона'))
     return
   }
 
@@ -9776,19 +9819,19 @@ style={{
           !data.street ||
           !data.house
         ) {
-          showToast('Заполните обязательные поля')
+          showToast(ui('Заполните обязательные поля'))
           return
         }
 
         if (!/^\+49[0-9\s()-]{6,18}$/.test(data.phone)) {
-          showToast('Проверьте номер телефона Германии')
+          showToast(ui('Проверьте номер телефона Германии'))
           return
         }
 
         setRetailDeliveryData(data)
 setRetailDeliverySaved(true)
 setRetailCheckoutStep(3)
-showToast('Адрес сохранён')
+showToast(ui('Адрес сохранён'))
       }}
       style={{ display: 'grid', gap: 14 }}
     >
@@ -9815,7 +9858,7 @@ showToast('Адрес сохранён')
         fontWeight: 800,
         marginBottom: 4,
       }}>
-        Контактные данные
+        {ui("Контактные данные")}
       </div>
 
       {[
@@ -9826,7 +9869,7 @@ showToast('Адрес сохранён')
       ].map(([name, label, placeholder, type]) => (
         <label key={name} style={{ display: 'grid', gap: 7 }}>
           <span style={{ fontSize: 13, color: '#c6b8d4' }}>
-            {label} *
+            {ui(label)} *
           </span>
           <input
             name={name}
@@ -9834,7 +9877,7 @@ showToast('Адрес сохранён')
             defaultValue={
               retailDeliveryData[name as keyof typeof retailDeliveryData]
             }
-            placeholder={placeholder}
+            placeholder={ui(placeholder)}
             required
             style={{ ...inputStyle, marginBottom: 0, boxSizing: 'border-box' }}
           />
@@ -9850,7 +9893,7 @@ showToast('Адрес сохранён')
         fontWeight: 800,
         marginTop: 8,
       }}>
-        Адрес доставки
+        {ui("Адрес доставки")}
       </div>
 
       <div style={{
@@ -9860,7 +9903,7 @@ showToast('Адрес сохранён')
         borderRadius: 12,
         fontSize: 13,
       }}>
-        Германия · Доставка GLS
+        {ui("Германия · Доставка GLS")}
       </div>
 
       {[
@@ -9872,7 +9915,7 @@ showToast('Адрес сохранён')
       ].map(([name, label, placeholder, required]) => (
         <label key={String(name)} style={{ display: 'grid', gap: 7 }}>
           <span style={{ fontSize: 13, color: '#c6b8d4' }}>
-            {label}{required ? ' *' : ''}
+            {ui(String(label))}{required ? ' *' : ''}
           </span>
           <input
             name={String(name)}
@@ -9881,7 +9924,7 @@ showToast('Адрес сохранён')
                 String(name) as keyof typeof retailDeliveryData
               ]
             }
-            placeholder={String(placeholder)}
+            placeholder={ui(String(placeholder))}
             required={Boolean(required)}
             style={{ ...inputStyle, marginBottom: 0, boxSizing: 'border-box' }}
           />
@@ -9900,7 +9943,7 @@ showToast('Адрес сохранён')
       marginBottom: 0,
     }}
   >
-    ← Назад к контактам
+    {ui("← Назад к контактам")}
   </button>
 )}
       
@@ -9913,7 +9956,7 @@ showToast('Адрес сохранён')
           marginTop: 8,
         }}
       >
-        {retailCheckoutStep === 1 ? 'Далее →' : 'Сохранить адрес →'}
+        {retailCheckoutStep === 1 ? ui('Далее →') : ui('Сохранить адрес →')}
       </button>
     </form>
   )}
@@ -10006,7 +10049,7 @@ showToast('Адрес сохранён')
   return (
     <div key={screen} style={page}>
       <RetailTopBar wholesale={priceMode === 'wholesale'} />
-      <div style={title}>Корзина</div>
+      <div style={title}>{ui("Корзина")}</div>
 
       {cart.length === 0 && retailCart.length === 0 && wholesaleCart.length === 0 && (
         <div style={{
@@ -10050,7 +10093,7 @@ showToast('Адрес сохранён')
     fontWeight: 700,
     marginBottom: 10,
   }}>
-    Корзина пуста
+    {ui("Корзина пуста")}
   </div>
 
   <div style={{
@@ -10058,8 +10101,7 @@ showToast('Адрес сохранён')
     fontSize: 13,
     lineHeight: 1.6,
   }}>
-    Добавьте товары из каталога,
-    чтобы они появились здесь
+    {ui("Добавьте товары из каталога, чтобы они появились здесь")}
   </div>
 
   <button
@@ -10072,7 +10114,7 @@ showToast('Адрес сохранён')
       padding: '13px 24px',
     }}
   >
-    Перейти в каталог
+    {ui("Перейти в каталог")}
   </button>
 </div>
       )}
@@ -10133,19 +10175,19 @@ showToast('Адрес сохранён')
             fontSize: 21,
             fontWeight: 800,
           }}>
-            Розница
+            {ui("Розница")}
           </div>
           <div style={{
             fontSize: 12,
             color: '#999',
             marginTop: 5,
           }}>
-            {retailCount} шт. в корзине
+            {retailCount} {ui('шт.')} {ui('в корзине')}
           </div>
         </div>
 
         <span style={adminBadge(true)}>
-          От 1 шт.
+          {ui("От 1 шт.")}
         </span>
       </div>
 
@@ -10195,7 +10237,7 @@ showToast('Адрес сохранён')
 
       <button
         type="button"
-        aria-label="Удалить товар"
+        aria-label={ui('Удалить товар')}
         onClick={() => {
           setRetailCart(prev =>
             prev.filter(row =>
@@ -10205,7 +10247,7 @@ showToast('Адрес сохранён')
               )
             )
           )
-          showToast('Товар удалён')
+          showToast(ui('Товар удалён'))
         }}
         style={{
           background: 'transparent',
@@ -10257,8 +10299,8 @@ showToast('Адрес сохранён')
           fontSize: 11,
         }}>
           {unitPrice !== null
-            ? `${unitPrice.toFixed(2)} €/шт.`
-            : 'Цена не задана'}
+            ? `${unitPrice.toFixed(2)} €/${ui('шт.')}`
+            : ui('Цена не задана')}
         </span>
 
         <strong style={{
@@ -10281,7 +10323,7 @@ showToast('Адрес сохранён')
       }}>
         <button
           type="button"
-          aria-label="Уменьшить количество"
+          aria-label={ui('Уменьшить количество')}
           onClick={() => {
             setRetailCart(prev =>
               prev
@@ -10320,7 +10362,7 @@ showToast('Адрес сохранён')
 
         <button
           type="button"
-          aria-label="Увеличить количество"
+          aria-label={ui('Увеличить количество')}
           disabled={item.quantity >= stock}
           onClick={() => {
             setRetailCart(prev =>
@@ -10373,9 +10415,9 @@ showToast('Адрес сохранён')
           fontSize: 13,
           color: '#aaa',
         }}>
-          <span>Количество товаров</span>
+          <span>{ui("Количество товаров")}</span>
           <strong style={{ color: '#fff' }}>
-            {retailCount} шт.
+            {retailCount} {ui('шт.')}
           </strong>
         </div>
 
@@ -10386,7 +10428,7 @@ showToast('Адрес сохранён')
           gap: 12,
         }}>
           <strong style={{ fontSize: 16 }}>
-            Итого
+            {ui("Итого")}
           </strong>
 
           <strong style={{
@@ -10394,7 +10436,7 @@ showToast('Адрес сохранён')
             color: '#c084fc',
           }}>
             {hasMissingPrices
-              ? 'Цена не задана'
+              ? ui('Цена не задана')
               : `${retailTotal.toFixed(2)} €`}
           </strong>
         </div>
@@ -10419,7 +10461,7 @@ showToast('Адрес сохранён')
     cursor: hasMissingPrices ? 'not-allowed' : 'pointer',
   }}
 >
-  Оформить розничный заказ
+  {ui("Оформить розничный заказ")}
 </button>
 
       <div style={{
@@ -10463,8 +10505,8 @@ showToast('Адрес сохранён')
       marginBottom: 6,
     }}>
       {deliveryType === 'pickup'
-        ? 'Самовывоз'
-        : 'Доставка по Германии'}
+        ? ui('Самовывоз')
+        : ui('Доставка по Германии')}
     </div>
 
     <div style={{
@@ -10473,8 +10515,8 @@ showToast('Адрес сохранён')
       lineHeight: 1.6,
     }}>
       {deliveryType === 'pickup'
-        ? 'Место и время получения согласовываются индивидуально с менеджером.'
-        : 'Стоимость доставки рассчитывается индивидуально и не входит в сумму товаров.'}
+        ? ui('Место и время получения согласовываются индивидуально с менеджером.')
+        : ui('Стоимость доставки рассчитывается индивидуально и не входит в сумму товаров.')}
     </div>
   </div>
 </div>
@@ -10483,7 +10525,7 @@ showToast('Адрес сохранён')
 })()}
       {cart.length > 0 && (
         <div style={{ ...card, marginBottom: 18 }}>
-          <h2>🛍 Розница</h2>
+          <h2>{ui("🛍 Розница")}</h2>
 
           {cart.map(item => (
             <div
@@ -10520,13 +10562,13 @@ showToast('Адрес сохранён')
             </div>
           ))}
 
-          <h3>Итого: {retailTotal.toFixed(2)} €</h3>
+          <h3>{ui('Итого')}: {retailTotal.toFixed(2)} €</h3>
 
           <button
             style={btnMain}
             onClick={() => setScreen('checkout')}
           >
-            Оформить розничный заказ
+            {ui("Оформить розничный заказ")}
           </button>
         </div>
       )}
@@ -10552,14 +10594,14 @@ showToast('Адрес сохранён')
           fontSize: 20,
           fontWeight: 700,
         }}>
-          Опт
+          {ui("Опт")}
         </div>
         <div style={{
           color: '#A99DB4',
           fontSize: 12,
           marginTop: 5,
         }}>
-          {wholesaleCount} шт. в корзине
+          {wholesaleCount} {ui('шт.')} {ui('в корзине')}
         </div>
       </div>
 
@@ -10572,7 +10614,7 @@ showToast('Адрес сохранён')
         fontSize: 12,
         fontWeight: 600,
       }}>
-        От 20 шт.
+        {ui("От 20 шт.")}
       </span>
     </div>
 
@@ -10619,7 +10661,7 @@ showToast('Адрес сохранён')
 
             <button
               type="button"
-              aria-label="Удалить товар"
+              aria-label={ui('Удалить товар')}
               onClick={() =>
                 setWholesaleCart(prev =>
                   prev.filter(row =>
@@ -10680,8 +10722,8 @@ showToast('Адрес сохранён')
                 fontSize: 11,
               }}>
                 {item.hasPrice
-                  ? `${item.unitPrice.toFixed(2)} €/шт.`
-                  : 'Цена не задана'}
+                  ? `${item.unitPrice.toFixed(2)} €/${ui('шт.')}`
+                  : ui('Цена не задана')}
               </span>
 
               <strong style={{
@@ -10703,7 +10745,7 @@ showToast('Адрес сохранён')
             }}>
               <button
                 type="button"
-                aria-label="Уменьшить количество"
+                aria-label={ui('Уменьшить количество')}
                 onClick={() =>
                   changeWholesaleQty(item.flavorId, -1)
                 }
@@ -10733,7 +10775,7 @@ showToast('Адрес сохранён')
 
               <button
                 type="button"
-                aria-label="Увеличить количество"
+                aria-label={ui('Увеличить количество')}
                 onClick={() => {
   changeWholesaleQty(item.flavorId, 1)
 }}
@@ -10772,9 +10814,9 @@ style={{
         fontSize: 13,
         marginBottom: 12,
       }}>
-        <span>Количество товаров</span>
+        <span>{ui("Количество товаров")}</span>
         <strong style={{ color: '#FFFFFF' }}>
-          {wholesaleCount} шт.
+          {wholesaleCount} {ui('шт.')}
         </strong>
       </div>
 
@@ -10787,7 +10829,7 @@ style={{
           fontSize: 12,
           marginBottom: 14,
         }}>
-          Для оформления добавьте ещё {20 - wholesaleCount} шт.
+          {ui('Для оформления добавьте ещё')} {20 - wholesaleCount} {ui('шт.')}
         </div>
       )}
 
@@ -10803,7 +10845,7 @@ style={{
           fontSize: 16,
           fontWeight: 700,
         }}>
-          Итого
+          {ui("Итого")}
         </span>
 
         <strong style={{
@@ -10841,7 +10883,7 @@ style={{
               : 1,
         }}
       >
-        Оформить оптовый заказ
+        {ui("Оформить оптовый заказ")}
       </button>
 
       <div style={{
@@ -10851,8 +10893,7 @@ style={{
         textAlign: 'center',
         marginTop: 12,
       }}>
-        Доставка рассчитывается индивидуально и не входит
-        в стоимость товаров.
+        {ui("Доставка рассчитывается индивидуально и не входит в стоимость товаров.")}
       </div>
     </div>
   </div>
@@ -10891,7 +10932,7 @@ style={{
       letterSpacing: '-0.04em',
       lineHeight: 1.15,
     }}>
-      Каталог товаров
+      {ui("Каталог товаров")}
     </div>
   </div>
 </div>
@@ -10906,8 +10947,8 @@ style={{
   gap: 5,
 }}>
   {([
-    { id: 'retail', label: 'Розница' },
-    { id: 'wholesale', label: 'Опт' },
+    { id: 'retail', label: ui("Розница") },
+    { id: 'wholesale', label: ui("Опт") },
   ] as const).map(option => {
     const active = priceMode === option.id
 
@@ -10939,7 +10980,7 @@ style={{
     )
   })}
 </div>
-      {loading ? <div style={{ color: '#a0a0a0', marginBottom: 12 }}>Загрузка...</div> : null}
+      {loading ? <div style={{ color: '#a0a0a0', marginBottom: 12 }}>{ui("Загрузка...")}</div> : null}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         {priceMode === 'wholesale' ? (
   <>
@@ -10957,13 +10998,13 @@ style={{
           cursor: 'pointer',
         }}
       >
-        Условия работы
+        {ui("Условия работы")}
       </button>
 
       <div style={{ ...card, padding: '14px 16px' }}>
-        <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6 }}>💬 Нашли дешевле? Сделаем лучше!</div>
+        <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6 }}>{ui("💬 Нашли дешевле? Сделаем лучше!")}</div>
         <div style={{ fontSize: 13, color: '#c8c8c8', lineHeight: 1.45 }}>
-          Напишите менеджеру — <a href="https://t.me/optpuffy" target="_blank" rel="noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>@optpuffy</a>, предложим более выгодную цену на опт!
+          {ui("Напишите менеджеру —")} <a href="https://t.me/optpuffy" target="_blank" rel="noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>@optpuffy</a>{ui(", предложим более выгодную цену на опт!")}
         </div>
       </div>
     </div>
@@ -11001,7 +11042,7 @@ style={{
             background: cat.img ? `url(${cat.img}) center/cover` : 'rgba(255,255,255,0.08)',
             border: optCat === cat.id ? '2px solid #fff' : '2px solid transparent',
           }} />
-          <div style={{ fontSize: 11, fontWeight: 600 }}>{cat.name}</div>
+          <div style={{ fontSize: 11, fontWeight: 600 }}>{ui(cat.name)}</div>
         </button>
       ))}
     </div>
@@ -11068,7 +11109,7 @@ style={{
                 color: '#777',
                 fontSize: 13,
               }}>
-                Нет фотографии
+                {ui("Нет фотографии")}
               </div>
             )}
           </div>
@@ -11093,7 +11134,7 @@ style={{
               fontSize: 12,
               color: Number(p.stock) > 0 ? '#4ade80' : '#aaa',
             }}>
-              В наличии: {p.stock || 0} шт.
+              {ui('В наличии:')} {p.stock || 0} {ui('шт.')}
             </div>
 
             <div style={{
@@ -11106,7 +11147,7 @@ style={{
                 color: '#b8a7c8',
                 marginBottom: 8,
               }}>
-                Оптовые цены
+                {ui("Оптовые цены")}
               </div>
 
               {sortedPrices.length > 0 ? (
@@ -11122,7 +11163,7 @@ style={{
                       borderBottom: '1px solid rgba(255,255,255,0.06)',
                     }}
                   >
-                    <span>От {t.min_qty} шт.</span>
+                    <span>{language === 'en' ? 'From' : 'От'} {t.min_qty} {ui('шт.')}</span>
                     <strong>
                       {Number(t.price).toFixed(2)} €
                     </strong>
@@ -11130,7 +11171,7 @@ style={{
                 ))
               ) : (
                 <div style={{ fontSize: 12, color: '#aaa' }}>
-                  Цены уточняются
+                  {ui("Цены уточняются")}
                 </div>
               )}
             </div>
@@ -11144,7 +11185,7 @@ style={{
               fontWeight: 700,
               color: '#fff',
             }}>
-              Выбрать вкусы
+              {ui("Выбрать вкусы")}
             </div>
           </div>
         </div>
@@ -11161,7 +11202,7 @@ style={{
       textAlign: 'center',
       padding: 16,
     }}>
-      Товаров в этой категории пока нет
+      {ui("Товаров в этой категории пока нет")}
     </div>
   )}
 </div>
@@ -11218,7 +11259,7 @@ style={{
           color: '#94899F',
           fontSize: 12,
         }}>
-          Нет фотографии
+          {ui("Нет фотографии")}
         </div>
       )}
     </div>
@@ -11259,8 +11300,8 @@ style={{
             : '#87798F',
         }}/>
         {Number(p.stock || 0) > 0
-          ? `В наличии: ${p.stock} шт.`
-          : 'Нет в наличии'}
+          ? `${ui('В наличии:')} ${p.stock} ${ui('шт.')}`
+          : ui('Нет в наличии')}
       </div>
 
       <div style={{
@@ -11289,7 +11330,7 @@ style={{
                   fontSize: 11,
                   whiteSpace: 'nowrap',
                 }}>
-                  От {tier.min_qty} шт.
+                  {language === 'en' ? 'From' : 'От'} {tier.min_qty} {ui('шт.')}
                 </span>
                 <span style={{
                   color: '#FFFFFF',
@@ -11307,7 +11348,7 @@ style={{
             color: '#A99EB3',
             fontSize: 12,
           }}>
-            Цены уточняются
+            {ui("Цены уточняются")}
           </span>
         )}
       </div>
@@ -11322,7 +11363,7 @@ style={{
         color: '#FFFFFF',
         marginTop: 2,
       }}>
-        Выбрать вкусы
+        {ui("Выбрать вкусы")}
       </div>
     </div>
   </div>
@@ -11338,7 +11379,7 @@ style={{
       textAlign: 'center',
       padding: 20,
     }}>
-      В рознице пока нет товаров
+      {ui("В рознице пока нет товаров")}
     </div>
   )}
 </>
