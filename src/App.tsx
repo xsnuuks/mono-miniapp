@@ -704,7 +704,7 @@ async function loadWholesaleProducts() {
       if (ex) return prev.map((i) => (i.product.id === product.id ? { ...i, quantity: i.quantity + 1 } : i))
       return [...prev, { product, quantity: 1 }]
     })
-    showToast('Товар добавлен в корзину')
+    showToast(ui('Товар добавлен в корзину'))
   }
 
   async function submitOrder() {
@@ -1086,11 +1086,11 @@ async function deleteOrder(orderId: number) {
         await fetch(`${API_URL}/favorites/${tgUser.id}/${productId}`, { method: 'DELETE' })
         setFavIds((prev) => prev.filter((id) => id !== productId))
         setFavProducts((prev) => prev.filter((p) => p.id !== productId))
-        showToast('Убрано из избранного')
+        showToast(ui('Убрано из избранного'))
       } else {
         await fetch(`${API_URL}/favorites/${tgUser.id}/${productId}`, { method: 'POST' })
         setFavIds((prev) => [...prev, productId])
-        showToast('В избранном')
+        showToast(ui('В избранном'))
       }
     } catch {
       showToast('Не удалось')
@@ -3788,7 +3788,7 @@ setEditingRetailTiers(
                 width: '100%',
               }}
             >
-              <div style={{ fontWeight: 600 }}>{cat.name}</div>
+              <div style={{ fontWeight: 600 }}>{ui(cat.name)}</div>
 <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
   {wholesaleProducts.filter(p => cat.id === 'all' || String(p.category_id) === cat.id).length} товаров
 </div>
@@ -6072,7 +6072,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     background: '#79C99B',
     flexShrink: 0,
   }} />
-  В наличии: {product.stock || 0} шт.
+  {ui('В наличии:')} {product.stock || 0} {ui('шт.')}
 </div>
 
 <div style={{
@@ -6088,8 +6088,8 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   color: '#FFFFFF',
 }}>
   {selectedRetailFlavor
-  ? `Выбран: ${selectedRetailFlavor.name} · В корзине: ${selectedRetailCartQty} шт.`
-  : 'Выберите вкус'}
+  ? `${ui('Выбран:')} ${selectedRetailFlavor.name} · ${ui('В корзине:')} ${selectedRetailCartQty} ${ui('шт.')}`
+  : ui('Выберите вкус')}
 </div>
 
         <div
@@ -6117,7 +6117,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
         fontWeight: 600,
       }}
     >
-      От {tier.min_qty} шт. — {Number(tier.price).toFixed(2)} €
+      {language === 'en' ? 'From' : 'От'} {tier.min_qty} {ui('шт.')} — {Number(tier.price).toFixed(2)} €
     </div>
   ))}
 </div>
@@ -6269,14 +6269,14 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
       color: '#B5A7C2',
       fontSize: 12,
     }}>
-      {totalQty > 0 ? 'Итого' : 'Цена за 1 шт.'}
+      {totalQty > 0 ? ui('Итого') : ui('Цена за 1 шт.')}
     </span>
     <span style={{
       color: '#FFFFFF',
       fontSize: 14,
       fontWeight: 600,
     }}>
-      {totalQty > 0 ? `${totalQty} шт. в корзине` : 'Выберите вкус'}
+      {totalQty > 0 ? `${totalQty} ${ui('шт.')} ${ui('в корзине')}` : ui('Выберите вкус')}
     </span>
   </div>
 
@@ -6405,7 +6405,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
     })
 
     setRetailQty({})
-    showToast('Вкус добавлен в корзину')
+    showToast(ui('Вкус добавлен в корзину'))
   }}
   style={{
   width: '100%',
@@ -6771,7 +6771,7 @@ return (
       color: '#B5A7C2',
       fontSize: 13,
     }}>
-      От {t.min_qty} шт.
+      {language === 'en' ? 'From' : 'От'} {t.min_qty} {ui('шт.')}
     </span>
 
     <strong style={{
@@ -6815,7 +6815,7 @@ return (
       fontSize: 18,
       fontWeight: 700,
     }}>
-      {totalQty} шт.
+      {totalQty} {ui('шт.')}
     </span>
   </div>
 
@@ -6861,7 +6861,7 @@ return (
   setWholesaleQty({})
 }
 
-  showToast('Товары добавлены в корзину')
+  showToast(ui('Товары добавлены в корзину'))
 }}
     style={{
   width: '100%',
@@ -6876,7 +6876,7 @@ return (
   transition: 'background 0.2s ease',
 }}
 >
-    Добавить в корзину · {totalQty} шт.
+    Добавить в корзину · {totalQty} {ui('шт.')}
   </button>
               <button
   type="button"
@@ -6928,7 +6928,7 @@ return (
             <div style={{ fontSize: 14, color: '#a0a0a0', marginBottom: 8 }}>{selected.volume} · {selected.strength}</div>
             {selected.description ? <div style={{ fontSize: 14, color: '#b0b0b0', marginBottom: 12, lineHeight: 1.5 }}>{selected.description}</div> : null}
             <div style={{ display: 'inline-block', fontSize: 12, color: selected.available ? '#ddd' : '#777', border: '1px solid rgba(255,255,255,0.12)', padding: '5px 10px', borderRadius: 8, marginBottom: 14 }}>
-              {selected.available ? 'В НАЛИЧИИ' : 'НЕТ В НАЛИЧИИ'}
+              {selected.available ? ui('В НАЛИЧИИ') : ui('НЕТ В НАЛИЧИИ')}
             </div>
             <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 16 }}>{profile?.has_discount ? 10 : selected.price} €</div>
             <button disabled={!selected.available} onClick={() => { addToCart(selected); setScreen('catalog') }} style={{ ...btnMain, opacity: selected.available ? 1 : 0.4 }}>{ui("В корзину")}</button>
@@ -7103,7 +7103,7 @@ if (selectedOrder) {
               ? 'Наличные'
               : selectedOrder.payment_method === 'usdt'
                 ? 'USDT'
-                : 'Банковский перевод UAH'}
+                : ui('Банковский перевод UAH')}
           </div>
           <div>
             Статус: {selectedOrder.status === 'new'
@@ -7400,7 +7400,7 @@ if (selectedOrder) {
         cursor: 'pointer',
       }}
     >
-      {label} ({count})
+      {ui(label)} ({count})
     </button>
   ))}
 </div>
@@ -7472,7 +7472,7 @@ if (selectedOrder) {
           marginBottom: 8,
         }}>
           <span style={{ fontSize: 13, color: '#aaa' }}>
-            {order.delivery_type === 'pickup' ? 'Самовывоз' : 'GLS · Германия'}
+            {order.delivery_type === 'pickup' ? ui('Самовывоз') : ui('Германия · GLS')}
           </span>
           <strong style={{ color: '#c084fc', fontSize: 18 }}>
             {Number(order.items_total).toFixed(2)} €
@@ -7889,7 +7889,7 @@ cursor: 'pointer',
       ['EE', 'Эстония'],
     ].map(([code, name]) => (
       <option key={code} value={code}>
-        {name}
+        {ui(name)}
       </option>
     ))}
   </select>
@@ -8073,7 +8073,7 @@ onChange={field.name === 'phone'
             e.preventDefault()
 
             if (!wholesaleCarrier) {
-              showToast('Выберите службу доставки')
+              showToast(ui('Выберите службу доставки'))
               return
             }
 
@@ -8081,7 +8081,7 @@ onChange={field.name === 'phone'
               wholesaleCarrier === 'GLS' &&
               wholesaleCountry !== 'DE'
             ) {
-              showToast('GLS доступен только по Германии')
+              showToast(ui('GLS доступен только по Германии'))
               return
             }
 
@@ -8095,7 +8095,7 @@ onChange={field.name === 'phone'
             }
 
             if (Object.values(address).some(value => !value)) {
-              showToast('Заполните адрес доставки')
+              showToast(ui('Заполните адрес доставки'))
               return
             }
 
@@ -8330,8 +8330,8 @@ onChange={field.name === 'phone'
             lineHeight: 1.7,
             marginBottom: 22,
           }}>
-            Оптовый заказ №{wholesaleSuccessOrderId} создан.
-            Менеджер свяжется с вами для уточнения деталей.
+            {ui('Оптовый заказ')} №{wholesaleSuccessOrderId} {language === 'en' ? 'created.' : 'создан.'}
+            {ui('Менеджер свяжется с вами для уточнения деталей.')}
           </p>
 
           <div style={{
@@ -8565,7 +8565,7 @@ onChange={field.name === 'phone'
                 {wholesaleAddress.city}
               </div>
               <div style={{ color: '#aaa' }}>
-                {countryNames[wholesaleCountry] || wholesaleCountry}
+                {ui(countryNames[wholesaleCountry] || wholesaleCountry)}
               </div>
             </div>
 
@@ -8576,7 +8576,7 @@ onChange={field.name === 'phone'
               fontSize: 12,
               marginBottom: 12,
             }}>
-              Товары ({count} шт.)
+              {ui('Товары')} ({count} {ui('шт.')})
             </div>
 
             {rows.map(item => (
@@ -8802,7 +8802,7 @@ onChange={field.name === 'phone'
             opacity: wholesalePayment && count >= 20 ? 1 : 0.5,
           }}
         >
-          {wholesaleSubmitting ? 'Оформляем заказ...' : 'Оформить заказ'}
+          {wholesaleSubmitting ? ui('Оформляем заказ...') : ui('Оформить заказ')}
         </button>
       </div>
     </div>
@@ -8993,7 +8993,7 @@ onChange={field.name === 'phone'
 
       <button
         type="button"
-        aria-label="Удалить товар"
+        aria-label={ui('Удалить товар')}
         onClick={() => {
           setRetailCart(prev =>
             prev.filter(row =>
@@ -9079,7 +9079,7 @@ onChange={field.name === 'phone'
       }}>
         <button
           type="button"
-          aria-label="Уменьшить количество"
+          aria-label={ui('Уменьшить количество')}
           onClick={() => {
             setRetailCart(prev =>
               prev
@@ -9118,7 +9118,7 @@ onChange={field.name === 'phone'
 
         <button
           type="button"
-          aria-label="Увеличить количество"
+          aria-label={ui('Увеличить количество')}
           disabled={item.quantity >= stock}
           onClick={() => {
             setRetailCart(prev =>
@@ -9276,7 +9276,7 @@ onChange={field.name === 'phone'
   {deliveryType === 'pickup' ? 'Самовывоз' : 'Доставка GLS'}
 </span>
 <span>
-  {deliveryType === 'pickup' ? '0,00 €' : 'Рассчитывается отдельно'}
+  {deliveryType === 'pickup' ? '0,00 €' : ui('Рассчитывается отдельно')}
 </span>
   </div>
 
@@ -9350,7 +9350,7 @@ style={{
       cursor: retailOrderSubmitting ? 'wait' : 'pointer',
     }}
   >
-    {retailOrderSubmitting ? 'Отправка заказа...' : 'Оформить заказ →'}
+    {retailOrderSubmitting ? ui('Отправка заказа...') : ui('Оформить заказ →')}
   </button>
 )}
 
@@ -9631,7 +9631,7 @@ style={{
       marginBottom: 22,
     }}>
       Заказ №{retailOrderId} успешно создан.
-      Менеджер свяжется с вами для уточнения деталей.
+      {ui('Менеджер свяжется с вами для уточнения деталей.')}
     </div>
 
     <button
@@ -9691,13 +9691,13 @@ style={{
     </div>
 
     <div style={{ fontSize: 14, lineHeight: 1.8 }}>
-      <div>Получатель: {retailDeliveryData.firstName} {retailDeliveryData.lastName}</div>
+      <div>{language === 'en' ? 'Recipient:' : 'Получатель:'} {retailDeliveryData.firstName} {retailDeliveryData.lastName}</div>
       <div>{ui("Доставка: GLS, Германия")}</div>
-      <div>Товаров на сумму: {retailTotal.toFixed(2)} €</div>
+      <div>{language === 'en' ? 'Items total:' : 'Товаров на сумму:'} {retailTotal.toFixed(2)} €</div>
       <div>
-        Оплата: {retailPaymentMethod === 'usdt'
+        {language === 'en' ? 'Payment:' : 'Оплата:'} {retailPaymentMethod === 'usdt'
           ? 'USDT'
-          : 'Банковский перевод UAH'}
+          : ui('Банковский перевод UAH')}
       </div>
     </div>
 
@@ -9730,8 +9730,8 @@ style={{
   }}
 >
   {retailOrderSubmitting
-    ? 'Оформляем заказ...'
-    : 'Подтвердить заказ'}
+    ? ui('Оформляем заказ...')
+    : ui('Подтвердить заказ')}
 </button>
 
     <button
@@ -9778,12 +9778,12 @@ style={{
   const email = get('email')
 
   if (!firstName || !lastName || !phone || !email) {
-    showToast('Заполните контактные данные')
+    showToast(ui('Заполните контактные данные'))
     return
   }
 
   if (!/^\+49[0-9\s()-]{6,18}$/.test(phone)) {
-    showToast('Проверьте номер телефона')
+    showToast(ui('Проверьте номер телефона'))
     return
   }
 
@@ -9821,19 +9821,19 @@ style={{
           !data.street ||
           !data.house
         ) {
-          showToast('Заполните обязательные поля')
+          showToast(ui('Заполните обязательные поля'))
           return
         }
 
         if (!/^\+49[0-9\s()-]{6,18}$/.test(data.phone)) {
-          showToast('Проверьте номер телефона Германии')
+          showToast(ui('Проверьте номер телефона Германии'))
           return
         }
 
         setRetailDeliveryData(data)
 setRetailDeliverySaved(true)
 setRetailCheckoutStep(3)
-showToast('Адрес сохранён')
+showToast(ui('Адрес сохранён'))
       }}
       style={{ display: 'grid', gap: 14 }}
     >
@@ -9871,7 +9871,7 @@ showToast('Адрес сохранён')
       ].map(([name, label, placeholder, type]) => (
         <label key={name} style={{ display: 'grid', gap: 7 }}>
           <span style={{ fontSize: 13, color: '#c6b8d4' }}>
-            {label} *
+            {ui(label)} *
           </span>
           <input
             name={name}
@@ -9879,7 +9879,7 @@ showToast('Адрес сохранён')
             defaultValue={
               retailDeliveryData[name as keyof typeof retailDeliveryData]
             }
-            placeholder={placeholder}
+            placeholder={ui(placeholder)}
             required
             style={{ ...inputStyle, marginBottom: 0, boxSizing: 'border-box' }}
           />
@@ -10184,7 +10184,7 @@ showToast('Адрес сохранён')
             color: '#999',
             marginTop: 5,
           }}>
-            {retailCount} шт. в корзине
+            {retailCount} {ui('шт.')} {ui('в корзине')}
           </div>
         </div>
 
@@ -10239,7 +10239,7 @@ showToast('Адрес сохранён')
 
       <button
         type="button"
-        aria-label="Удалить товар"
+        aria-label={ui('Удалить товар')}
         onClick={() => {
           setRetailCart(prev =>
             prev.filter(row =>
@@ -10325,7 +10325,7 @@ showToast('Адрес сохранён')
       }}>
         <button
           type="button"
-          aria-label="Уменьшить количество"
+          aria-label={ui('Уменьшить количество')}
           onClick={() => {
             setRetailCart(prev =>
               prev
@@ -10364,7 +10364,7 @@ showToast('Адрес сохранён')
 
         <button
           type="button"
-          aria-label="Увеличить количество"
+          aria-label={ui('Увеличить количество')}
           disabled={item.quantity >= stock}
           onClick={() => {
             setRetailCart(prev =>
@@ -10603,7 +10603,7 @@ showToast('Адрес сохранён')
           fontSize: 12,
           marginTop: 5,
         }}>
-          {wholesaleCount} шт. в корзине
+          {wholesaleCount} {ui('шт.')} {ui('в корзине')}
         </div>
       </div>
 
@@ -10663,7 +10663,7 @@ showToast('Адрес сохранён')
 
             <button
               type="button"
-              aria-label="Удалить товар"
+              aria-label={ui('Удалить товар')}
               onClick={() =>
                 setWholesaleCart(prev =>
                   prev.filter(row =>
@@ -10747,7 +10747,7 @@ showToast('Адрес сохранён')
             }}>
               <button
                 type="button"
-                aria-label="Уменьшить количество"
+                aria-label={ui('Уменьшить количество')}
                 onClick={() =>
                   changeWholesaleQty(item.flavorId, -1)
                 }
@@ -10777,7 +10777,7 @@ showToast('Адрес сохранён')
 
               <button
                 type="button"
-                aria-label="Увеличить количество"
+                aria-label={ui('Увеличить количество')}
                 onClick={() => {
   changeWholesaleQty(item.flavorId, 1)
 }}
@@ -11044,7 +11044,7 @@ style={{
             background: cat.img ? `url(${cat.img}) center/cover` : 'rgba(255,255,255,0.08)',
             border: optCat === cat.id ? '2px solid #fff' : '2px solid transparent',
           }} />
-          <div style={{ fontSize: 11, fontWeight: 600 }}>{cat.name}</div>
+          <div style={{ fontSize: 11, fontWeight: 600 }}>{ui(cat.name)}</div>
         </button>
       ))}
     </div>
@@ -11136,7 +11136,7 @@ style={{
               fontSize: 12,
               color: Number(p.stock) > 0 ? '#4ade80' : '#aaa',
             }}>
-              В наличии: {p.stock || 0} шт.
+              {ui('В наличии:')} {p.stock || 0} {ui('шт.')}
             </div>
 
             <div style={{
@@ -11165,7 +11165,7 @@ style={{
                       borderBottom: '1px solid rgba(255,255,255,0.06)',
                     }}
                   >
-                    <span>От {t.min_qty} шт.</span>
+                    <span>{language === 'en' ? 'From' : 'От'} {t.min_qty} {ui('шт.')}</span>
                     <strong>
                       {Number(t.price).toFixed(2)} €
                     </strong>
@@ -11332,7 +11332,7 @@ style={{
                   fontSize: 11,
                   whiteSpace: 'nowrap',
                 }}>
-                  От {tier.min_qty} шт.
+                  {language === 'en' ? 'From' : 'От'} {tier.min_qty} {ui('шт.')}
                 </span>
                 <span style={{
                   color: '#FFFFFF',
