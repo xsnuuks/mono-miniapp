@@ -7086,7 +7086,6 @@ return (
 
         if (screen === 'profile') {
   const name = tgUser?.first_name || ui('Клиент')
-  const letter = name.charAt(0).toUpperCase()
   const photo = (tgUser as any)?.photo_url || null
           const selectedOrder = myRetailOrders.find(
   (order: any) => order.id === selectedRetailOrderId
