@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import AdminBanners from './AdminBanners'
 import CatalogBanners from './CatalogBanners'
+import ProfileOverview from './ProfileOverview'
 import { translateUI, UI_LANGUAGE_KEY, type UILanguage } from './i18n'
 import './App.css'
 
@@ -195,12 +196,10 @@ function App() {
       return null
     }
   })
-  const [showLanguageSelector, setShowLanguageSelector] = useState(false)
   const ui = (value: string) => translateUI(value, language ?? 'ru')
   function chooseLanguage(next: UILanguage) {
     setLanguage(next)
     try { localStorage.setItem(UI_LANGUAGE_KEY, next) } catch { /* Storage can be disabled */ }
-    setShowLanguageSelector(false)
   }
   const [screen, setScreen] = useState<Screen>('catalog')
   const [isProductSheetClosing, setIsProductSheetClosing] = useState(false)
@@ -236,6 +235,15 @@ function App() {
   const [editProduct, setEditProduct] = useState<Partial<Product> & { id?: number }>({})
   const [isNewProduct, setIsNewProduct] = useState(false)
   const [profile, setProfile] = useState<any>(null)
+  const [profileStats, setProfileStats] = useState<{
+    client_no: number | null
+    orders_total: number
+    referrals_total: number
+    has_discount: boolean
+    successful_referrals: number
+    bot_username?: string | null
+  } | null>(null)
+  const [profileStatsLoading, setProfileStatsLoading] = useState(false)
   const [supportMessages, setSupportMessages] = useState<any[]>([])
   const [supportText, setSupportText] = useState('')
   const [chats, setChats] = useState<any[]>([])
@@ -810,6 +818,28 @@ async function loadWholesaleProducts() {
   }
 }
 
+  async function loadProfileStats() {
+    const initData = (window as any).Telegram?.WebApp?.initData || ''
+    if (!initData) {
+      setProfileStats(null)
+      setProfileStatsLoading(false)
+      return
+    }
+    setProfileStatsLoading(true)
+    try {
+      const response = await fetch(`${API_URL}/api/profile/stats`, {
+        headers: { 'X-Telegram-Init-Data': initData },
+      })
+      if (!response.ok) throw new Error('Profile stats unavailable')
+      const result = await response.json()
+      setProfileStats(result)
+    } catch {
+      setProfileStats(null)
+    } finally {
+      setProfileStatsLoading(false)
+    }
+  }
+
   async function loadMyWholesaleOrders() {
   setMyWholesaleOrdersLoading(true)
 
@@ -961,6 +991,7 @@ async function loadWholesaleProducts() {
   if (screen === 'profile') {
     loadMyRetailOrders()
     loadMyWholesaleOrders()
+    loadProfileStats()
   }
 }, [screen])
 
@@ -7055,7 +7086,6 @@ return (
 
         if (screen === 'profile') {
   const name = tgUser?.first_name || ui('Клиент')
-  const letter = name.charAt(0).toUpperCase()
   const photo = (tgUser as any)?.photo_url || null
           const selectedOrder = myRetailOrders.find(
   (order: any) => order.id === selectedRetailOrderId
@@ -7188,131 +7218,39 @@ if (selectedOrder) {
 
   return (
     <div key={screen} style={page}>
-      {/* Верхняя часть с градиентом на всю ширину */}
-      <div style={{
-  background: 'linear-gradient(90deg, #2e1065, #7c3aed)',
-  padding: '28px 20px 36px',
-  margin: '-16px -16px 20px -16px',
-  display: 'flex',
-  alignItems: 'center',
-  gap: 16,
-}}>
-        <div style={{
-          width: 72,
-          height: 72,
-          borderRadius: '50%',
-          background: '#1a1a1a',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 32,
-          fontWeight: 700,
-          color: '#fff',
-          flexShrink: 0,
-        }}>
-          {photo ? (
-            <img src={photo} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          ) : (
-            letter
-          )}
-        </div>
-
-        <div>
-          <div style={{ fontSize: 24, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8 }}>
-            {name}
-            <span style={{ fontSize: 14, color: '#a3a3a3', fontWeight: 500 }}>
-              M-{String(profile?.id || 0).padStart(3, '0')}
-            </span>
-          </div>
-          {tgUser?.username && (
-            <div style={{ color: '#a3a3a3', fontSize: 14, marginTop: 2 }}>
-              @{tgUser.username}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Статистика */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
-        <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16 }}>
-          <div style={{ color: '#a3a3a3', fontSize: 13 }}>{ui("Покупок")}</div>
-          <div style={{ fontSize: 28, fontWeight: 700 }}>{profile?.purchases || 0}</div>
-        </div>
-        <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16 }}>
-          <div style={{ color: '#a3a3a3', fontSize: 13 }}>{ui("Друзей")}</div>
-          <div style={{ fontSize: 28, fontWeight: 700 }}>{profile?.referrals || 0}</div>
-        </div>
-      </div>
-
-      {/* Скидка */}
-<div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-  <div>
-    <div style={{ color: '#a3a3a3', fontSize: 13 }}>{ui("Скидка")}</div>
-    <div style={{ fontSize: 20, fontWeight: 700 }}>
-      {profile?.has_discount ? ui('Да') : ui('Нет')}
-    </div>
-  </div>
-  <button
-    onClick={() => setShowDiscountInfo(true)}
-    style={{
-      width: 28,
-      height: 28,
-      borderRadius: '50%',
-      border: '1px solid #444',
-      background: 'transparent',
-      color: '#a3a3a3',
-      fontSize: 14,
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
-  >
-    ?
-  </button>
-</div>
-
-
-      {/* Customer language preference; leaves the admin panel unchanged. */}
-      <div style={{ background: '#21142e', border: '1px solid #493166', borderRadius: 16, padding: 16, marginBottom: 14 }}>
-        <button type="button" onClick={() => setShowLanguageSelector(!showLanguageSelector)}
-          style={{ width: '100%', border: 0, background: 'transparent', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 15, fontWeight: 650, padding: 0 }}>
-          <span>{ui('Язык')} / Language</span>
-          <span style={{ color: '#caacff' }}>{language.toUpperCase()} ›</span>
-        </button>
-        {showLanguageSelector && (
-          <div style={{ display: 'flex', gap: 9, marginTop: 14 }}>
-            <button type="button" onClick={() => chooseLanguage('ru')}
-              style={{ flex: 1, border: language === 'ru' ? '1px solid #c49dff' : '1px solid #59416e', borderRadius: 12, background: language === 'ru' ? '#7135a8' : '#271c35', color: '#fff', padding: 12, cursor: 'pointer' }}>Русский</button>
-            <button type="button" onClick={() => chooseLanguage('en')}
-              style={{ flex: 1, border: language === 'en' ? '1px solid #c49dff' : '1px solid #59416e', borderRadius: 12, background: language === 'en' ? '#7135a8' : '#271c35', color: '#fff', padding: 12, cursor: 'pointer' }}>English</button>
-          </div>
-        )}
-      </div>
-
-      {/* Реферальная ссылка */}
-      <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 16 }}>
-        <div style={{ color: '#a3a3a3', fontSize: 13, marginBottom: 8 }}>{ui("Реферальная ссылка")}</div>
-        <div
-          onClick={() => {
-            const link = `https://t.me/itsmono_bot?start=ref_${tgUser?.id || ''}`
-            navigator.clipboard.writeText(link)
-            alert(ui('Ссылка скопирована'))
-          }}
-          style={{
-            background: '#111',
-            borderRadius: 12,
-            padding: 12,
-            fontSize: 13,
-            wordBreak: 'break-all',
-            cursor: 'pointer',
-          }}
-        >
-          https://t.me/itsmono_bot?start=ref_{tgUser?.id || ''}
-        </div>
-        <div style={{ color: '#6b6b6b', fontSize: 12, marginTop: 6 }}>{ui("Нажми, чтобы скопировать")}</div>
-      </div>
+      <ProfileOverview
+        name={name}
+        username={tgUser?.username || null}
+        photo={photo}
+        clientNo={profileStats?.client_no ?? profile?.client_no ?? null}
+        ordersTotal={profileStats?.orders_total ?? null}
+        referralsTotal={profileStats?.referrals_total ?? null}
+        statsLoading={profileStatsLoading}
+        hasDiscount={profileStats?.has_discount ?? Boolean(profile?.has_discount)}
+        referralLink={tgUser?.id && profileStats?.bot_username ? `https://t.me/${profileStats.bot_username}?start=ref_${tgUser.id}` : null}
+        language={language}
+        onLanguageChange={chooseLanguage}
+        onDiscountInfo={() => setShowDiscountInfo(true)}
+        onCopyReferral={async () => {
+          const link = tgUser?.id && profileStats?.bot_username ? `https://t.me/${profileStats.bot_username}?start=ref_${tgUser.id}` : null
+          if (!link) return
+          try {
+            await navigator.clipboard.writeText(link)
+            showToast(ui('Ссылка скопирована'))
+          } catch {
+            window.prompt(ui('Скопируйте ссылку'), link)
+          }
+        }}
+        onShareReferral={() => {
+          if (!tgUser?.id || !profileStats?.bot_username) return
+          const link = `https://t.me/${profileStats.bot_username}?start=ref_${tgUser.id}`
+          const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}`
+          const telegram = (window as any).Telegram?.WebApp
+          if (telegram?.openTelegramLink) telegram.openTelegramLink(shareUrl)
+          else window.open(shareUrl, '_blank', 'noopener,noreferrer')
+        }}
+        ui={ui}
+      />
 
       {showDiscountInfo && (
   <div
