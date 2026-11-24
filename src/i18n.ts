@@ -148,7 +148,7 @@ export const uiTranslations: Record<string, string> = {
   "Картриджи": "Cartridges",
   "Снюс": "Nicotine pouches",
   "Все": "All",
-  "Цена за 1 шт.": "Price per item",
+  "Цена за 1 шт.": "Price per unit",
   "Сообщение...": "Message...",
   "Отправить": "Send",
   "Клиент": "Customer",
@@ -322,7 +322,28 @@ export const uiTranslations: Record<string, string> = {
   "Товаров в этой категории пока нет": "No products in this category yet",
   "Банковский перевод UAH": "UAH bank transfer",
   "Покупатель": "Customer",
-  "Заполните данные для оформления заказа": "Enter your details to place an order"
+  "Заполните данные для оформления заказа": "Enter your details to place an order",
+  "В наличии:": "In stock:",
+  "Выбран:": "Selected:",
+  "В корзине:": "In cart:",
+  "в корзине": "in cart",
+  "Товары добавлены в корзину": "Items added to cart",
+  "Вкус добавлен в корзину": "Flavor added to cart",
+  "Товар добавлен в корзину": "Item added to cart",
+  "Убрано из избранного": "Removed from favorites",
+  "В избранном": "Added to favorites",
+  "Удалить товар": "Remove item",
+  "Уменьшить количество": "Decrease quantity",
+  "Увеличить количество": "Increase quantity",
+  "От 5,89 €": "From €5.89",
+  "USDT (криптовалюта)": "USDT (cryptocurrency)",
+  "Менеджер свяжется с вами для уточнения деталей.": "A manager will contact you to confirm the details.",
+  "Оптовый заказ": "Wholesale order",
+  "Заказ получен. Свяжитесь с менеджером,": "Order received. Contact the manager",
+  "чтобы согласовать место самовывоза и оплату.": "to arrange pickup and payment.",
+  "В корзине": "In cart",
+  "Показать ещё": "Show more",
+  "шт. в корзине": "units in cart"
 }
 
 export function translateUI(text: string, language: UILanguage): string {
