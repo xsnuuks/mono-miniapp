@@ -2186,8 +2186,8 @@ const statusColor =
         <div style={{ fontSize: 13, lineHeight: 1.9 }}>
           <div>
             Получение: {order.delivery_type === 'pickup'
-              ? ui('Самовывоз')
-              : ui('Германия · GLS')}
+              ? 'Самовывоз'
+              : 'GLS · Германия'}
           </div>
           {order.delivery_type === 'delivery' && (
             <div>
@@ -3788,7 +3788,7 @@ setEditingRetailTiers(
                 width: '100%',
               }}
             >
-              <div style={{ fontWeight: 600 }}>{ui(cat.name)}</div>
+              <div style={{ fontWeight: 600 }}>{cat.name}</div>
 <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
   {wholesaleProducts.filter(p => cat.id === 'all' || String(p.category_id) === cat.id).length} товаров
 </div>
