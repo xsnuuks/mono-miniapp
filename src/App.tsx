@@ -8142,9 +8142,7 @@ onChange={field.name === 'phone'
       fontSize: 14,
       fontWeight: 600,
     }}>
-      {countries.find(
-        ([code]) => code === wholesaleCountry
-      )?.[1] || ui('Страна не выбрана')}
+      {ui(countries.find(([code]) => code === wholesaleCountry)?.[1] || 'Страна не выбрана')}
     </span>
   </div>
 
@@ -9917,7 +9915,7 @@ showToast(ui('Адрес сохранён'))
       ].map(([name, label, placeholder, required]) => (
         <label key={String(name)} style={{ display: 'grid', gap: 7 }}>
           <span style={{ fontSize: 13, color: '#c6b8d4' }}>
-            {label}{required ? ' *' : ''}
+            {ui(String(label))}{required ? ' *' : ''}
           </span>
           <input
             name={String(name)}
@@ -9926,7 +9924,7 @@ showToast(ui('Адрес сохранён'))
                 String(name) as keyof typeof retailDeliveryData
               ]
             }
-            placeholder={String(placeholder)}
+            placeholder={ui(String(placeholder))}
             required={Boolean(required)}
             style={{ ...inputStyle, marginBottom: 0, boxSizing: 'border-box' }}
           />
