@@ -358,7 +358,16 @@ export const uiTranslations: Record<string, string> = {
   "успешно создан.": "successfully created.",
   "Выбрана доставка": "Selected carrier:",
   "Стоимость рассчитывается индивидуально": "The delivery cost is calculated individually",
-  "в зависимости от страны и веса посылки.": "depending on country and parcel weight."
+  "в зависимости от страны и веса посылки.": "depending on country and parcel weight.",
+  "Заказов": "Orders",
+  "Реферальная скидка": "Referral discount",
+  "Доступна скидка 5 €": "€5 discount available",
+  "Пригласите 2 друзей с заказами": "Invite 2 friends who place orders",
+  "Пригласить друзей": "Invite friends",
+  "Поделитесь персональной ссылкой": "Share your personal referral link",
+  "Скопировать": "Copy",
+  "Скопируйте ссылку": "Copy this link",
+  "Откройте магазин через Telegram": "Open the store in Telegram"
 }
 
 export function translateUI(text: string, language: UILanguage): string {
