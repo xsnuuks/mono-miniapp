@@ -5952,7 +5952,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
         <div style={{ ...card, marginBottom: 16 }}>
           <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>{ui("ОПЛАТА")}</div>
           {PAYMENTS.map((p) => (
-            <button key={p} onClick={() => setPayment(p)} style={{ display: 'block', width: '100%', padding: 12, marginBottom: 8, background: payment === p ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.04)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, fontSize: 15, textAlign: 'left' as const, cursor: 'pointer' }}>{t(p)}</button>
+            <button key={p} onClick={() => setPayment(p)} style={{ display: 'block', width: '100%', padding: 12, marginBottom: 8, background: payment === p ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.04)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, fontSize: 15, textAlign: 'left' as const, cursor: 'pointer' }}>{ui(p)}</button>
           ))}
         </div>
         <button disabled={!city || !payment || submitting} onClick={submitOrder} style={{ ...btnMain, opacity: city && payment && !submitting ? 1 : 0.45 }}>
