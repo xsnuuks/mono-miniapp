@@ -1361,13 +1361,13 @@ async function deleteOrder(orderId: number) {
             {([
               {
                 id: 'pickup',
-                title: 'Самовывоз',
-                description: 'По договорённости с менеджером',
+                title: t("Самовывоз"),
+                description: t("По договорённости с менеджером"),
               },
               {
                 id: 'delivery',
-                title: 'Доставка',
-                description: 'Отправка по Германии',
+                title: t("Доставка"),
+                description: t("Отправка по Германии"),
               },
             ] as const).map(option => {
               const active = deliveryType === option.id
@@ -1559,7 +1559,7 @@ async function deleteOrder(orderId: number) {
   }
 
   const items = [
-    { id: 'catalog' as Screen, label: 'Каталог', icon: (active: boolean) => (
+    { id: 'catalog' as Screen, label: t("Каталог"), icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="7" height="7" rx="1"/>
         <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -1567,21 +1567,21 @@ async function deleteOrder(orderId: number) {
         <rect x="3" y="14" width="7" height="7" rx="1"/>
       </svg>
     )},
-    { id: 'cart' as Screen, label: cartCount > 0 ? `Корзина ${cartCount}` : 'Корзина', icon: (active: boolean) => (
+    { id: 'cart' as Screen, label: cartCount > 0 ? `${t('Корзина')} ${cartCount}` : t('Корзина'), icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="9" cy="21" r="1"/>
         <circle cx="20" cy="21" r="1"/>
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
       </svg>
     )},
-    { id: 'info' as Screen, label: 'Инфо', icon: (active: boolean) => (
+    { id: 'info' as Screen, label: t("Инфо"), icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"/>
         <path d="M12 16v-4"/>
         <path d="M12 8h.01"/>
       </svg>
     )},
-    { id: 'profile' as Screen, label: 'Профиль', icon: (active: boolean) => (
+    { id: 'profile' as Screen, label: t("Профиль"), icon: (active: boolean) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#fff' : '#a3a3a3'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
@@ -1726,7 +1726,7 @@ async function deleteOrder(orderId: number) {
     return (
       <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.93)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: 20 }}>
         <div style={{ background: 'linear-gradient(145deg, #1a0b2e, #2e1065)', borderRadius: 24, padding: 24, maxWidth: 350, width: '100%', border: '1px solid rgba(168,85,247,0.35)', color: '#fff', textAlign: 'center' }}>
-          <div style={{ fontSize: 27, fontWeight: 750, marginBottom: 8 }}>Выберите язык</div>
+          <div style={{ fontSize: 27, fontWeight: 750, marginBottom: 8 }}>{t("Выберите язык")}</div>
           <div style={{ fontSize: 14, color: '#c4b5fd', marginBottom: 22 }}>Choose your language</div>
           <button type="button" onClick={() => chooseLanguage('ru')} style={{ width: '100%', padding: 16, background: '#7437bb', border: '1px solid #aa7bf5', borderRadius: 14, color: '#fff', fontSize: 16, fontWeight: 650, marginBottom: 12, cursor: 'pointer' }}>Русский</button>
           <button type="button" onClick={() => chooseLanguage('en')} style={{ width: '100%', padding: 16, background: '#251536', border: '1px solid #6f4893', borderRadius: 14, color: '#fff', fontSize: 16, fontWeight: 650, cursor: 'pointer' }}>English</button>
@@ -1740,7 +1740,7 @@ async function deleteOrder(orderId: number) {
   return (
     <div key={screen} style={page}>
       <RetailTopBar wholesale={priceMode === 'wholesale'} />
-      <div style={{ ...title, marginBottom: 20 }}>Инфо</div>
+      <div style={{ ...title, marginBottom: 20 }}>{t("Инфо")}</div>
 
       <button
         onClick={() => setScreen('catalog')}
@@ -2186,8 +2186,8 @@ const statusColor =
         <div style={{ fontSize: 13, lineHeight: 1.9 }}>
           <div>
             Получение: {order.delivery_type === 'pickup'
-              ? 'Самовывоз'
-              : 'GLS · Германия'}
+              ? t('Самовывоз')
+              : t('Германия · GLS')}
           </div>
           {order.delivery_type === 'delivery' && (
             <div>
@@ -5924,11 +5924,11 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     return (
       <div key={screen} style={page}>
         <div style={card}>
-          <div style={{ ...title, marginBottom: 12 }}>Ожидает подтверждения</div>
+          <div style={{ ...title, marginBottom: 12 }}>{t("Ожидает подтверждения")}</div>
           <div style={{ fontSize: 15, color: '#b0b0b0', lineHeight: 1.6, marginBottom: 20 }}>
             Заказ принят. Администратор скоро свяжется с вами и сообщит время и место встречи.
           </div>
-          <button onClick={() => setScreen('catalog')} style={btnMain}>В каталог</button>
+          <button onClick={() => setScreen('catalog')} style={btnMain}>{t("В каталог")}</button>
         </div>
       </div>
     )
@@ -5937,26 +5937,26 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
   if (screen === 'checkout') {
     return (
       <div key={screen} style={page}>
-        <button onClick={() => setScreen('cart')} style={backBtn}>Назад</button>
-        <div style={title}>Оформление</div>
+        <button onClick={() => setScreen('cart')} style={backBtn}>{t("Назад")}</button>
+        <div style={title}>{t("Оформление")}</div>
         <div style={{ ...card, marginBottom: 12 }}>
-          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>ГОРОД</div>
+          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>{t("ГОРОД")}</div>
           {CITIES.map((c) => (
             <button key={c} onClick={() => setCity(c)} style={{ display: 'block', width: '100%', padding: 12, marginBottom: 8, background: city === c ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.04)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, fontSize: 15, textAlign: 'left' as const, cursor: 'pointer' }}>{c}</button>
           ))}
         </div>
         <div style={{ ...card, marginBottom: 12 }}>
-          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>МЕСТО ВСТРЕЧИ</div>
-          <input style={inputStyle} value={place} onChange={(e) => setPlace(e.target.value)} placeholder="Например: Hauptbahnhof, у входа" />
+          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>{t("МЕСТО ВСТРЕЧИ")}</div>
+          <input style={inputStyle} value={place} onChange={(e) => setPlace(e.target.value)} placeholder={t("Например: Hauptbahnhof, у входа")} />
         </div>
         <div style={{ ...card, marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>ОПЛАТА</div>
+          <div style={{ fontSize: 12, color: '#8a8a8a', marginBottom: 10 }}>{t("ОПЛАТА")}</div>
           {PAYMENTS.map((p) => (
-            <button key={p} onClick={() => setPayment(p)} style={{ display: 'block', width: '100%', padding: 12, marginBottom: 8, background: payment === p ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.04)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, fontSize: 15, textAlign: 'left' as const, cursor: 'pointer' }}>{p}</button>
+            <button key={p} onClick={() => setPayment(p)} style={{ display: 'block', width: '100%', padding: 12, marginBottom: 8, background: payment === p ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.04)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, fontSize: 15, textAlign: 'left' as const, cursor: 'pointer' }}>{t(p)}</button>
           ))}
         </div>
         <button disabled={!city || !payment || submitting} onClick={submitOrder} style={{ ...btnMain, opacity: city && payment && !submitting ? 1 : 0.45 }}>
-          {submitting ? 'Отправка...' : 'Подтвердить заказ'}
+          {submitting ? t('Отправка...') : t('Подтвердить заказ')}
         </button>
       </div>
     )
@@ -5973,7 +5973,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
         <button style={backBtn} onClick={() => setScreen('catalog')}>
           ← Назад
         </button>
-        <div style={card}>Товар не найден</div>
+        <div style={card}>{t("Товар не найден")}</div>
       </div>
     )
   }
@@ -6133,7 +6133,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   }}
 >
   {retailLoading ? (
-          <div style={{ color: '#aaa' }}>Загрузка...</div>
+          <div style={{ color: '#aaa' }}>{t("Загрузка...")}</div>
         ) : (
           retailFlavors
   .filter(f => Number(f.stock) > 0 && Number(f.is_active ?? 1) !== 0)
@@ -6463,7 +6463,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
           >
             ← Назад
           </button>
-          <div style={card}>Товар не найден</div>
+          <div style={card}>{t("Товар не найден")}</div>
         </div>
       )
     }
@@ -6555,10 +6555,10 @@ const selectedWholesaleRemainingStock = selectedWholesaleFlavor
   {product.name}
 </div>
 
-          <h3>Выберите вкусы</h3>
+          <h3>{t("Выберите вкусы")}</h3>
 
           {wholesaleLoading ? (
-            <p>Загрузка вкусов...</p>
+            <p>{t("Загрузка вкусов...")}</p>
           ) : activeFlavors.length === 0 ? (
             <p style={{ color: '#aaa' }}>
               Вкусов пока нет
@@ -6918,7 +6918,7 @@ return (
     const img = photoUrl(selected.photo)
     return (
       <div key={screen} style={page}>
-        <button onClick={() => setScreen('catalog')} style={backBtn}>Назад</button>
+        <button onClick={() => setScreen('catalog')} style={backBtn}>{t("Назад")}</button>
         <div style={{ ...card, padding: 0, overflow: 'hidden' }}>
           <div style={{ width: '100%', aspectRatio: '1/1', background: '#111' }}>
             {img ? <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
@@ -6931,7 +6931,7 @@ return (
               {selected.available ? 'В НАЛИЧИИ' : 'НЕТ В НАЛИЧИИ'}
             </div>
             <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 16 }}>{profile?.has_discount ? 10 : selected.price} €</div>
-            <button disabled={!selected.available} onClick={() => { addToCart(selected); setScreen('catalog') }} style={{ ...btnMain, opacity: selected.available ? 1 : 0.4 }}>В корзину</button>
+            <button disabled={!selected.available} onClick={() => { addToCart(selected); setScreen('catalog') }} style={{ ...btnMain, opacity: selected.available ? 1 : 0.4 }}>{t("В корзину")}</button>
           </div>
         </div>
       </div>
@@ -6941,15 +6941,15 @@ return (
   if (screen === 'rules') {
     return (
       <div key={screen} style={page}>
-        <button onClick={() => setScreen('profile')} style={backBtn}>Назад</button>
-        <div style={title}>Правила</div>
+        <button onClick={() => setScreen('profile')} style={backBtn}>{t("Назад")}</button>
+        <div style={title}>{t("Правила")}</div>
         <div style={{ ...card, fontSize: 14, color: '#c0c0c0', lineHeight: 1.7 }}>
-          <p style={{ marginBottom: 12 }}>1. Возврат жидкостей после покупки не осуществляется.</p>
-          <p style={{ marginBottom: 12 }}>2. Обмен вкуса возможен в течение 12 часов при неповреждённой упаковке и невскрытом флаконе.</p>
-          <p style={{ marginBottom: 12 }}>3. Проверяйте товар при получении.</p>
-          <p style={{ marginBottom: 12 }}>4. Администрация вправе отказать в обслуживании без объяснения причины.</p>
-          <p style={{ marginBottom: 12 }}>5. Просим соблюдать уважительный тон при общении.</p>
-          <p>6. Оформляя заказ, вы подтверждаете согласие с правилами MONO.</p>
+          <p style={{ marginBottom: 12 }}>{t("1. Возврат жидкостей после покупки не осуществляется.")}</p>
+          <p style={{ marginBottom: 12 }}>{t("2. Обмен вкуса возможен в течение 12 часов при неповреждённой упаковке и невскрытом флаконе.")}</p>
+          <p style={{ marginBottom: 12 }}>{t("3. Проверяйте товар при получении.")}</p>
+          <p style={{ marginBottom: 12 }}>{t("4. Администрация вправе отказать в обслуживании без объяснения причины.")}</p>
+          <p style={{ marginBottom: 12 }}>{t("5. Просим соблюдать уважительный тон при общении.")}</p>
+          <p>{t("6. Оформляя заказ, вы подтверждаете согласие с правилами MONO.")}</p>
         </div>
         <BottomNav />
       </div>
@@ -6959,8 +6959,8 @@ return (
     if (screen === 'support') {
     return (
       <div key={screen} style={page}>
-        <button onClick={() => setScreen('profile')} style={backBtn}>Назад</button>
-        <div style={title}>Поддержка</div>
+        <button onClick={() => setScreen('profile')} style={backBtn}>{t("Назад")}</button>
+        <div style={title}>{t("Поддержка")}</div>
         <div style={{ ...card, marginBottom: 12, maxHeight: '50vh', overflowY: 'auto' }}>
           {supportMessages.length === 0 ? (
             <div style={{ color: '#a0a0a0', fontSize: 14, lineHeight: 1.6 }}>
@@ -6995,7 +6995,7 @@ return (
         <textarea
           value={supportText}
           onChange={(e) => setSupportText(e.target.value)}
-          placeholder="Сообщение..."
+          placeholder={t("Сообщение...")}
           rows={3}
           style={{ ...inputStyle, resize: 'none' as const }}
         />
@@ -7010,17 +7010,17 @@ return (
     if (screen === 'favorites') {
     return (
       <div key={screen} style={page}>
-        <button onClick={() => setScreen('profile')} style={backBtn}>Назад</button>
-        <div style={title}>Избранное</div>
+        <button onClick={() => setScreen('profile')} style={backBtn}>{t("Назад")}</button>
+        <div style={title}>{t("Избранное")}</div>
         {favProducts.length === 0 ? (
-          <div style={card}>Пока пусто — нажмите ♡ на товаре в каталоге</div>
+          <div style={card}>{t("Пока пусто — нажмите ♡ на товаре в каталоге")}</div>
         ) : (
           favProducts.map((p) => (
             <div key={p.id} style={{ ...card, marginBottom: 10 }}>
               <div style={{ fontWeight: 700, marginBottom: 6 }}>{p.name}</div>
               <div style={{ marginBottom: 10 }}>{p.price} €</div>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button onClick={() => addToCart(p)} style={{ ...btnMain, flex: 1 }}>В корзину</button>
+                <button onClick={() => addToCart(p)} style={{ ...btnMain, flex: 1 }}>{t("В корзину")}</button>
                 <button
                   onClick={() => toggleFav(p.id)}
                   style={{ ...btnMain, flex: 1, background: 'rgba(0,0,0,0.5)' }}
@@ -7095,8 +7095,8 @@ if (selectedOrder) {
           </div>
           <div>
             Получение: {selectedOrder.delivery_type === 'pickup'
-              ? 'Самовывоз'
-              : 'GLS · Германия'}
+              ? t('Самовывоз')
+              : t('Германия · GLS')}
           </div>
           <div>
             Оплата: {selectedOrder.payment_method === 'cash'
@@ -7112,7 +7112,7 @@ if (selectedOrder) {
                 ? 'Отправлен'
                 : selectedOrder.status === 'done'
                   ? 'Завершён'
-                  : 'Отменён'}
+                  : t('Отменён')}
           </div>
         </div>
       </div>
@@ -7154,7 +7154,7 @@ if (selectedOrder) {
         alignItems: 'center',
         marginBottom: 24,
       }}>
-        <strong>Итого за товары</strong>
+        <strong>{t("Итого за товары")}</strong>
         <strong style={{ fontSize: 22, color: '#c084fc' }}>
           {Number(selectedOrder.items_total).toFixed(2)} €
         </strong>
@@ -7236,11 +7236,11 @@ if (selectedOrder) {
       {/* Статистика */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
         <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16 }}>
-          <div style={{ color: '#a3a3a3', fontSize: 13 }}>Покупок</div>
+          <div style={{ color: '#a3a3a3', fontSize: 13 }}>{t("Покупок")}</div>
           <div style={{ fontSize: 28, fontWeight: 700 }}>{profile?.purchases || 0}</div>
         </div>
         <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16 }}>
-          <div style={{ color: '#a3a3a3', fontSize: 13 }}>Друзей</div>
+          <div style={{ color: '#a3a3a3', fontSize: 13 }}>{t("Друзей")}</div>
           <div style={{ fontSize: 28, fontWeight: 700 }}>{profile?.referrals || 0}</div>
         </div>
       </div>
@@ -7248,9 +7248,9 @@ if (selectedOrder) {
       {/* Скидка */}
 <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
   <div>
-    <div style={{ color: '#a3a3a3', fontSize: 13 }}>Скидка</div>
+    <div style={{ color: '#a3a3a3', fontSize: 13 }}>{t("Скидка")}</div>
     <div style={{ fontSize: 20, fontWeight: 700 }}>
-      {profile?.has_discount ? 'Да' : 'Нет'}
+      {profile?.has_discount ? t('Да') : t('Нет')}
     </div>
   </div>
   <button
@@ -7293,7 +7293,7 @@ if (selectedOrder) {
 
       {/* Реферальная ссылка */}
       <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 16 }}>
-        <div style={{ color: '#a3a3a3', fontSize: 13, marginBottom: 8 }}>Реферальная ссылка</div>
+        <div style={{ color: '#a3a3a3', fontSize: 13, marginBottom: 8 }}>{t("Реферальная ссылка")}</div>
         <div
           onClick={() => {
             const link = `https://t.me/itsmono_bot?start=ref_${tgUser?.id || ''}`
@@ -7311,7 +7311,7 @@ if (selectedOrder) {
         >
           https://t.me/itsmono_bot?start=ref_{tgUser?.id || ''}
         </div>
-        <div style={{ color: '#6b6b6b', fontSize: 12, marginTop: 6 }}>Нажми, чтобы скопировать</div>
+        <div style={{ color: '#6b6b6b', fontSize: 12, marginTop: 6 }}>{t("Нажми, чтобы скопировать")}</div>
       </div>
 
       {showDiscountInfo && (
@@ -7338,7 +7338,7 @@ if (selectedOrder) {
         width: '100%',
       }}
     >
-      <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Как работает скидка</div>
+      <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>{t("Как работает скидка")}</div>
       <div style={{ color: '#a3a3a3', fontSize: 14, lineHeight: 1.4 }}>
         Пригласите 2 друзей по своей реферальной ссылке.<br />
         После того как они оформят заказ, вам активируется скидка 5 € на следующий заказ.
@@ -7458,10 +7458,10 @@ if (selectedOrder) {
   fontSize: 12,
   fontWeight: 600,
 }}>
-            {order.status === 'new' ? 'Новый'
-              : order.status === 'shipped' ? 'Отправлен'
-              : order.status === 'done' ? 'Завершён'
-              : 'Отменён'}
+            {order.status === 'new' ? t('Новый')
+              : order.status === 'shipped' ? t('Отправлен')
+              : order.status === 'done' ? t('Завершён')
+              : t('Отменён')}
           </span>
         </div>
 
@@ -7574,7 +7574,7 @@ cursor: 'pointer',
   fontSize: 12,
   fontWeight: 600,
 }}>
-  {order.status === 'new' ? 'Новый' :
+  {order.status === 'new' ? t('Новый') :
    order.status === 'shipped' ? 'Отправлен' :
    order.status === 'done' ? 'Завершён' :
    order.status === 'cancelled' ? 'Отменён' :
@@ -7655,8 +7655,8 @@ cursor: 'pointer',
  if (screen === 'delivery') {
   return (
     <div key={screen} style={page}>
-      <button onClick={() => setScreen('catalog')} style={backBtn}>Назад</button>
-      <div style={{ ...title, marginBottom: 20 }}>Способы получения</div>
+      <button onClick={() => setScreen('catalog')} style={backBtn}>{t("Назад")}</button>
+      <div style={{ ...title, marginBottom: 20 }}>{t("Способы получения")}</div>
 
       <button
         onClick={() => { setDeliveryType('pickup'); setScreen('catalog') }}
@@ -7674,7 +7674,7 @@ cursor: 'pointer',
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
             <circle cx="12" cy="9" r="2.5"/>
           </svg>
-          <div style={{ fontSize: 18, fontWeight: 600 }}>Самовывоз</div>
+          <div style={{ fontSize: 18, fontWeight: 600 }}>{t("Самовывоз")}</div>
         </div>
         <div style={{ fontSize: 14, color: '#a0a0a0', lineHeight: 1.5 }}>
           Для оформления самовывоза предварительно свяжитесь с менеджером через поддержку.
@@ -7697,7 +7697,7 @@ cursor: 'pointer',
             <path d="M3.27 6.96L12 12.01l8.73-5.05"/>
             <path d="M12 22.08V12"/>
           </svg>
-          <div style={{ fontSize: 18, fontWeight: 600 }}>Доставка</div>
+          <div style={{ fontSize: 18, fontWeight: 600 }}>{t("Доставка")}</div>
         </div>
         <div style={{ fontSize: 14, color: '#a0a0a0', lineHeight: 1.5 }}>
           Самовывоз недоступен в вашем городе? Закажите по почте!
@@ -7712,11 +7712,11 @@ cursor: 'pointer',
     <div key="conditions" style={page}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
         <button type="button" onClick={() => setScreen('catalog')} style={{ border: 'none', background: 'none', color: '#fff', fontSize: 20, cursor: 'pointer' }}>←</button>
-        <div style={title}>Условия работы</div>
+        <div style={title}>{t("Условия работы")}</div>
       </div>
 
       <div style={{ ...card, padding: 16, marginBottom: 12 }}>
-        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>📦 Минимальный заказ и ассортимент</div>
+        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{t("📦 Минимальный заказ и ассортимент")}</div>
         <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
           Мы работаем с любыми объёмами — как с небольшими заказами, так и с супер крупными партиями.
           <br /><br />
@@ -7733,7 +7733,7 @@ cursor: 'pointer',
       </div>
 
       <div style={{ ...card, padding: 16, marginBottom: 12 }}>
-        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>📦 Доставка по Европе</div>
+        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{t("📦 Доставка по Европе")}</div>
         <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
           Служба: DPD / GLS
           <br />Сроки: в среднем от 3 до 5 рабочих дней
@@ -7744,7 +7744,7 @@ cursor: 'pointer',
       </div>
 
       <div style={{ ...card, padding: 16 }}>
-        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>💳 Оплата</div>
+        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{t("💳 Оплата")}</div>
         <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
           Мы предлагаем несколько способов оплаты:
           <br /><br />
@@ -7898,21 +7898,21 @@ cursor: 'pointer',
             {[
               {
                 name: 'first_name',
-                label: 'Имя',
+                label: t("Имя"),
                 placeholder: 'Ваше имя',
                 type: 'text',
                 value: wholesaleContact.first_name,
               },
               {
                 name: 'last_name',
-                label: 'Фамилия',
+                label: t("Фамилия"),
                 placeholder: 'Ваша фамилия',
                 type: 'text',
                 value: wholesaleContact.last_name,
               },
               {
                 name: 'phone',
-                label: 'Телефон',
+                label: t("Телефон"),
                 placeholder: '+49...',
                 type: 'tel',
                 value: wholesaleContact.phone,
@@ -8216,7 +8216,7 @@ onChange={field.name === 'phone'
                 <input
                   name="city"
                   defaultValue={wholesaleAddress.city}
-                  placeholder="Город"
+                  placeholder={t("Город")}
                   style={deliveryField}
                   required
                 />
@@ -8230,7 +8230,7 @@ onChange={field.name === 'phone'
                 <input
                   name="postal_code"
                   defaultValue={wholesaleAddress.postal_code}
-                  placeholder="Индекс"
+                  placeholder={t("Индекс")}
                   style={deliveryField}
                   required
                 />
@@ -8245,7 +8245,7 @@ onChange={field.name === 'phone'
               <input
                 name="street"
                 defaultValue={wholesaleAddress.street}
-                placeholder="Название улицы"
+                placeholder={t("Название улицы")}
                 style={deliveryField}
                 required
               />
@@ -8523,7 +8523,7 @@ onChange={field.name === 'phone'
             </div>
 
             <div style={detailStyle}>
-              <span style={{ color: '#aaa' }}>Имя</span>
+              <span style={{ color: '#aaa' }}>{t("Имя")}</span>
               <strong>
                 {wholesaleContact.first_name}{' '}
                 {wholesaleContact.last_name}
@@ -8531,7 +8531,7 @@ onChange={field.name === 'phone'
             </div>
 
             <div style={detailStyle}>
-              <span style={{ color: '#aaa' }}>Телефон</span>
+              <span style={{ color: '#aaa' }}>{t("Телефон")}</span>
               <strong>{wholesaleContact.phone}</strong>
             </div>
 
@@ -8545,7 +8545,7 @@ onChange={field.name === 'phone'
             <hr style={{ borderColor: '#333', margin: '18px 0' }}/>
 
             <div style={detailStyle}>
-              <span style={{ color: '#aaa' }}>Доставка</span>
+              <span style={{ color: '#aaa' }}>{t("Доставка")}</span>
               <strong>{wholesaleCarrier}</strong>
             </div>
 
@@ -8628,8 +8628,8 @@ onChange={field.name === 'phone'
             </div>
 
             {[
-              { id: 'USDT', label: 'Крипта · USDT', icon: '◇' },
-              { id: 'UAH', label: 'Карта UAH', icon: '▣' },
+              { id: 'USDT', label: t("Крипта · USDT"), icon: '◇' },
+              { id: 'UAH', label: t("Карта UAH"), icon: '▣' },
             ].map(method => (
               <button
                 key={method.id}
@@ -8712,7 +8712,7 @@ onChange={field.name === 'phone'
               borderTop: '1px solid #333',
               paddingTop: 16,
             }}>
-              <strong>Итого без доставки</strong>
+              <strong>{t("Итого без доставки")}</strong>
               <strong style={{
                 color: '#a855f7',
                 fontSize: 21,
@@ -9166,7 +9166,7 @@ onChange={field.name === 'phone'
         marginTop: 20,
       }}>
         <div>
-          <div style={{ fontWeight: 700 }}>Товары</div>
+          <div style={{ fontWeight: 700 }}>{t("Товары")}</div>
           <div style={{ color: '#aaa', fontSize: 12 }}>
             {retailCount} шт.
           </div>
@@ -9217,9 +9217,9 @@ onChange={field.name === 'phone'
   <div style={{ fontSize: 13, color: '#aaa' }}>
     Выберите удобный способ оплаты
     {([
-    { id: 'usdt', label: 'USDT · Криптовалюта' },
+    { id: 'usdt', label: t("USDT · Криптовалюта") },
     { id: 'uah', label: 'Банковский перевод UAH' },
-    { id: 'cash', label: 'Наличные при получении' },
+    { id: 'cash', label: t("Наличные при получении") },
   ] as const).map(method => (
     <button
       key={method.id}
@@ -9265,7 +9265,7 @@ onChange={field.name === 'phone'
     justifyContent: 'space-between',
     fontSize: 14,
   }}>
-    <span>Товары</span>
+    <span>{t("Товары")}</span>
     <span>{retailTotal.toFixed(2)} €</span>
   </div>
 
@@ -9426,7 +9426,7 @@ style={{
             gap: 12,
             fontSize: 14,
           }}>
-            <span>Стоимость доставки</span>
+            <span>{t("Стоимость доставки")}</span>
             <strong style={{ color: '#c084fc' }}>
               {retailCount <= 10
                 ? 'От 5,89 €'
@@ -9480,7 +9480,7 @@ style={{
         <div>
           {retailDeliveryData.postalCode} {retailDeliveryData.city}
         </div>
-        <div>Германия · GLS</div>
+        <div>{t("Германия · GLS")}</div>
       </div>
 
       {retailCheckoutStep === 3 && (
@@ -9532,7 +9532,7 @@ style={{
       fontWeight: 800,
       fontSize: 17,
     }}>
-      <span>Товары</span>
+      <span>{t("Товары")}</span>
       <span>{retailTotal.toFixed(2)} €</span>
     </div>
 
@@ -9697,7 +9697,7 @@ style={{
 
     <div style={{ fontSize: 14, lineHeight: 1.8 }}>
       <div>Получатель: {retailDeliveryData.firstName} {retailDeliveryData.lastName}</div>
-      <div>Доставка: GLS, Германия</div>
+      <div>{t("Доставка: GLS, Германия")}</div>
       <div>Товаров на сумму: {retailTotal.toFixed(2)} €</div>
       <div>
         Оплата: {retailPaymentMethod === 'usdt'
@@ -10057,7 +10057,7 @@ showToast('Адрес сохранён')
   return (
     <div key={screen} style={page}>
       <RetailTopBar wholesale={priceMode === 'wholesale'} />
-      <div style={title}>Корзина</div>
+      <div style={title}>{t("Корзина")}</div>
 
       {cart.length === 0 && retailCart.length === 0 && wholesaleCart.length === 0 && (
         <div style={{
@@ -10424,7 +10424,7 @@ showToast('Адрес сохранён')
           fontSize: 13,
           color: '#aaa',
         }}>
-          <span>Количество товаров</span>
+          <span>{t("Количество товаров")}</span>
           <strong style={{ color: '#fff' }}>
             {retailCount} шт.
           </strong>
@@ -10534,7 +10534,7 @@ showToast('Адрес сохранён')
 })()}
       {cart.length > 0 && (
         <div style={{ ...card, marginBottom: 18 }}>
-          <h2>🛍 Розница</h2>
+          <h2>{t("🛍 Розница")}</h2>
 
           {cart.map(item => (
             <div
@@ -10823,7 +10823,7 @@ style={{
         fontSize: 13,
         marginBottom: 12,
       }}>
-        <span>Количество товаров</span>
+        <span>{t("Количество товаров")}</span>
         <strong style={{ color: '#FFFFFF' }}>
           {wholesaleCount} шт.
         </strong>
@@ -10957,8 +10957,8 @@ style={{
   gap: 5,
 }}>
   {([
-    { id: 'retail', label: 'Розница' },
-    { id: 'wholesale', label: 'Опт' },
+    { id: 'retail', label: t("Розница") },
+    { id: 'wholesale', label: t("Опт") },
   ] as const).map(option => {
     const active = priceMode === option.id
 
@@ -10990,7 +10990,7 @@ style={{
     )
   })}
 </div>
-      {loading ? <div style={{ color: '#a0a0a0', marginBottom: 12 }}>Загрузка...</div> : null}
+      {loading ? <div style={{ color: '#a0a0a0', marginBottom: 12 }}>{t("Загрузка...")}</div> : null}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         {priceMode === 'wholesale' ? (
   <>
@@ -11012,7 +11012,7 @@ style={{
       </button>
 
       <div style={{ ...card, padding: '14px 16px' }}>
-        <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6 }}>💬 Нашли дешевле? Сделаем лучше!</div>
+        <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6 }}>{t("💬 Нашли дешевле? Сделаем лучше!")}</div>
         <div style={{ fontSize: 13, color: '#c8c8c8', lineHeight: 1.45 }}>
           Напишите менеджеру — <a href="https://t.me/optpuffy" target="_blank" rel="noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>@optpuffy</a>, предложим более выгодную цену на опт!
         </div>
