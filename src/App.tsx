@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import AdminBanners from './AdminBanners'
 import CatalogBanners from './CatalogBanners'
+import { translateUI, UI_LANGUAGE_KEY, type UILanguage } from './i18n'
 import './App.css'
 
 const API_URL = 'https://web-production-8afa.up.railway.app'
@@ -185,6 +186,22 @@ function photoUrl(photo?: string | null) {
 
 
 function App() {
+  // Selected once and stored between app launches; unlike the 18+ gate.
+  const [language, setLanguage] = useState<UILanguage | null>(() => {
+    try {
+      const saved = localStorage.getItem(UI_LANGUAGE_KEY)
+      return saved === 'ru' || saved === 'en' ? saved : null
+    } catch {
+      return null
+    }
+  })
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false)
+  const t = (value: string) => translateUI(value, language ?? 'ru')
+  function chooseLanguage(next: UILanguage) {
+    setLanguage(next)
+    try { localStorage.setItem(UI_LANGUAGE_KEY, next) } catch { /* Storage can be disabled */ }
+    setShowLanguageSelector(false)
+  }
   const [screen, setScreen] = useState<Screen>('catalog')
   const [isProductSheetClosing, setIsProductSheetClosing] = useState(false)
   const [selectedId] = useState<number | null>(null)
@@ -1703,6 +1720,22 @@ async function deleteOrder(orderId: number) {
   )
 }
   
+
+  // Show the language selection after age verification, once per installation.
+  if (!language) {
+    return (
+      <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.93)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: 20 }}>
+        <div style={{ background: 'linear-gradient(145deg, #1a0b2e, #2e1065)', borderRadius: 24, padding: 24, maxWidth: 350, width: '100%', border: '1px solid rgba(168,85,247,0.35)', color: '#fff', textAlign: 'center' }}>
+          <div style={{ fontSize: 27, fontWeight: 750, marginBottom: 8 }}>Выберите язык</div>
+          <div style={{ fontSize: 14, color: '#c4b5fd', marginBottom: 22 }}>Choose your language</div>
+          <button type="button" onClick={() => chooseLanguage('ru')} style={{ width: '100%', padding: 16, background: '#7437bb', border: '1px solid #aa7bf5', borderRadius: 14, color: '#fff', fontSize: 16, fontWeight: 650, marginBottom: 12, cursor: 'pointer' }}>Русский</button>
+          <button type="button" onClick={() => chooseLanguage('en')} style={{ width: '100%', padding: 16, background: '#251536', border: '1px solid #6f4893', borderRadius: 14, color: '#fff', fontSize: 16, fontWeight: 650, cursor: 'pointer' }}>English</button>
+          <div style={{ color: '#b4a3c7', marginTop: 18, fontSize: 12 }}>You can change this later in your profile</div>
+        </div>
+      </div>
+    )
+  }
+
   if (screen === 'info') {
   return (
     <div key={screen} style={page}>
@@ -7239,6 +7272,24 @@ if (selectedOrder) {
     ?
   </button>
 </div>
+
+
+      {/* Customer language preference; leaves the admin panel unchanged. */}
+      <div style={{ background: '#21142e', border: '1px solid #493166', borderRadius: 16, padding: 16, marginBottom: 14 }}>
+        <button type="button" onClick={() => setShowLanguageSelector(!showLanguageSelector)}
+          style={{ width: '100%', border: 0, background: 'transparent', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 15, fontWeight: 650, padding: 0 }}>
+          <span>{t('Язык')} / Language</span>
+          <span style={{ color: '#caacff' }}>{language.toUpperCase()} ›</span>
+        </button>
+        {showLanguageSelector && (
+          <div style={{ display: 'flex', gap: 9, marginTop: 14 }}>
+            <button type="button" onClick={() => chooseLanguage('ru')}
+              style={{ flex: 1, border: language === 'ru' ? '1px solid #c49dff' : '1px solid #59416e', borderRadius: 12, background: language === 'ru' ? '#7135a8' : '#271c35', color: '#fff', padding: 12, cursor: 'pointer' }}>Русский</button>
+            <button type="button" onClick={() => chooseLanguage('en')}
+              style={{ flex: 1, border: language === 'en' ? '1px solid #c49dff' : '1px solid #59416e', borderRadius: 12, background: language === 'en' ? '#7135a8' : '#271c35', color: '#fff', padding: 12, cursor: 'pointer' }}>English</button>
+          </div>
+        )}
+      </div>
 
       {/* Реферальная ссылка */}
       <div style={{ background: '#1a1a1a', borderRadius: 16, padding: 16, marginBottom: 16 }}>
