@@ -7227,12 +7227,12 @@ if (selectedOrder) {
         referralsTotal={profileStats?.referrals_total ?? null}
         statsLoading={profileStatsLoading}
         hasDiscount={profileStats?.has_discount ?? Boolean(profile?.has_discount)}
-        referralLink={tgUser?.id ? `https://t.me/${profileStats?.bot_username || 'itsmono_bot'}?start=ref_${tgUser.id}` : null}
+        referralLink={tgUser?.id && profileStats?.bot_username ? `https://t.me/${profileStats.bot_username}?start=ref_${tgUser.id}` : null}
         language={language}
         onLanguageChange={chooseLanguage}
         onDiscountInfo={() => setShowDiscountInfo(true)}
         onCopyReferral={async () => {
-          const link = tgUser?.id ? `https://t.me/${profileStats?.bot_username || 'itsmono_bot'}?start=ref_${tgUser.id}` : null
+          const link = tgUser?.id && profileStats?.bot_username ? `https://t.me/${profileStats.bot_username}?start=ref_${tgUser.id}` : null
           if (!link) return
           try {
             await navigator.clipboard.writeText(link)
@@ -7242,8 +7242,8 @@ if (selectedOrder) {
           }
         }}
         onShareReferral={() => {
-          if (!tgUser?.id) return
-          const link = `https://t.me/${profileStats?.bot_username || 'itsmono_bot'}?start=ref_${tgUser.id}`
+          if (!tgUser?.id || !profileStats?.bot_username) return
+          const link = `https://t.me/${profileStats.bot_username}?start=ref_${tgUser.id}`
           const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}`
           const telegram = (window as any).Telegram?.WebApp
           if (telegram?.openTelegramLink) telegram.openTelegramLink(shareUrl)
