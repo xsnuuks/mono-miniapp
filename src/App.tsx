@@ -1327,7 +1327,7 @@ async function deleteOrder(orderId: number) {
                   fontWeight: 750,
                   letterSpacing: '-0.03em',
                 }}>
-                  Как получить заказ?
+                  {t("Как получить заказ?")}
                 </div>
 
                 <div style={{
@@ -1335,7 +1335,7 @@ async function deleteOrder(orderId: number) {
                   fontSize: 13,
                   marginTop: 8,
                 }}>
-                  Выберите удобный способ получения
+                  {t("Выберите удобный способ получения")}
                 </div>
               </div>
 
@@ -1497,7 +1497,7 @@ async function deleteOrder(orderId: number) {
                 boxShadow: '0 8px 24px rgba(140,55,225,0.22)',
               }}
             >
-              Продолжить
+              {t("Продолжить")}
             </button>
           </div>
         </div>,
@@ -1538,7 +1538,7 @@ async function deleteOrder(orderId: number) {
           fontSize: 13,
           fontWeight: 700,
         }}>
-          Опт
+          {t("Опт")}
         </div>
       ) : (
         <RetailDeliverySelector />
@@ -1675,10 +1675,10 @@ async function deleteOrder(orderId: number) {
         </div>
 
         <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>
-          Вам есть 18 лет?
+          {t("Вам есть 18 лет?")}
         </div>
         <div style={{ color: '#a3a3a3', fontSize: 14, marginBottom: 24, lineHeight: 1.4 }}>
-          Подтвердите возраст, чтобы продолжить.
+          {t("Подтвердите возраст, чтобы продолжить.")}
         </div>
 
         <button
@@ -1696,7 +1696,7 @@ async function deleteOrder(orderId: number) {
             cursor: 'pointer',
           }}
         >
-          Да, мне есть 18
+          {t("Да, мне есть 18")}
         </button>
 
         <button
@@ -1713,7 +1713,7 @@ async function deleteOrder(orderId: number) {
             cursor: 'pointer',
           }}
         >
-          Нет, выйти
+          {t("Нет, выйти")}
         </button>
       </div>
     </div>
@@ -1762,7 +1762,7 @@ async function deleteOrder(orderId: number) {
         }}
       >
         <span style={{ fontSize: 20 }}>ⓘ</span>
-        Дополнительно
+        {t("Дополнительно")}
       </button>
 
       <div style={{
@@ -1772,10 +1772,10 @@ async function deleteOrder(orderId: number) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, fontWeight: 600, fontSize: 16 }}>
           <span style={{ fontSize: 20 }}>?</span>
-          Часто задаваемые вопросы (FAQ)
+          {t("Часто задаваемые вопросы (FAQ)")}
         </div>
         <div style={{ color: '#a3a3a3', fontSize: 14, lineHeight: 1.5, marginBottom: 16, textAlign: 'center' }}>
-          Остались вопросы? Обратитесь в команду поддержки, чтобы получить ответ
+          {t("Остались вопросы? Обратитесь в команду поддержки, чтобы получить ответ")}
         </div>
         <button
           onClick={() => window.open('https://t.me/optpuffy', '_blank')}
@@ -1795,7 +1795,7 @@ async function deleteOrder(orderId: number) {
             cursor: 'pointer',
           }}
         >
-          Связаться с поддержкой
+          {t("Связаться с поддержкой")}
         </button>
       </div>
 
@@ -5926,7 +5926,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
         <div style={card}>
           <div style={{ ...title, marginBottom: 12 }}>{t("Ожидает подтверждения")}</div>
           <div style={{ fontSize: 15, color: '#b0b0b0', lineHeight: 1.6, marginBottom: 20 }}>
-            Заказ принят. Администратор скоро свяжется с вами и сообщит время и место встречи.
+            {t("Заказ принят. Администратор скоро свяжется с вами и сообщит время и место встречи.")}
           </div>
           <button onClick={() => setScreen('catalog')} style={btnMain}>{t("В каталог")}</button>
         </div>
@@ -5971,7 +5971,7 @@ if (screen.startsWith('admin_wholesale_flavors_')) {
     return (
       <div style={page}>
         <button style={backBtn} onClick={() => setScreen('catalog')}>
-          ← Назад
+          {t("← Назад")}
         </button>
         <div style={card}>{t("Товар не найден")}</div>
       </div>
@@ -6421,7 +6421,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
   transition: 'opacity 0.2s ease',
 }}
 >
-  Добавить в корзину
+  {t("Добавить в корзину")}
 </button>
   )}
         <button
@@ -6461,7 +6461,7 @@ const selectedRetailCartQty = selectedRetailCartItem?.quantity ?? 0
             style={backBtn}
             onClick={() => setScreen('catalog')}
           >
-            ← Назад
+            {t("← Назад")}
           </button>
           <div style={card}>{t("Товар не найден")}</div>
         </div>
@@ -6561,7 +6561,7 @@ const selectedWholesaleRemainingStock = selectedWholesaleFlavor
             <p>{t("Загрузка вкусов...")}</p>
           ) : activeFlavors.length === 0 ? (
             <p style={{ color: '#aaa' }}>
-              Вкусов пока нет
+              {t("Вкусов пока нет")}
             </p>
           ) : (
             activeFlavors.map(f => {
@@ -6752,7 +6752,7 @@ return (
   paddingTop: 16,
   borderTop: '1px solid #382C42',
 }}>
-  Оптовые цены
+  {t("Оптовые цены")}
 </div>
 
           {sortedTiers.map(t => (
@@ -6807,7 +6807,7 @@ return (
       fontSize: 13,
       fontWeight: 500,
     }}>
-      Выбрано
+      {t("Выбрано")}
     </span>
 
     <span style={{
@@ -6904,7 +6904,7 @@ return (
     textAlign: 'center',
     marginTop: 10,
   }}>
-    Итоговая стоимость рассчитывается в корзине
+    {t("Итоговая стоимость рассчитывается в корзине")}
   </p>
 </div>
           </div>
@@ -6964,7 +6964,7 @@ return (
         <div style={{ ...card, marginBottom: 12, maxHeight: '50vh', overflowY: 'auto' }}>
           {supportMessages.length === 0 ? (
             <div style={{ color: '#a0a0a0', fontSize: 14, lineHeight: 1.6 }}>
-              Напишите нам — обычно отвечаем в течение 5–15 минут.
+              {t("Напишите нам — обычно отвечаем в течение 5–15 минут.")}
             </div>
           ) : (
             supportMessages.map((m) => (
@@ -7025,7 +7025,7 @@ return (
                   onClick={() => toggleFav(p.id)}
                   style={{ ...btnMain, flex: 1, background: 'rgba(0,0,0,0.5)' }}
                 >
-                  Убрать
+                  {t("Убрать")}
                 </button>
               </div>
             </div>
@@ -7069,11 +7069,11 @@ if (selectedOrder) {
         onClick={() => setSelectedRetailOrderId(null)}
         style={backBtn}
       >
-        ← Назад к заказам
+        {t("← Назад к заказам")}
       </button>
 
       <div style={{ ...title, marginBottom: 20 }}>
-        Информация о заказе
+        {t("Информация о заказе")}
       </div>
 
       <div style={{ ...adminCard, marginBottom: 16 }}>
@@ -7119,7 +7119,7 @@ if (selectedOrder) {
 
       <div style={{ ...adminCard, marginBottom: 16 }}>
         <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>
-          Товары
+          {t("Товары")}
         </div>
 
         {(selectedOrder.items || []).map((item: any, index: number) => (
@@ -7177,7 +7177,7 @@ if (selectedOrder) {
       cursor: 'pointer',
     }}
   >
-    ✕ Отменить заказ
+    {t("✕ Отменить заказ")}
   </button>
 )}
 
@@ -7340,8 +7340,8 @@ if (selectedOrder) {
     >
       <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>{t("Как работает скидка")}</div>
       <div style={{ color: '#a3a3a3', fontSize: 14, lineHeight: 1.4 }}>
-        Пригласите 2 друзей по своей реферальной ссылке.<br />
-        После того как они оформят заказ, вам активируется скидка 5 € на следующий заказ.
+        {t("Пригласите 2 друзей по своей реферальной ссылке.")}<br />
+        {t("После того как они оформят заказ, вам активируется скидка 5 € на следующий заказ.")}
       </div>
       <button
         onClick={() => setShowDiscountInfo(false)}
@@ -7357,7 +7357,7 @@ if (selectedOrder) {
           cursor: 'pointer',
         }}
       >
-        Понятно
+        {t("Понятно")}
       </button>
     </div>
   </div>
@@ -7371,7 +7371,7 @@ if (selectedOrder) {
     marginBottom: 14,
   }}>
     <div style={{ fontSize: 20, fontWeight: 800 }}>
-      Мои заказы
+      {t("Мои заказы")}
     </div>
     <div style={{
   display: 'flex',
@@ -7408,11 +7408,11 @@ if (selectedOrder) {
    
   {ordersTab !== 'retail' ? null : myRetailOrdersLoading ? (
     <div style={{ ...adminCard, color: '#aaa' }}>
-      Загружаем заказы...
+      {t("Загружаем заказы...")}
     </div>
   ) : myRetailOrders.length === 0 ? (
     <div style={{ ...adminCard, color: '#aaa' }}>
-      У вас пока нет заказов
+      {t("У вас пока нет заказов")}
     </div>
   ) : (
     myRetailOrders.map((order: any) => (
@@ -7497,7 +7497,7 @@ if (selectedOrder) {
   alignItems: 'center',
   gap: 5,
 }}>
-  Подробнее
+  {t("Подробнее")}
   <svg
     width="16"
     height="16"
@@ -7521,11 +7521,11 @@ if (selectedOrder) {
 
   {ordersTab !== 'wholesale' ? null : myWholesaleOrdersLoading ? (
     <div style={adminCard}>
-      Загружаем оптовые заказы...
+      {t("Загружаем оптовые заказы...")}
     </div>
   ) : myWholesaleOrders.length === 0 ? (
     <div style={adminCard}>
-      У вас пока нет оптовых заказов
+      {t("У вас пока нет оптовых заказов")}
     </div>
   ) : (
     myWholesaleOrders.map((order: any) => (
@@ -7622,14 +7622,14 @@ cursor: 'pointer',
       fontWeight: 600,
       color: '#FFFFFF',
     }}>
-      Итого
+      {t("Итого")}
     </div>
     <div style={{
       fontSize: 11,
       color: '#A99AB8',
       marginTop: 4,
     }}>
-      Без учёта доставки
+      {t("Без учёта доставки")}
     </div>
   </div>
 
@@ -7677,7 +7677,7 @@ cursor: 'pointer',
           <div style={{ fontSize: 18, fontWeight: 600 }}>{t("Самовывоз")}</div>
         </div>
         <div style={{ fontSize: 14, color: '#a0a0a0', lineHeight: 1.5 }}>
-          Для оформления самовывоза предварительно свяжитесь с менеджером через поддержку.
+          {t("Для оформления самовывоза предварительно свяжитесь с менеджером через поддержку.")}
         </div>
       </button>
 
@@ -7700,7 +7700,7 @@ cursor: 'pointer',
           <div style={{ fontSize: 18, fontWeight: 600 }}>{t("Доставка")}</div>
         </div>
         <div style={{ fontSize: 14, color: '#a0a0a0', lineHeight: 1.5 }}>
-          Самовывоз недоступен в вашем городе? Закажите по почте!
+          {t("Самовывоз недоступен в вашем городе? Закажите по почте!")}
         </div>
       </button>
     </div>
@@ -7718,38 +7718,38 @@ cursor: 'pointer',
       <div style={{ ...card, padding: 16, marginBottom: 12 }}>
         <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{t("📦 Минимальный заказ и ассортимент")}</div>
         <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
-          Мы работаем с любыми объёмами — как с небольшими заказами, так и с супер крупными партиями.
+          {t("Мы работаем с любыми объёмами — как с небольшими заказами, так и с супер крупными партиями.")}
           <br /><br />
-          Вы можете свободно миксовать товары между собой — любые бренды, типы и вкусы (жидкости, одноразки и др.).
+          {t("Вы можете свободно миксовать товары между собой — любые бренды, типы и вкусы (жидкости, одноразки и др.).")}
           <br /><br />
-          Главное условие — соблюдение минимального общего количества для отгрузки:
-          <br />• от 20 шт — первая ценовая категория;
-          <br />• цены для крупных объёмов доступны по запросу.
+          {t("Главное условие — соблюдение минимального общего количества для отгрузки:")}
+          <br />{t("• от 20 шт — первая ценовая категория;")}
+          <br />{t("• цены для крупных объёмов доступны по запросу.")}
           <br /><br />
-          📌 Картриджи для подсистем не участвуют в подсчёте минимального количества.
+          {t("📌 Картриджи для подсистем не участвуют в подсчёте минимального количества.")}
           <br /><br />
-          Минимальное количество считается только по жидкостям, подсистемам и одноразкам.
+          {t("Минимальное количество считается только по жидкостям, подсистемам и одноразкам.")}
         </div>
       </div>
 
       <div style={{ ...card, padding: 16, marginBottom: 12 }}>
         <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{t("📦 Доставка по Европе")}</div>
         <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
-          Служба: DPD / GLS
-          <br />Сроки: в среднем от 3 до 5 рабочих дней
+          {t("Служба: DPD / GLS")}
+          <br />{t("Сроки: в среднем от 3 до 5 рабочих дней")}
           <br />20–40 €
           <br /><br />
-          Точная стоимость зависит от веса и количества.
+          {t("Точная стоимость зависит от веса и количества.")}
         </div>
       </div>
 
       <div style={{ ...card, padding: 16 }}>
         <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{t("💳 Оплата")}</div>
         <div style={{ fontSize: 13, color: '#d0d0d0', lineHeight: 1.5 }}>
-          Мы предлагаем несколько способов оплаты:
+          {t("Мы предлагаем несколько способов оплаты:")}
           <br /><br />
-          🅣 USDT (криптовалюта) — предпочтительный способ расчёта.
-          <br />💶 Банковский перевод в UAH — на Украинский счёт.
+          {t("🅣 USDT (криптовалюта) — предпочтительный способ расчёта.")}
+          <br />{t("💶 Банковский перевод в UAH — на Украинский счёт.")}
         </div>
       </div>
     </div>
@@ -7765,7 +7765,7 @@ cursor: 'pointer',
           style={backBtn}
           onClick={() => setScreen('cart')}
         >
-          ← Назад в корзину
+          {t("← Назад в корзину")}
         </button>
 
         <div style={{
@@ -7775,7 +7775,7 @@ cursor: 'pointer',
           marginBottom: 20,
         }}>
           <h2 style={{ margin: 0, fontSize: 23 }}>
-            Контактные данные
+            {t("Контактные данные")}
           </h2>
           <span style={adminBadge(true)}>1 / 4</span>
         </div>
@@ -7824,7 +7824,7 @@ cursor: 'pointer',
               fontWeight: 700,
               marginBottom: 20,
             }}>
-              ♙ Введите данные
+              {t("♙ Введите данные")}
             </div>
 
             <div style={{ marginBottom: 16 }}>
@@ -7834,7 +7834,7 @@ cursor: 'pointer',
     fontSize: 13,
     marginBottom: 8,
   }}>
-    Страна *
+    {t("Страна *")}
   </label>
 
   <select
@@ -7967,7 +7967,7 @@ onChange={field.name === 'phone'
               fontSize: 15,
             }}
           >
-            Далее
+            {t("Далее")}
           </button>
         </form>
       </div>
@@ -8030,7 +8030,7 @@ onChange={field.name === 'phone'
           style={backBtn}
           onClick={() => setScreen('wholesale_checkout')}
         >
-          ← Назад
+          {t("← Назад")}
         </button>
 
         <div style={{
@@ -8040,7 +8040,7 @@ onChange={field.name === 'phone'
           marginBottom: 20,
         }}>
           <h2 style={{ margin: 0, fontSize: 23 }}>
-            Доставка
+            {t("Доставка")}
           </h2>
 
           <span style={adminBadge(true)}>
@@ -8114,7 +8114,7 @@ onChange={field.name === 'phone'
               fontWeight: 700,
               marginBottom: 20,
             }}>
-              🚚 Доставка
+              {t("🚚 Доставка")}
             </div>
 
             <div style={{ marginBottom: 18 }}>
@@ -8123,7 +8123,7 @@ onChange={field.name === 'phone'
     fontSize: 13,
     marginBottom: 8,
   }}>
-    Страна доставки
+    {t("Страна доставки")}
   </div>
 
   <div style={{
@@ -8153,13 +8153,13 @@ onChange={field.name === 'phone'
     fontSize: 11,
     marginTop: 7,
   }}>
-    Изменить страну можно на предыдущем шаге
+    {t("Изменить страну можно на предыдущем шаге")}
   </div>
 </div>
 
             <div style={{ marginBottom: 18 }}>
               <label style={deliveryLabel}>
-                Способ доставки *
+                {t("Способ доставки *")}
               </label>
 
               <select
@@ -8171,16 +8171,16 @@ onChange={field.name === 'phone'
                 required
               >
                 <option value="">
-                  Выберите способ доставки
+                  {t("Выберите способ доставки")}
                 </option>
 
                 <option value="DPD">
-                  DPD — доставка по Европе
+                  {t("DPD — доставка по Европе")}
                 </option>
 
                 {wholesaleCountry === 'DE' && (
                   <option value="GLS">
-                    GLS — доставка по Германии
+                    {t("GLS — доставка по Германии")}
                   </option>
                 )}
               </select>
@@ -8210,7 +8210,7 @@ onChange={field.name === 'phone'
             }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <label style={deliveryLabel}>
-                  Город *
+                  {t("Город *")}
                 </label>
 
                 <input
@@ -8224,7 +8224,7 @@ onChange={field.name === 'phone'
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 <label style={deliveryLabel}>
-                  Почтовый индекс *
+                  {t("Почтовый индекс *")}
                 </label>
 
                 <input
@@ -8239,7 +8239,7 @@ onChange={field.name === 'phone'
 
             <div style={{ marginBottom: 18 }}>
               <label style={deliveryLabel}>
-                Улица *
+                {t("Улица *")}
               </label>
 
               <input
@@ -8253,7 +8253,7 @@ onChange={field.name === 'phone'
 
             <div>
               <label style={deliveryLabel}>
-                Номер дома / квартиры *
+                {t("Номер дома / квартиры *")}
               </label>
 
               <input
@@ -8276,7 +8276,7 @@ onChange={field.name === 'phone'
               fontSize: 15,
             }}
           >
-            Далее
+            {t("Далее")}
           </button>
         </form>
 
@@ -8321,7 +8321,7 @@ onChange={field.name === 'phone'
             fontSize: 23,
             margin: '0 0 12px',
           }}>
-            Заказ оформлен
+            {t("Заказ оформлен")}
           </h2>
 
           <p style={{
@@ -8344,10 +8344,10 @@ onChange={field.name === 'phone'
             justifyContent: 'space-between',
           }}>
             <span style={{ color: '#B5A7C2' }}>
-              Статус
+              {t("Статус")}
             </span>
             <strong style={{ color: '#C084FC' }}>
-              Новый
+              {t("Новый")}
             </strong>
           </div>
 
@@ -8369,7 +8369,7 @@ onChange={field.name === 'phone'
               cursor: 'pointer',
             }}
           >
-            Мои заказы
+            {t("Мои заказы")}
           </button>
 
           <button
@@ -8390,7 +8390,7 @@ onChange={field.name === 'phone'
               cursor: 'pointer',
             }}
           >
-            Вернуться в каталог
+            {t("Вернуться в каталог")}
           </button>
         </div>
       </div>
@@ -8468,7 +8468,7 @@ onChange={field.name === 'phone'
           style={backBtn}
           onClick={() => setScreen('wholesale_delivery')}
         >
-          ← Назад
+          {t("← Назад")}
         </button>
 
         <div style={{
@@ -8478,7 +8478,7 @@ onChange={field.name === 'phone'
           marginBottom: 20,
         }}>
           <h2 style={{ margin: 0, fontSize: 23 }}>
-            Проверка заказа
+            {t("Проверка заказа")}
           </h2>
           <span style={adminBadge(true)}>3 / 4</span>
         </div>
@@ -8506,7 +8506,7 @@ onChange={field.name === 'phone'
             fontWeight: 700,
             marginBottom: 20,
           }}>
-            📦 Ваш заказ
+            {t("📦 Ваш заказ")}
           </div>
 
           <div style={{
@@ -8519,7 +8519,7 @@ onChange={field.name === 'phone'
               fontSize: 12,
               marginBottom: 14,
             }}>
-              Контактные данные
+              {t("Контактные данные")}
             </div>
 
             <div style={detailStyle}>
@@ -8554,7 +8554,7 @@ onChange={field.name === 'phone'
               fontSize: 12,
               marginBottom: 8,
             }}>
-              Адрес получения
+              {t("Адрес получения")}
             </div>
 
             <div style={{ fontSize: 13, lineHeight: 1.7 }}>
@@ -8624,7 +8624,7 @@ onChange={field.name === 'phone'
               fontWeight: 700,
               marginBottom: 14,
             }}>
-              Способ оплаты
+              {t("Способ оплаты")}
             </div>
 
             {[
@@ -8682,25 +8682,24 @@ onChange={field.name === 'phone'
               lineHeight: 1.7,
               marginTop: 12,
             }}>
-              Оплата на этом этапе не производится.
-              Выбор способа оплаты не списывает деньги.
+              {t("Оплата на этом этапе не производится. Выбор способа оплаты не списывает деньги.")}
             </div>
 
             <hr style={{ borderColor: '#333', margin: '18px 0' }}/>
 
             <div style={detailStyle}>
               <span style={{ color: '#aaa' }}>
-                Стоимость товаров
+                {t("Стоимость товаров")}
               </span>
               <strong>{total.toFixed(2)} €</strong>
             </div>
 
             <div style={detailStyle}>
               <span style={{ color: '#aaa' }}>
-                Доставка
+                {t("Доставка")}
               </span>
               <span style={{ color: '#c084fc' }}>
-                Рассчитывается индивидуально
+                {t("Рассчитывается индивидуально")}
               </span>
             </div>
 
@@ -8921,7 +8920,7 @@ onChange={field.name === 'phone'
         style={backBtn}
         onClick={() => setScreen('cart')}
       >
-        ← Назад в корзину
+        {t("← Назад в корзину")}
       </button>
 
       <div style={{
@@ -8947,7 +8946,7 @@ onChange={field.name === 'phone'
           fontWeight: 700,
           marginBottom: 16,
         }}>
-          Ваш заказ
+          {t("Ваш заказ")}
         </div>
 
         {retailCart.map(item => {
@@ -9185,7 +9184,7 @@ onChange={field.name === 'phone'
             fontWeight: 700,
             marginBottom: 12,
           }}>
-            Самовывоз
+            {t("Самовывоз")}
           </div>
 
           <p style={{
@@ -9193,15 +9192,14 @@ onChange={field.name === 'phone'
             fontSize: 14,
             lineHeight: 1.7,
           }}>
-  Самовывоз по согласованию с менеджером. Если он недоступен
-  в вашем городе, предложим доставку.
+  {t("Самовывоз по согласованию с менеджером. Если он недоступен в вашем городе, предложим доставку.")}
 </p>
           <div style={{
             margin: '16px 0',
             color: '#34d399',
             fontSize: 13,
           }}>
-            Доплата за доставку отсутствует
+            {t("Доплата за доставку отсутствует")}
           </div>
 
           <div style={{
@@ -9211,7 +9209,7 @@ onChange={field.name === 'phone'
   gap: 12,
 }}>
   <div style={{ fontSize: 18, fontWeight: 800 }}>
-    Способ оплаты
+    {t("Способ оплаты")}
   </div>
 
   <div style={{ fontSize: 13, color: '#aaa' }}>
@@ -9299,13 +9297,13 @@ onChange={field.name === 'phone'
       color: '#BBAACB',
       marginBottom: 5,
     }}>
-      Итого к оплате
+      {t("Итого к оплате")}
     </div>
     <div style={{
       fontSize: 11,
       color: '#93839F',
     }}>
-      Стоимость товаров
+      {t("Стоимость товаров")}
     </div>
   </div>
 
@@ -9335,8 +9333,7 @@ onChange={field.name === 'phone'
       ✓ Заказ №{retailOrderId} создан
     </div>
     <p style={{ color: '#ccc', fontSize: 13, lineHeight: 1.6 }}>
-      Заказ получен. Свяжитесь с менеджером,
-      чтобы согласовать место самовывоза и оплату.
+      {t("Заказ получен. Свяжитесь с менеджером, чтобы согласовать место самовывоза и оплату.")}
     </p>
   </div>
 ) : (
@@ -9368,7 +9365,7 @@ style={{
               padding: 16,
             }}
           >
-            Написать менеджеру
+            {t("Написать менеджеру")}
           </button>
 
           <p style={{
@@ -9377,8 +9374,7 @@ style={{
             lineHeight: 1.6,
             marginTop: 14,
           }}>
-            Место получения и способ оплаты согласовываются
-            с менеджером. Само открытие чата не создаёт заказ.
+            {t("Место получения и способ оплаты согласовываются с менеджером. Само открытие чата не создаёт заказ.")}
           </p>
         </div>
       ) : (
@@ -9408,7 +9404,7 @@ style={{
     <circle cx="6.5" cy="18" r="2" />
     <circle cx="18.5" cy="18" r="2" />
   </svg>
-  Доставка GLS
+  {t("Доставка GLS")}
 </span>
           </div>
 
@@ -9417,7 +9413,7 @@ style={{
             fontSize: 13,
             marginBottom: 14,
           }}>
-            Страна доставки: Германия
+            {t("Страна доставки: Германия")}
           </div>
 
           <div style={{
@@ -9440,8 +9436,7 @@ style={{
             lineHeight: 1.7,
             marginTop: 16,
           }}>
-            Точная стоимость зависит от посылки.
-            В указанную сумму товаров доставка не включена.
+            {t("Точная стоимость зависит от посылки. В указанную сумму товаров доставка не включена.")}
           </p>
 
           <div style={{
@@ -9456,7 +9451,7 @@ style={{
         fontWeight: 700,
         fontSize: 17,
       }}>
-        ✓ Данные получателя заполнены
+        {t("✓ Данные получателя заполнены")}
       </div>
 
       <div style={{
@@ -9492,7 +9487,7 @@ style={{
     gap: 14,
   }}>
     <div style={{ fontSize: 17, fontWeight: 800 }}>
-      Ваш заказ
+      {t("Ваш заказ")}
     </div>
 
     {retailCart.map(item => {
@@ -9537,7 +9532,7 @@ style={{
     </div>
 
     <div style={{ color: '#aaa', fontSize: 12 }}>
-      Доставка GLS рассчитывается отдельно и пока не включена в сумму.
+      {t("Доставка GLS рассчитывается отдельно и пока не включена в сумму.")}
     </div>
   </div>
 )}
@@ -9545,7 +9540,7 @@ style={{
       {retailCheckoutStep === 3 && (
   <div style={{ display: 'grid', gap: 12 }}>
     <div style={{ fontSize: 17, fontWeight: 800 }}>
-      Способ оплаты
+      {t("Способ оплаты")}
     </div>
 
     {[
@@ -9588,7 +9583,7 @@ style={{
       opacity: hasMissingPrices || retailCart.length === 0 ? 0.5 : 1,
     }}
   >
-    Далее — подтверждение →
+    {t("Далее — подтверждение →")}
   </button>
 )}
 
@@ -9626,7 +9621,7 @@ style={{
       color: '#FFFFFF',
       marginBottom: 10,
     }}>
-      Заказ оформлен
+      {t("Заказ оформлен")}
     </div>
 
     <div style={{
@@ -9656,7 +9651,7 @@ style={{
         cursor: 'pointer',
       }}
     >
-      Мои заказы
+      {t("Мои заказы")}
     </button>
 
     <button
@@ -9673,7 +9668,7 @@ style={{
         cursor: 'pointer',
       }}
     >
-      Вернуться в каталог
+      {t("Вернуться в каталог")}
     </button>
   </div>
 )}
@@ -9692,7 +9687,7 @@ style={{
       fontWeight: 800,
       color: '#d8b4fe',
     }}>
-      Подтверждение заказа
+      {t("Подтверждение заказа")}
     </div>
 
     <div style={{ fontSize: 14, lineHeight: 1.8 }}>
@@ -9707,8 +9702,7 @@ style={{
     </div>
 
     <div style={{ fontSize: 12, color: '#aaa' }}>
-      Стоимость доставки рассчитывается отдельно и не включена
-      в указанную сумму.
+      {t("Стоимость доставки рассчитывается отдельно и не включена в указанную сумму.")}
     </div>
 
     <button
@@ -9745,7 +9739,7 @@ style={{
       onClick={() => setRetailCheckoutStep(3)}
       style={{ ...backBtn, width: '100%' }}
     >
-      ← Назад к оплате
+      {t("← Назад к оплате")}
     </button>
 
     <div style={{
@@ -9765,7 +9759,7 @@ style={{
         onClick={() => setRetailDeliverySaved(false)}
         style={{ ...adminActionBtn, width: '100%' }}
       >
-        Изменить данные
+        {t("Изменить данные")}
       </button>
     </div>
   ) : (
@@ -9866,7 +9860,7 @@ showToast('Адрес сохранён')
         fontWeight: 800,
         marginBottom: 4,
       }}>
-        Контактные данные
+        {t("Контактные данные")}
       </div>
 
       {[
@@ -9901,7 +9895,7 @@ showToast('Адрес сохранён')
         fontWeight: 800,
         marginTop: 8,
       }}>
-        Адрес доставки
+        {t("Адрес доставки")}
       </div>
 
       <div style={{
@@ -9911,7 +9905,7 @@ showToast('Адрес сохранён')
         borderRadius: 12,
         fontSize: 13,
       }}>
-        Германия · Доставка GLS
+        {t("Германия · Доставка GLS")}
       </div>
 
       {[
@@ -9951,7 +9945,7 @@ showToast('Адрес сохранён')
       marginBottom: 0,
     }}
   >
-    ← Назад к контактам
+    {t("← Назад к контактам")}
   </button>
 )}
       
@@ -10101,7 +10095,7 @@ showToast('Адрес сохранён')
     fontWeight: 700,
     marginBottom: 10,
   }}>
-    Корзина пуста
+    {t("Корзина пуста")}
   </div>
 
   <div style={{
@@ -10109,8 +10103,7 @@ showToast('Адрес сохранён')
     fontSize: 13,
     lineHeight: 1.6,
   }}>
-    Добавьте товары из каталога,
-    чтобы они появились здесь
+    {t("Добавьте товары из каталога, чтобы они появились здесь")}
   </div>
 
   <button
@@ -10123,7 +10116,7 @@ showToast('Адрес сохранён')
       padding: '13px 24px',
     }}
   >
-    Перейти в каталог
+    {t("Перейти в каталог")}
   </button>
 </div>
       )}
@@ -10184,7 +10177,7 @@ showToast('Адрес сохранён')
             fontSize: 21,
             fontWeight: 800,
           }}>
-            Розница
+            {t("Розница")}
           </div>
           <div style={{
             fontSize: 12,
@@ -10196,7 +10189,7 @@ showToast('Адрес сохранён')
         </div>
 
         <span style={adminBadge(true)}>
-          От 1 шт.
+          {t("От 1 шт.")}
         </span>
       </div>
 
@@ -10437,7 +10430,7 @@ showToast('Адрес сохранён')
           gap: 12,
         }}>
           <strong style={{ fontSize: 16 }}>
-            Итого
+            {t("Итого")}
           </strong>
 
           <strong style={{
@@ -10470,7 +10463,7 @@ showToast('Адрес сохранён')
     cursor: hasMissingPrices ? 'not-allowed' : 'pointer',
   }}
 >
-  Оформить розничный заказ
+  {t("Оформить розничный заказ")}
 </button>
 
       <div style={{
@@ -10577,7 +10570,7 @@ showToast('Адрес сохранён')
             style={btnMain}
             onClick={() => setScreen('checkout')}
           >
-            Оформить розничный заказ
+            {t("Оформить розничный заказ")}
           </button>
         </div>
       )}
@@ -10603,7 +10596,7 @@ showToast('Адрес сохранён')
           fontSize: 20,
           fontWeight: 700,
         }}>
-          Опт
+          {t("Опт")}
         </div>
         <div style={{
           color: '#A99DB4',
@@ -10623,7 +10616,7 @@ showToast('Адрес сохранён')
         fontSize: 12,
         fontWeight: 600,
       }}>
-        От 20 шт.
+        {t("От 20 шт.")}
       </span>
     </div>
 
@@ -10854,7 +10847,7 @@ style={{
           fontSize: 16,
           fontWeight: 700,
         }}>
-          Итого
+          {t("Итого")}
         </span>
 
         <strong style={{
@@ -10892,7 +10885,7 @@ style={{
               : 1,
         }}
       >
-        Оформить оптовый заказ
+        {t("Оформить оптовый заказ")}
       </button>
 
       <div style={{
@@ -10902,8 +10895,7 @@ style={{
         textAlign: 'center',
         marginTop: 12,
       }}>
-        Доставка рассчитывается индивидуально и не входит
-        в стоимость товаров.
+        {t("Доставка рассчитывается индивидуально и не входит в стоимость товаров.")}
       </div>
     </div>
   </div>
@@ -10942,7 +10934,7 @@ style={{
       letterSpacing: '-0.04em',
       lineHeight: 1.15,
     }}>
-      Каталог товаров
+      {t("Каталог товаров")}
     </div>
   </div>
 </div>
@@ -11008,13 +11000,13 @@ style={{
           cursor: 'pointer',
         }}
       >
-        Условия работы
+        {t("Условия работы")}
       </button>
 
       <div style={{ ...card, padding: '14px 16px' }}>
         <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6 }}>{t("💬 Нашли дешевле? Сделаем лучше!")}</div>
         <div style={{ fontSize: 13, color: '#c8c8c8', lineHeight: 1.45 }}>
-          Напишите менеджеру — <a href="https://t.me/optpuffy" target="_blank" rel="noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>@optpuffy</a>, предложим более выгодную цену на опт!
+          {t("Напишите менеджеру —")} <a href="https://t.me/optpuffy" target="_blank" rel="noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>@optpuffy</a>{t(", предложим более выгодную цену на опт!")}
         </div>
       </div>
     </div>
@@ -11119,7 +11111,7 @@ style={{
                 color: '#777',
                 fontSize: 13,
               }}>
-                Нет фотографии
+                {t("Нет фотографии")}
               </div>
             )}
           </div>
@@ -11157,7 +11149,7 @@ style={{
                 color: '#b8a7c8',
                 marginBottom: 8,
               }}>
-                Оптовые цены
+                {t("Оптовые цены")}
               </div>
 
               {sortedPrices.length > 0 ? (
@@ -11181,7 +11173,7 @@ style={{
                 ))
               ) : (
                 <div style={{ fontSize: 12, color: '#aaa' }}>
-                  Цены уточняются
+                  {t("Цены уточняются")}
                 </div>
               )}
             </div>
@@ -11195,7 +11187,7 @@ style={{
               fontWeight: 700,
               color: '#fff',
             }}>
-              Выбрать вкусы
+              {t("Выбрать вкусы")}
             </div>
           </div>
         </div>
@@ -11212,7 +11204,7 @@ style={{
       textAlign: 'center',
       padding: 16,
     }}>
-      Товаров в этой категории пока нет
+      {t("Товаров в этой категории пока нет")}
     </div>
   )}
 </div>
@@ -11269,7 +11261,7 @@ style={{
           color: '#94899F',
           fontSize: 12,
         }}>
-          Нет фотографии
+          {t("Нет фотографии")}
         </div>
       )}
     </div>
@@ -11358,7 +11350,7 @@ style={{
             color: '#A99EB3',
             fontSize: 12,
           }}>
-            Цены уточняются
+            {t("Цены уточняются")}
           </span>
         )}
       </div>
@@ -11373,7 +11365,7 @@ style={{
         color: '#FFFFFF',
         marginTop: 2,
       }}>
-        Выбрать вкусы
+        {t("Выбрать вкусы")}
       </div>
     </div>
   </div>
@@ -11389,7 +11381,7 @@ style={{
       textAlign: 'center',
       padding: 20,
     }}>
-      В рознице пока нет товаров
+      {t("В рознице пока нет товаров")}
     </div>
   )}
 </>
