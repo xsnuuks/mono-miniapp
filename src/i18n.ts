@@ -141,7 +141,7 @@ export const uiTranslations: Record<string, string> = {
   "В НАЛИЧИИ": "IN STOCK",
   "НЕТ В НАЛИЧИИ": "OUT OF STOCK",
   "Широкий ассортимент": "Wide selection",
-  "Дата неизвестна": "Unknown date",
+  "Дата неизвестна": "Date unknown",
   "Жижи": "E-liquids",
   "Одноразки": "Disposables",
   "Поды": "Pod devices",
@@ -169,7 +169,7 @@ export const uiTranslations: Record<string, string> = {
   "Оптовый заказ оформлен!": "Wholesale order placed!",
   "Оформляем заказ...": "Placing order...",
   "Проверьте товары и цены": "Check items and prices",
-  "Сначала заполните данные доставки": "First enter delivery details",
+  "Сначала заполните данные доставки": "Enter delivery details first",
   "Доставка GLS": "GLS delivery",
   "Рассчитывается отдельно": "Calculated separately",
   "Цена уточняется": "Price to be confirmed",
@@ -343,7 +343,22 @@ export const uiTranslations: Record<string, string> = {
   "чтобы согласовать место самовывоза и оплату.": "to arrange pickup and payment.",
   "В корзине": "In cart",
   "Показать ещё": "Show more",
-  "шт. в корзине": "units in cart"
+  "шт. в корзине": "units in cart",
+  "Выберите удобный способ оплаты": "Choose a payment method",
+  "Товар удалён": "Item removed",
+  "Ошибка оформления заказа": "Order placement failed",
+  "Неизвестная ошибка оформления заказа": "Unknown checkout error",
+  "Ошибка отправки заказа": "Order submission failed",
+  "Не удалось создать заказ": "Could not create order",
+  "Заказ успешно создан": "Order created successfully",
+  "Для оформления добавьте ещё": "Add another",
+  "Ошибка заказа: ": "Order error: ",
+  "Заказ": "Order",
+  "создан": "created",
+  "успешно создан.": "successfully created.",
+  "Выбрана доставка": "Selected carrier:",
+  "Стоимость рассчитывается индивидуально": "The delivery cost is calculated individually",
+  "в зависимости от страны и веса посылки.": "depending on country and parcel weight."
 }
 
 export function translateUI(text: string, language: UILanguage): string {
