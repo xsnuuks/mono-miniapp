@@ -226,6 +226,12 @@ function App() {
   const [users, setUsers] = useState<any[]>([])
   const [usersPage, setUsersPage] = useState(0)
   const [usersTotal, setUsersTotal] = useState(0)
+  const [usersView, setUsersView] = useState<'all' | 'newbot'>('all')
+  const [newBotClients, setNewBotClients] = useState<{ user_id: number; username: string | null; full_name: string | null; new_bot_started_at: string }[]>([])
+  const [newBotTotal, setNewBotTotal] = useState(0)
+  const [newBotPage, setNewBotPage] = useState(0)
+  const [newBotLoading, setNewBotLoading] = useState(false)
+  const [newBotError, setNewBotError] = useState('')
   const [stats, setStats] = useState<any>(null)
   const [statsPeriod, setStatsPeriod] = useState<'today' | '7d' | '30d' | 'all'>('all')
   const [broadcastText, setBroadcastText] = useState('')
@@ -1057,6 +1063,27 @@ async function deleteOrder(orderId: number) {
       setUsers(data.users || [])
       setUsersTotal(data.total || 0)
       setUsersPage(data.page || 0)
+    }
+  }
+
+  async function loadNewBotClients(page = 0) {
+    setNewBotLoading(true)
+    setNewBotError('')
+    try {
+      const initData = (window as any).Telegram?.WebApp?.initData || ''
+      if (!initData) throw new Error('Откройте админку через Telegram')
+      const r = await fetch(`${API_URL}/api/admin/new-bot-clients?page=${page}`, {
+        headers: { 'X-Telegram-Init-Data': initData },
+      })
+      if (!r.ok) throw new Error('Не удалось загрузить список нового бота')
+      const d = await r.json()
+      setNewBotClients(d.users || [])
+      setNewBotTotal(d.total || 0)
+      setNewBotPage(d.page || 0)
+    } catch (err) {
+      setNewBotError(err instanceof Error ? err.message : 'Ошибка загрузки')
+    } finally {
+      setNewBotLoading(false)
     }
   }
 
@@ -2397,24 +2424,75 @@ const statusColor =
 
   if (screen === 'admin_users') {
     const maxPage = Math.max(0, Math.ceil(usersTotal / 10) - 1)
+    const newMaxPage = Math.max(0, Math.ceil(newBotTotal / 20) - 1)
+    const newBotHandles = newBotClients
+      .filter(u => u.username)
+      .map(u => '@' + u.username)
+      .join('\n')
     return (
       <div key={screen} style={page}>
         <button onClick={() => setScreen('admin')} style={backBtn}>Назад</button>
-        <div style={title}>Пользователи ({usersTotal})</div>
-        {users.map((u) => (
-          <div key={u.user_id} style={{ ...card, marginBottom: 10 }}>
-            <div style={{ fontSize: 15, fontWeight: 600 }}>{u.full_name || '—'}</div>
-            <div style={{ fontSize: 13, color: '#a0a0a0', marginBottom: 10 }}>@{u.username || '—'} · ID {u.user_id}</div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={() => { setWriteUserId(u.user_id); setWriteText(''); setScreen('admin_write') }} style={{ ...btnMain, flex: 1 }}>Написать</button>
-              <button onClick={() => toggleBlock(u.user_id, !u.is_blocked)} style={{ ...btnMain, flex: 1 }}>{u.is_blocked ? 'Разблок' : 'Блок'}</button>
-            </div>
-          </div>
-        ))}
-        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-          <button disabled={usersPage <= 0} onClick={() => loadUsers(usersPage - 1)} style={{ ...btnMain, flex: 1, opacity: usersPage <= 0 ? 0.4 : 1 }}>Назад</button>
-          <button disabled={usersPage >= maxPage} onClick={() => loadUsers(usersPage + 1)} style={{ ...btnMain, flex: 1, opacity: usersPage >= maxPage ? 0.4 : 1 }}>Далее</button>
+        <div style={title}>Клиенты</div>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
+          <button type="button" onClick={() => { setUsersView('all'); loadUsers(0) }}
+            style={{ ...btnMain, flex: 1, background: usersView === 'all' ? '#7135A8' : '#271E33', padding: '11px 5px', fontSize: 13 }}>
+            Все ({usersTotal})
+          </button>
+          <button type="button" onClick={() => { setUsersView('newbot'); loadNewBotClients(0) }}
+            style={{ ...btnMain, flex: 1, background: usersView === 'newbot' ? '#7135A8' : '#271E33', padding: '11px 5px', fontSize: 13 }}>
+            Новый бот ({newBotTotal})
+          </button>
         </div>
+        {usersView === 'all' ? (
+          <>
+            {users.map((u) => (
+              <div key={u.user_id} style={{ ...card, marginBottom: 10 }}>
+                <div style={{ fontSize: 15, fontWeight: 600 }}>{u.full_name || '—'}</div>
+                <div style={{ fontSize: 13, color: '#a0a0a0', marginBottom: 10 }}>@{u.username || '—'} · ID {u.user_id}</div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={() => { setWriteUserId(u.user_id); setWriteText(''); setScreen('admin_write') }} style={{ ...btnMain, flex: 1 }}>Написать</button>
+                  <button onClick={() => toggleBlock(u.user_id, !u.is_blocked)} style={{ ...btnMain, flex: 1 }}>{u.is_blocked ? 'Разблок' : 'Блок'}</button>
+                </div>
+              </div>
+            ))}
+            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+              <button disabled={usersPage <= 0} onClick={() => loadUsers(usersPage - 1)} style={{ ...btnMain, flex: 1, opacity: usersPage <= 0 ? 0.4 : 1 }}>Назад</button>
+              <button disabled={usersPage >= maxPage} onClick={() => loadUsers(usersPage + 1)} style={{ ...btnMain, flex: 1, opacity: usersPage >= maxPage ? 0.4 : 1 }}>Далее</button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{ ...card, marginBottom: 12, fontSize: 13, color: '#BFB0CE', lineHeight: 1.6 }}>
+              Пользователи, которые нажали /start в новом боте после включения учёта. Старая база клиентов сохраняется.
+            </div>
+            <button type="button" onClick={() => loadNewBotClients(newBotPage)} disabled={newBotLoading}
+              style={{ ...btnMain, marginBottom: 12, background: '#352446' }}>Обновить список</button>
+            {newBotError && <div style={{ color: '#FCA5A5', marginBottom: 12 }}>{newBotError}</div>}
+            {newBotLoading ? <div style={card}>Загрузка...</div> : newBotClients.length === 0
+              ? <div style={card}>Пока нет подтверждённых запусков нового бота</div>
+              : newBotClients.map((u) => (
+                <div key={u.user_id} style={{ ...card, marginBottom: 9, padding: 14 }}>
+                  <div style={{ fontWeight: 700, color: '#fff' }}>
+                    {u.username ? <a href={`https://t.me/${u.username}`} target="_blank" rel="noreferrer" style={{ color: '#D3ABFF', textDecoration: 'none' }}>@{u.username}</a> : 'Без username'}
+                  </div>
+                  <div style={{ color: '#B5A5C3', fontSize: 12, marginTop: 5 }}>{u.full_name || '—'} · ID {u.user_id}</div>
+                  <div style={{ color: '#88799A', fontSize: 11, marginTop: 5 }}>START: {u.new_bot_started_at?.replace('T', ' ').slice(0, 16) || '—'}</div>
+                </div>
+              ))}
+            <button type="button" onClick={async () => {
+              if (!newBotHandles) return
+              try { await navigator.clipboard.writeText(newBotHandles); showToast('Юзернеймы этой страницы скопированы') }
+              catch { window.prompt('Скопируйте юзернеймы', newBotHandles) }
+            }} disabled={!newBotHandles}
+              style={{ ...btnMain, marginTop: 9, background: '#7135A8', opacity: newBotHandles ? 1 : 0.5 }}>
+              Скопировать юзернеймы этой страницы
+            </button>
+            <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+              <button disabled={newBotPage <= 0 || newBotLoading} onClick={() => loadNewBotClients(newBotPage - 1)} style={{ ...btnMain, flex: 1, opacity: newBotPage <= 0 ? 0.4 : 1 }}>Назад</button>
+              <button disabled={newBotPage >= newMaxPage || newBotLoading} onClick={() => loadNewBotClients(newBotPage + 1)} style={{ ...btnMain, flex: 1, opacity: newBotPage >= newMaxPage ? 0.4 : 1 }}>Далее</button>
+            </div>
+          </>
+        )}
       </div>
     )
   }
