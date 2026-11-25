@@ -1,0 +1,19 @@
+name: Audit unused code and lint
+on:
+  push:
+    branches: [audit/dead-code-lint]
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: TypeScript and Vite build
+        run: npm run build
+      - name: Oxlint report
+        run: npm run lint
